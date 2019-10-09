@@ -15,6 +15,8 @@
     <bidrag-commons.version>0.1.14</bidrag-commons.version>
     <clucumber.version>2.2.0</clucumber.version>
     <cucumber.version>4.7.4</cucumber.version>
+    <gson.version>2.8.6</gson.version>
+    <mimepull.version>1.9.11</mimepull.version>
     <junit-jupiter.version>5.5.2</junit-jupiter.version>
     <spring-web.version>5.1.9.RELEASE</spring-web.version>
 
@@ -35,6 +37,12 @@
       <version>${kotlin.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
@@ -77,10 +85,12 @@
       <version>${spring-web.version}</version>
     </dependency>
 
+    <!-- override transient dependency which is removed from maven central -->
     <dependency>
       <groupId>org.jvnet.mimepull</groupId>
       <artifactId>mimepull</artifactId>
-      <version>1.9.11</version>
+      <version>${mimepull.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 

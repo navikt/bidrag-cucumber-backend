@@ -21,7 +21,7 @@ class FasitEgenskap {
 
     @Så("skal responsen inneholde json med property {string} og verdi {string}")
     fun `skal responsen inneholde json med property og verdi`(property: String, verdi: String) {
-//        assertThat(restTjeneste.response).contains(""""$property":"$verdi"""") fix når fasit er på plass
+        assertThat(restTjeneste.response).contains(""""$property":"$verdi"""")
     }
 
     @Så("skal aktuell klasse være {string}")
