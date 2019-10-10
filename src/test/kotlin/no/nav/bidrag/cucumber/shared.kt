@@ -37,11 +37,12 @@ class RestTjeneste(private val restTemplate: RestTemplate) {
     }
 }
 
-class Fasit(val fasitUrl: String = FASIT_URL) {
+class Fasit {
     private var fasitTemplate = RestTemplate()
+    private var offline = false
 
     fun hentRestTemplateFor(alias: String): RestTemplate {
-        val baseUrl = hentFor(alias) ?: throw IllegalStateException("Unable to find alias $alias in url for fasit $fasitUrl")
+        val baseUrl = hentFor(alias) ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
 
         val restTemplate = hentMedCorrelationIdHeader()
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(baseUrl)
@@ -49,16 +50,22 @@ class Fasit(val fasitUrl: String = FASIT_URL) {
         return restTemplate
     }
 
+    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connectesd to url"
+
     private fun hentFor(alias: String): String? {
         val miljo = Environment().fetch()
         val builder = UriComponentsBuilder
-                .fromHttpUrl(fasitUrl).path("/")
+                .fromHttpUrl(FASIT_URL).path("/")
                 .query("type=restservice")
                 .query("alias=$alias")
                 .query("environment=$miljo")
 
-        val fasitJson = fasitTemplate.getForObject<String>(builder.toUriString(), String::class.java, "type=restservice")
-
+        val fasitJson: String? = try {
+            fasitTemplate.getForObject<String>(builder.toUriString(), String::class.java, "type=restservice")
+        } catch (e: Exception) {
+            offline = true
+            Fasit::class.java.getResource("fasit.offline.rest.json").readText(Charsets.UTF_8)
+        }
 
         println(fasitJson)
 
@@ -73,7 +80,7 @@ class Fasit(val fasitUrl: String = FASIT_URL) {
         return httpHeaderRestTemplate
     }
 
-    private fun fetchIdToken() : String{
+    private fun fetchIdToken(): String {
         return "Bearer todo: id token"
     }
 
@@ -115,3 +122,13 @@ class Environment {
         return null
     }
 }
+
+interface FasitService {
+    fun fetchResource(type: String, environment: String, alias: String)
+}
+
+data class FasitResource(
+        val type: String? = null,
+        val environment: String? = null,
+        val url: String? = null
+)

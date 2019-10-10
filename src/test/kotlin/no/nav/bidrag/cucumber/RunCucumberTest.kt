@@ -9,5 +9,4 @@ import org.junit.runner.RunWith
  */
 @RunWith(Cucumber::class)
 @CucumberOptions(plugin = ["pretty", "json:target/cucumber-report/cucumber.json"])
-class RunCucumberTest {
-}
+class RunCucumberTest
