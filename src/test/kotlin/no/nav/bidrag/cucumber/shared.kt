@@ -6,30 +6,30 @@ import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
-import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-internal class RestTjeneste(private val alias: String, private val restTemplate: RestTemplate) {
+class RestTjeneste(private val alias: String, private val restTemplate: RestTemplate) {
 
-    var response: String? = null
+    internal var response: String? = null
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         val stringEntity: ResponseEntity<String> = try {
             restTemplate.getForEntity(endpointUrl, String::class.java)
-        } catch (e: HttpClientErrorException) {
-            ResponseEntity(addHeader(e), e.statusCode)
+        } catch (e: HttpStatusCodeException) {
+            ResponseEntity(addAliasToHeader(), e.statusCode)
         }
 
         response = stringEntity.body
         return stringEntity
     }
 
-    private fun addHeader(e: Exception): MultiValueMap<String, String> {
+    private fun addAliasToHeader(): MultiValueMap<String, String> {
         val httpHeaders = HttpHeaders()
         httpHeaders.add("ERROR_REST_SERVICE", alias)
 
@@ -98,7 +98,7 @@ internal class Fasit {
 }
 
 internal class Environment {
-    companion object ManagedEnvironment {
+    companion object {
         internal var environment: String? = null
     }
 
@@ -109,7 +109,7 @@ internal class Environment {
 
         environment = System.getenv(ENVIRONMENT)
 
-        return environment ?: throw IllegalStateException("Ikke angitt miljø for variable ENVIRONMENT")
+        return environment ?: "q0"
     }
 
     fun use(miljo: String) {
