@@ -5,6 +5,7 @@ import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
@@ -20,11 +21,18 @@ class RestTjeneste(private val restTemplate: RestTemplate) {
         val stringEntity: ResponseEntity<String> = try {
             restTemplate.getForEntity(relativSti, String::class.java)
         } catch (e: Exception) {
-            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+            ResponseEntity(addHeader(e), HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
         response = stringEntity.body
         return stringEntity
+    }
+
+    private fun addHeader(e: Exception): MultiValueMap<String, String> {
+        val httpHeaders = HttpHeaders()
+        httpHeaders.add("ERROR_REST_SERVICE", e.javaClass.simpleName + ": " + e.message)
+
+        return httpHeaders
     }
 }
 
@@ -112,10 +120,6 @@ class Environment {
     fun fetchUsrerToken(): Any? {
         return null
     }
-}
-
-interface FasitService {
-    fun fetchResource(type: String, environment: String, alias: String)
 }
 
 data class FasitResource(
