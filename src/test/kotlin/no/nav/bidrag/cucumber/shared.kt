@@ -1,27 +1,28 @@
 package no.nav.bidrag.cucumber
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-class RestTjeneste(private val restTemplate: RestTemplate) {
+internal class RestTjeneste(private val alias: String, private val restTemplate: RestTemplate) {
 
     var response: String? = null
 
-    constructor(alias: String) : this(Fasit().hentRestTemplateFor(alias))
+    constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
     fun exchangeGet(relativSti: String): ResponseEntity<String> {
         val stringEntity: ResponseEntity<String> = try {
             restTemplate.getForEntity(relativSti, String::class.java)
-        } catch (e: Exception) {
-            ResponseEntity(addHeader(e), HttpStatus.INTERNAL_SERVER_ERROR)
+        } catch (e: HttpClientErrorException) {
+            ResponseEntity(addHeader(e), e.statusCode)
         }
 
         response = stringEntity.body
@@ -30,28 +31,30 @@ class RestTjeneste(private val restTemplate: RestTemplate) {
 
     private fun addHeader(e: Exception): MultiValueMap<String, String> {
         val httpHeaders = HttpHeaders()
-        httpHeaders.add("ERROR_REST_SERVICE", e.javaClass.simpleName + ": " + e.message)
+        httpHeaders.add("ERROR_REST_SERVICE", alias)
 
         return httpHeaders
     }
 }
 
-class Fasit {
+@Suppress("UNCHECKED_CAST")
+internal class Fasit {
     private var fasitTemplate = RestTemplate()
     private var offline = false
 
     internal fun hentRestTemplateFor(alias: String): RestTemplate {
-        val baseUrl = hentResttjenesteFor(alias) ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
+        val fasitResource = hentRessursForRestTemplate(alias)
+                ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
 
         val restTemplate = hentMedCorrelationIdHeader()
-        restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(baseUrl)
+        restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(fasitResource.url)
 
         return restTemplate
     }
 
     private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connectesd to url"
 
-    private fun hentResttjenesteFor(alias: String): String? {
+    private fun hentRessursForRestTemplate(alias: String): FasitResource? {
         val miljo = Environment().fetch()
         val builder = UriComponentsBuilder
                 .fromHttpUrl(FASIT_URL).path("/")
@@ -66,9 +69,10 @@ class Fasit {
             Fasit::class.java.getResource("fasit.offline.rest.json").readText(Charsets.UTF_8)
         }
 
-        println(fasitJson)
+        val listeFraFasit = ObjectMapper().readValue(fasitJson, List::class.java)
+        val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, String>) }
 
-        return fasitJson
+        return listeOverRessurser.find { it.alias == alias }
     }
 
     private fun hentMedCorrelationIdHeader(): HttpHeaderRestTemplate {
@@ -94,7 +98,7 @@ class Fasit {
     }
 }
 
-class Environment {
+internal class Environment {
     companion object ManagedEnvironment {
         internal var environment: String? = null
     }
@@ -122,8 +126,20 @@ class Environment {
     }
 }
 
-data class FasitResource(
-        val type: String? = null,
-        val environment: String? = null,
-        val url: String? = null
-)
+internal data class FasitResource(
+        var alias: String = "not named",
+        var environment: String = "no environment",
+        var type: String = "no type",
+        var url: String = "somewhere"
+) {
+    constructor(jsonMap: Map<String, *>?) : this() {
+        if (jsonMap == null) throw IllegalArgumentException("cannot construct a fasit resource without a jsonMap")
+
+        alias = jsonMap.getOrDefault("alias", "not named") as String
+        environment = jsonMap.getOrDefault("environment", "no environment") as String
+        type = jsonMap.getOrDefault("type", "no type") as String
+
+        @Suppress("UNCHECKED_CAST") val properties = jsonMap.get("properties") as Map<String, String>
+        url = properties.getOrDefault("url", "$alias wants to go somewhere")
+    }
+}

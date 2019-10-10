@@ -62,7 +62,7 @@
       "environment": "q4"
     },
     "properties": {
-      "url": "http://localhost:8080/bidrag-dokument"
+      "url": "http://localhost:8090/bidrag-dokument"
     },
     "secrets": {},
     "files": {},
