@@ -8,7 +8,7 @@
       "environment": "q4"
     },
     "properties": {
-      "url": "https://bidrag-dokument-journalpost-q4.nais.preprod.local/bidrag-dokument-journalpost"
+      "url": "http://localhost:8080/bidrag-dokument-journalpost"
     },
     "secrets": {},
     "files": {},
@@ -35,7 +35,7 @@
       "environment": "q4"
     },
     "properties": {
-      "url": "https://bidrag-dokument-arkiv-q4.nais.preprod.local/bidrag-dokument-arkiv"
+      "url": "http://localhost:8000/bidrag-dokument-arkiv"
     },
     "secrets": {},
     "files": {},
@@ -62,7 +62,7 @@
       "environment": "q4"
     },
     "properties": {
-      "url": "https://bidrag-dokument-q4.nais.preprod.local/bidrag-dokument"
+      "url": "http://localhost:8080/bidrag-dokument"
     },
     "secrets": {},
     "files": {},
@@ -89,7 +89,7 @@
       "environment": "q4"
     },
     "properties": {
-      "url": "https://bidrag-dokument-testdata-q4.nais.preprod.local/bidrag-dokument-testdata"
+      "url": "http://localhost:8080/bidrag-dokument-testdata"
     },
     "secrets": {},
     "files": {},
