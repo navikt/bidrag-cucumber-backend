@@ -18,9 +18,9 @@ internal class RestTjeneste(private val alias: String, private val restTemplate:
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
-    fun exchangeGet(relativSti: String): ResponseEntity<String> {
+    fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         val stringEntity: ResponseEntity<String> = try {
-            restTemplate.getForEntity(relativSti, String::class.java)
+            restTemplate.getForEntity(endpointUrl, String::class.java)
         } catch (e: HttpClientErrorException) {
             ResponseEntity(addHeader(e), e.statusCode)
         }
@@ -37,7 +37,6 @@ internal class RestTjeneste(private val alias: String, private val restTemplate:
     }
 }
 
-@Suppress("UNCHECKED_CAST")
 internal class Fasit {
     private var fasitTemplate = RestTemplate()
     private var offline = false
@@ -70,7 +69,7 @@ internal class Fasit {
         }
 
         val listeFraFasit = ObjectMapper().readValue(fasitJson, List::class.java)
-        val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, String>) }
+        @Suppress("UNCHECKED_CAST") val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, String>) }
 
         return listeOverRessurser.find { it.alias == alias }
     }
@@ -93,7 +92,7 @@ internal class Fasit {
         }
 
         override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
-            return URI.create(baseUrl)
+            return URI.create(baseUrl + uriTemplate)
         }
     }
 }
@@ -133,7 +132,7 @@ internal data class FasitResource(
         var url: String = "somewhere"
 ) {
     constructor(jsonMap: Map<String, *>?) : this() {
-        if (jsonMap == null) throw IllegalArgumentException("cannot construct a fasit resource without a jsonMap")
+        requireNotNull(jsonMap) { "cannot construct a fasit resource without a jsonMap" }
 
         alias = jsonMap.getOrDefault("alias", "not named") as String
         environment = jsonMap.getOrDefault("environment", "no environment") as String
