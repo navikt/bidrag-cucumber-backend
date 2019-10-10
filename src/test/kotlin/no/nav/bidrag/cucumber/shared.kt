@@ -10,15 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-private const val ENVIRONMENT = "ENVIRONMENT"
-private const val FASIT_URL = "https://fasit.adeo.no/api/v2/resources"
-private const val FASIT_ZONE = "fss"
-private const val OIDC_ALIAS = "bidrag-dokument-ui-oidc"
-private const val REDIRECT_ISSO_URI = "https://bidrag-dokument-ui.nais.preprod.local/isso"
-private const val TEST_USER = "TEST_USER"
-private const val TEST_USER_PASSWORD = "TEST_PASS"
-private const val X_ENHETSNUMMER_HEADER = "X-Enhetsnummer"
-
 class RestTjeneste(private val restTemplate: RestTemplate) {
 
     var response: String? = null

@@ -79,4 +79,5 @@ Man kan starte applikasjonene lokalt og kjøre cucumber-testene lokalt på egen 
 for ressurser der. Lokal kjøring støttes ved at det ligger en rekke json ressurser som er hentet fra et fasit miljø og som er
 tilpasset lokal kjøring. Eks. på offline json fil er for rest-tjenester: `src/test/resources/no/nav/bidrag/cucumber/fasit.offline.rest.json`
 
-Hvis man sitter på en maskin som også har tilgang til fasit men ønsker å kjøre lokalt, så må man bare endre fasit url slik at den ikke finnes, se etter konstanten `FASIT_URL` i `src/test/kotlin/no/nav/bidrag/cucumber/shared.kt`
+Hvis man sitter på en maskin som også har tilgang til fasit men ønsker å kjøre lokalt, så må man bare endre fasit url slik at den ikke finnes, se
+ etter konstanten `FASIT_URL` i `src/test/kotlin/no/nav/bidrag/cucumber/constants.kt`
