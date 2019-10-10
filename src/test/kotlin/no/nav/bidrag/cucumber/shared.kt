@@ -40,8 +40,8 @@ class Fasit {
     private var fasitTemplate = RestTemplate()
     private var offline = false
 
-    fun hentRestTemplateFor(alias: String): RestTemplate {
-        val baseUrl = hentFor(alias) ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
+    internal fun hentRestTemplateFor(alias: String): RestTemplate {
+        val baseUrl = hentResttjenesteFor(alias) ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
 
         val restTemplate = hentMedCorrelationIdHeader()
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(baseUrl)
@@ -51,7 +51,7 @@ class Fasit {
 
     private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connectesd to url"
 
-    private fun hentFor(alias: String): String? {
+    private fun hentResttjenesteFor(alias: String): String? {
         val miljo = Environment().fetch()
         val builder = UriComponentsBuilder
                 .fromHttpUrl(FASIT_URL).path("/")
