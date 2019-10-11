@@ -5,7 +5,6 @@ import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.RestTjenesteEgenskap
 import org.assertj.core.api.Assertions.assertThat
 
-
 class FasitEgenskap {
 
     private var restTjenesteEgenskap = RestTjenesteEgenskap()
