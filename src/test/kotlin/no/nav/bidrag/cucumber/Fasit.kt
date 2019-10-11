@@ -14,37 +14,42 @@ internal class Fasit {
     private var offline = false
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
-        val fasitResource = hentRessursForRestTemplate(alias)
-                ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
-
+        val miljo = Environment().fetch()
+        val resourceUrl = hentRessursUrl("type=restservice", "alias=$alias", "environment=$miljo")
+        val fasitResource = hentFasitResource(resourceUrl, alias, "rest")
         val restTemplate = hentMedCorrelationIdHeader()
+
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(fasitResource.url)
 
         return RestTemplateMedBaseUrl(restTemplate, fasitResource.url)
     }
 
-    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connectesd to url"
+    private fun hentRessursUrl(vararg queries: String): String {
+        val resourceUrl = UriComponentsBuilder
+                .fromHttpUrl(FASIT_URL)
 
-    private fun hentRessursForRestTemplate(alias: String): FasitResource? {
-        val miljo = Environment().fetch()
-        val builder = UriComponentsBuilder
-                .fromHttpUrl(FASIT_URL).path("/")
-                .query("type=restservice")
-                .query("alias=$alias")
-                .query("environment=$miljo")
+        queries.forEach { resourceUrl.query(it) }
 
-        val fasitJson: String? = try {
-            fasitTemplate.getForObject<String>(builder.toUriString(), String::class.java, "type=restservice")
+        return resourceUrl.toUriString()
+    }
+
+    private fun hentFasitResource(resourceUrl: String, alias: String, type: String): FasitResource {
+        val fasitJson = try {
+            fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
         } catch (e: Exception) {
             offline = true
-            Fasit::class.java.getResource("fasit.offline.rest.json").readText(Charsets.UTF_8)
+            Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8)
         }
 
         val listeFraFasit = ObjectMapper().readValue(fasitJson, List::class.java)
         @Suppress("UNCHECKED_CAST") val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, String>) }
 
-        return listeOverRessurser.find { it.alias == alias }
+        val fasitResource = listeOverRessurser.find { it.alias == alias }
+
+        return fasitResource ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus(type)}))")
     }
+
+    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connected to url"
 
     private fun hentMedCorrelationIdHeader(): HttpHeaderRestTemplate {
         val httpHeaderRestTemplate = HttpHeaderRestTemplate()

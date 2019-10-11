@@ -10,7 +10,6 @@ class RestTjeneste(
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl
 ) {
-
     internal var endpointUrl: String = alias
     internal var httpStatus: HttpStatus = HttpStatus.I_AM_A_TEAPOT
     internal var response: String? = null
