@@ -13,4 +13,4 @@ Egenskap: bidrag-dokument: fasit-info
     Gitt resttjeneste 'bidragDokument'
     Og jeg bruker miljø: "q0"
     Når det gjøres et kall til '/sakjournal'
-    Så skal html responsen være '200'
+    Så skal http status være '200'

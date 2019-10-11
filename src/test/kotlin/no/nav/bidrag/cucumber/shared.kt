@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
@@ -15,6 +16,7 @@ import java.net.URI
 class RestTjeneste(private val alias: String, private val restTemplate: RestTemplate) {
 
     internal var response: String? = null
+    internal var httpStatus: HttpStatus = HttpStatus.I_AM_A_TEAPOT
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
@@ -26,6 +28,8 @@ class RestTjeneste(private val alias: String, private val restTemplate: RestTemp
         }
 
         response = stringEntity.body
+        httpStatus = stringEntity.statusCode
+
         return stringEntity
     }
 
