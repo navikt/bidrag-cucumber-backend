@@ -1,7 +1,8 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.dokument
 
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.RestTjenesteEgenskap
 import org.assertj.core.api.Assertions.assertThat
 
 
