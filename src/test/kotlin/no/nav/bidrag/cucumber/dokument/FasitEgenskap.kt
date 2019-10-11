@@ -24,10 +24,4 @@ class FasitEgenskap {
     fun `skal aktuell klasse vaere`(forventetEgenskap: String) {
         assertThat(this.javaClass.simpleName).isEqualTo(forventetEgenskap)
     }
-
-    @Så("skal html responsen være {string}")
-    fun `skal html responsen vaere`(httmlStatus: String) {
-        // Write code here that turns the phrase above into concrete actions
-        throw cucumber.api.PendingException()
-    }
 }
