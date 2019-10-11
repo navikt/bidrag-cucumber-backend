@@ -13,16 +13,22 @@ import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-class RestTjeneste(private val alias: String, private val restTemplate: RestTemplate) {
+class RestTjeneste(
+        private val alias: String,
+        private val rest: RestTemplateMedBaseUrl
+) {
 
-    internal var response: String? = null
+    internal var endpointUrl: String = alias
     internal var httpStatus: HttpStatus = HttpStatus.I_AM_A_TEAPOT
+    internal var response: String? = null
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
+        this.endpointUrl = rest.baseUrl + endpointUrl
+
         val stringEntity: ResponseEntity<String> = try {
-            restTemplate.getForEntity(endpointUrl, String::class.java)
+            rest.template.getForEntity(endpointUrl, String::class.java)
         } catch (e: HttpStatusCodeException) {
             ResponseEntity(addAliasToHeader(), e.statusCode)
         }
@@ -45,14 +51,14 @@ internal class Fasit {
     private var fasitTemplate = RestTemplate()
     private var offline = false
 
-    internal fun hentRestTemplateFor(alias: String): RestTemplate {
+    internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val fasitResource = hentRessursForRestTemplate(alias)
                 ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus("rest")}))")
 
         val restTemplate = hentMedCorrelationIdHeader()
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(fasitResource.url)
 
-        return restTemplate
+        return RestTemplateMedBaseUrl(restTemplate, fasitResource.url)
     }
 
     private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connectesd to url"
@@ -101,6 +107,8 @@ internal class Fasit {
     }
 }
 
+data class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
+
 internal class Environment {
     companion object {
         internal var environment: String? = null
@@ -143,6 +151,6 @@ internal data class FasitResource(
         type = jsonMap.getOrDefault("type", "no type") as String
 
         @Suppress("UNCHECKED_CAST") val properties = jsonMap.get("properties") as Map<String, String>
-        url = properties.getOrDefault("url", "$alias wants to go somewhere")
+        url = properties.getOrDefault("url", "no url for $alias")
     }
 }

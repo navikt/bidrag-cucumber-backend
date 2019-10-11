@@ -19,7 +19,7 @@ class RestTjenesteEgenskap() {
     fun `skal http status vaere`(httpStatus: String) {
         val status = HttpStatus.valueOf(httpStatus.toInt())
 
-        assertThat(restTjeneste.httpStatus).isEqualTo(status)
+        assertThat(restTjeneste.httpStatus).`as`("HttpStatus for " + restTjeneste.endpointUrl).isEqualTo(status)
     }
 
     fun get(endpointUrl: String) {
