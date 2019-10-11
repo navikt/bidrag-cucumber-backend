@@ -81,7 +81,7 @@ internal class Environment {
             return environment as String
         }
 
-        environment = System.getenv(ENVIRONMENT)
+        environment = System.getProperty(ENVIRONMENT)
 
         return environment ?: "q0"
     }
