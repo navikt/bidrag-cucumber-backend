@@ -9,31 +9,30 @@ import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-internal class Fasit {
+open class Fasit {
     private var fasitTemplate = RestTemplate()
     private var offline = false
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment().fetch()
-        val resourceUrl = hentRessursUrl("type=restservice", "alias=$alias", "environment=$miljo")
+        val resourceUrl = hentRessursUrl(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitResource = hentFasitResource(resourceUrl, alias, "rest")
-        val restTemplate = hentMedCorrelationIdHeader()
+        val restTemplate = hentMedCorrelationIdOgSikkerhet()
 
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(fasitResource.url)
 
         return RestTemplateMedBaseUrl(restTemplate, fasitResource.url)
     }
 
-    private fun hentRessursUrl(vararg queries: String): String {
-        val resourceUrl = UriComponentsBuilder
-                .fromHttpUrl(FASIT_URL)
+    protected fun hentRessursUrl(url: String, vararg queries: String): String {
+        val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
 
         queries.forEach { resourceUrl.query(it) }
 
         return resourceUrl.toUriString()
     }
 
-    private fun hentFasitResource(resourceUrl: String, alias: String, type: String): FasitResource {
+    protected fun hentFasitResource(resourceUrl: String, alias: String, type: String): FasitResource {
         val fasitJson = try {
             fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
         } catch (e: Exception) {
@@ -42,25 +41,21 @@ internal class Fasit {
         }
 
         val listeFraFasit = ObjectMapper().readValue(fasitJson, List::class.java)
-        @Suppress("UNCHECKED_CAST") val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, String>) }
+        @Suppress("UNCHECKED_CAST") val listeOverRessurser: List<FasitResource> = listeFraFasit.map { FasitResource(it as Map<String, *>) }
 
         val fasitResource = listeOverRessurser.find { it.alias == alias }
 
-        return fasitResource ?: throw IllegalStateException("Unable to find '$alias' from $FASIT_URL (${offlineStatus(type)}))")
+        return fasitResource ?: throw IllegalStateException("Unable to find '$alias' from $URL_FASIT (${offlineStatus(type)}))")
     }
 
-    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connected to url"
+    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
 
-    private fun hentMedCorrelationIdHeader(): HttpHeaderRestTemplate {
+    private fun hentMedCorrelationIdOgSikkerhet(): HttpHeaderRestTemplate {
         val httpHeaderRestTemplate = HttpHeaderRestTemplate()
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER, CorrelationIdFilter::fetchCorrelationIdForThread)
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, this::fetchIdToken)
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, Sikkerhet::fetchIdToken)
 
         return httpHeaderRestTemplate
-    }
-
-    private fun fetchIdToken(): String {
-        return "Bearer todo: id token"
     }
 
     private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
@@ -74,7 +69,7 @@ internal class Fasit {
     }
 }
 
-data class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
+class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 
 internal class Environment {
     companion object {
@@ -94,17 +89,9 @@ internal class Environment {
     fun use(miljo: String) {
         environment = miljo
     }
-
-    fun fetchToken(): Any? {
-        return null
-    }
-
-    fun fetchUsrerToken(): Any? {
-        return null
-    }
 }
 
-internal data class FasitResource(
+data class FasitResource(
         var alias: String = "not named",
         var environment: String = "no environment",
         var type: String = "no type",
