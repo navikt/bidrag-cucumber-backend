@@ -1,6 +1,8 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.commons.CorrelationId
+import no.nav.bidrag.commons.CorrelationId.fetchCorrelationIdForThread
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
@@ -10,21 +12,21 @@ import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
 open class Fasit {
+
     private var fasitTemplate = RestTemplate()
-    private var offline = false
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment().fetch()
         val resourceUrl = hentRessursUrl(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitResource = hentFasitResource(resourceUrl, alias, "rest")
-        val restTemplate = hentMedCorrelationIdOgSikkerhet()
+        val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(), fasitResource.url)
+        httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER, CorrelationId::fetchCorrelationIdForThread)
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, Sikkerhet()::fetchIdToken)
 
-        restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(fasitResource.url)
-
-        return RestTemplateMedBaseUrl(restTemplate, fasitResource.url)
+        return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitResource.url)
     }
 
-    protected fun hentRessursUrl(url: String, vararg queries: String): String {
+    internal fun hentRessursUrl(url: String, vararg queries: String): String {
         val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
 
         queries.forEach { resourceUrl.query(it) }
@@ -36,7 +38,7 @@ open class Fasit {
         val fasitJson = try {
             fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
         } catch (e: Exception) {
-            offline = true
+            Environment.offline = true
             Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8)
         }
 
@@ -48,31 +50,14 @@ open class Fasit {
         return fasitResource ?: throw IllegalStateException("Unable to find '$alias' from $URL_FASIT (${offlineStatus(type)}))")
     }
 
-    private fun offlineStatus(type: String) = if (offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
-
-    private fun hentMedCorrelationIdOgSikkerhet(): HttpHeaderRestTemplate {
-        val httpHeaderRestTemplate = HttpHeaderRestTemplate()
-        httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER, CorrelationIdFilter::fetchCorrelationIdForThread)
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, Sikkerhet::fetchIdToken)
-
-        return httpHeaderRestTemplate
-    }
-
-    private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
-        override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-            return URI.create(baseUrl)
-        }
-
-        override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
-            return URI.create(baseUrl + uriTemplate)
-        }
-    }
+    private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
 }
 
 class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 
 internal class Environment {
     companion object {
+        internal var offline = false
         internal var environment: String? = null
     }
 
@@ -88,6 +73,26 @@ internal class Environment {
 
     fun use(miljo: String) {
         environment = miljo
+    }
+
+    internal fun initRestTemplate(url: String): RestTemplate {
+        return hentRestTemplate(RestTemplate(), url)
+    }
+
+    internal fun <T : RestTemplate> hentRestTemplate(restTemplate: T, url: String): T {
+        restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(url)
+
+        return restTemplate
+    }
+
+    private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
+        override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
+            return URI.create(baseUrl)
+        }
+
+        override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
+            return URI.create(baseUrl + uriTemplate)
+        }
     }
 }
 

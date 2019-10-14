@@ -1,6 +1,7 @@
 package no.nav.bidrag.cucumber
 
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
@@ -20,7 +21,7 @@ class RestTjeneste(
         this.endpointUrl = rest.baseUrl + endpointUrl
 
         val stringEntity: ResponseEntity<String> = try {
-            rest.template.getForEntity(endpointUrl, String::class.java)
+            rest.template.exchange(endpointUrl, HttpMethod.GET, null, String::class.java)
         } catch (e: HttpStatusCodeException) {
             ResponseEntity(addAliasToHeader(), e.statusCode)
         }
