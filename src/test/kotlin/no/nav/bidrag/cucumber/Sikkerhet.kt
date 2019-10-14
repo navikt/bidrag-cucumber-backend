@@ -1,5 +1,7 @@
 package no.nav.bidrag.cucumber
 
+import org.springframework.http.HttpMethod
+
 class Sikkerhet {
     private val fasit = Fasit()
 
@@ -17,9 +19,13 @@ class Sikkerhet {
         }
 
         val miljo = Environment().fetch()
-        val fasitResourceUrl = fasit.hentRessursUrl(
-                URL_FASIT, "type=OpenIdConnect", "environment=$miljo", "alias=$OIDC_ALIAS", "zone=$FASIT_ZONE", "usage=false"
+        val openIdConnect = "OpenIdConnect"
+        val fasitRessursUrl = fasit.hentRessursUrl(
+                URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$OIDC_ALIAS", "zone=$FASIT_ZONE", "usage=false"
         )
+
+        val fasitRessurs = fasit.hentFasitReurs(fasitRessursUrl, OIDC_ALIAS, openIdConnect)
+        val passordOpenAm = Environment().initRestTemplate(fasitRessurs.passordUrl()).exchange("/", HttpMethod.GET, null, String::class.java).body
 
         return "Bearer todo: id token"
     }
