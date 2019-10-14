@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder
 
 open class Fasit {
 
-    internal var fasitTemplate = RestTemplate()
+    private var fasitTemplate = RestTemplate()
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment().fetch()
@@ -53,18 +53,16 @@ open class Fasit {
 class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 
 data class FasitResurs(
-        var alias: String = "not named",
-        var environment: String = "no environment",
-        var type: String = "no type",
+        internal val alias: String,
+        internal val environment: String,
+        internal val type: String,
         private val ressurser: MutableMap<String, String?> = HashMap()
 ) {
-    constructor(jsonMap: Map<String, *>?) : this() {
-        requireNotNull(jsonMap) { "cannot construct a fasit resource without a jsonMap" }
-
-        alias = jsonMap.getOrDefault("alias", "not named") as String
-        environment = jsonMap.getOrDefault("environment", "no environment") as String
-        type = jsonMap.getOrDefault("type", "no type") as String
-
+    constructor(jsonMap: Map<String, *>) : this(
+            alias = jsonMap.getOrDefault("alias", "anonym") as String,
+            environment = jsonMap.getOrDefault("environment", "ukjent miljø") as String,
+            type = jsonMap.getOrDefault("type", "ingen type") as String
+    ) {
         @Suppress("UNCHECKED_CAST") val properties = jsonMap["properties"] as Map<String, String>
         ressurser["url"] = properties["url"]
         ressurser["issuerUrl"] = properties["issuerUrl"]
