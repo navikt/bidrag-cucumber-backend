@@ -11,4 +11,4 @@ Egenskap: bidrag-dokument: fasit-info
   Scenario: skal kunne kalle en http:get på en rest tjeneste med sikkerhet satt opp
     Gitt resttjeneste 'bidragDokument'
     Når det gjøres et kall til '/sakjournal/0000003?fagomrade=BID'
-    Så skal http status være '200'
+    Så skal http status ikke være '401' eller '403'

@@ -23,16 +23,19 @@ class RestTjenesteEgenskap() {
         Manage.alias = alias
     }
 
-    @Så("skal http status være {string}")
-    fun `skal http status vaere`(httpStatus: String) {
-        val status = HttpStatus.valueOf(httpStatus.toInt())
+    @Så("skal http status ikke være {string} eller {string}")
+    fun `skal http status ikke vaere`(enHttpStatus: String, enAnnenHttpStatus: String) {
+        val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
+        val annenHttpStatus = HttpStatus.valueOf(enAnnenHttpStatus.toInt())
 
-        assertThat(hentHttpStatus()).`as`("HttpStatus for " + hentEndpointUrl()).isEqualTo(status)
+        assertThat(hentHttpStatus())
+                .`as`("HttpStatus for " + hentEndpointUrl()).isNotEqualTo(httpStatus)
+                .`as`("HttpStatus for " + hentEndpointUrl()).isNotEqualTo(annenHttpStatus)
     }
 
     fun get(endpointUrl: String) {
         if (restTjenester.containsKey(alias)) {
-        restTjenester.get(alias)!!.exchangeGet(endpointUrl)
+            restTjenester.get(alias)!!.exchangeGet(endpointUrl)
         } else {
             throw IllegalStateException("Resttjeneste for $alias er ikke satt")
         }
