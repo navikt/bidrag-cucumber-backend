@@ -17,6 +17,7 @@
     <cucumber.version>4.7.4</cucumber.version>
     <jackson.version>2.10.0.pr3</jackson.version>
     <mimepull.version>1.9.11</mimepull.version>
+    <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
     <junit-jupiter.version>5.5.2</junit-jupiter.version>
     <spring-web.version>5.1.9.RELEASE</spring-web.version>
 
@@ -26,17 +27,26 @@
   </properties>
 
   <dependencies>
+    <!-- nav -->
     <dependency>
       <groupId>no.nav.bidrag</groupId>
       <artifactId>bidrag-commons</artifactId>
       <version>${bidrag-commons.version}</version>
+      <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>no.nav.security</groupId>
+      <artifactId>oidc-test-support</artifactId>
+      <version>${oidc-spring-support.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- third party dependencies -->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
