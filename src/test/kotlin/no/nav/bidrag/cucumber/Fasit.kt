@@ -15,7 +15,7 @@ open class Fasit {
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment.fetch()
         val resourceUrl = hentRessursUrl(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
-        val fasitRessurs = hentFasitReurs(resourceUrl, alias, "rest")
+        val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
         val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(), fasitRessurs.url())
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER, CorrelationId::fetchCorrelationIdForThread)
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, Sikkerhet()::fetchIdToken)
@@ -31,7 +31,7 @@ open class Fasit {
         return resourceUrl.toUriString()
     }
 
-    internal fun hentFasitReurs(resourceUrl: String, alias: String, type: String): FasitResurs {
+    internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitResurs {
         val fasitJson = try {
             fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
         } catch (e: Exception) {
