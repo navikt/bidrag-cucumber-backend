@@ -12,7 +12,7 @@ class Sikkerhet {
             return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
         }
 
-        val miljo = Environment().fetch()
+        val miljo = Environment.fetch()
         val openIdConnect = "OpenIdConnect"
         val fasitRessursUrl = fasit.hentRessursUrl(
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$OIDC_ALIAS", "zone=$FASIT_ZONE", "usage=false"

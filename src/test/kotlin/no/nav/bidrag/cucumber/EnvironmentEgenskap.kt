@@ -8,7 +8,7 @@ class EnvironmentEgenskap {
 
     @Gitt("jeg bruker miljø: {string}")
     fun `jeg bruker`(miljo: String) {
-        Environment().use(miljo)
+        Environment.use(miljo)
     }
 
     @Når("man sjekker at token er gyldig")

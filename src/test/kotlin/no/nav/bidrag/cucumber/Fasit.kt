@@ -13,7 +13,7 @@ open class Fasit {
     private var fasitTemplate = RestTemplate()
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
-        val miljo = Environment().fetch()
+        val miljo = Environment.fetch()
         val resourceUrl = hentRessursUrl(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitReurs(resourceUrl, alias, "rest")
         val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(), fasitRessurs.url())

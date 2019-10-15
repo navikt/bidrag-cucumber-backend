@@ -8,27 +8,27 @@ private const val Q0 = "q0"
 
 internal class Environment {
 
-    companion object {
+    companion object ManagedEnvironment {
         internal var offline = false
         internal var environment: String? = null
-    }
 
-    fun fetch(): String {
-        if (environment != null) {
-            return environment as String
+        fun fetch(): String {
+            if (environment != null) {
+                return environment as String
+            }
+
+            if (offline) {
+                return Q0
+            }
+
+            environment = System.getProperty(ENVIRONMENT)
+
+            return environment ?: Q0
         }
 
-        if (offline) {
-            return Q0
+        fun use(miljo: String) {
+            environment = miljo
         }
-
-        environment = System.getProperty(ENVIRONMENT)
-
-        return environment ?: Q0
-    }
-
-    fun use(miljo: String) {
-        environment = miljo
     }
 
     internal fun initRestTemplate(url: String): RestTemplate {
