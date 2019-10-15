@@ -45,7 +45,7 @@ class Sikkerhet {
 
     private fun initEntityWithBasicAutorization(): HttpEntity<*>? {
         val httpHeaders = HttpHeaders()
-        val auth = "${Environment.user}:${Environment.user_authentication}"
+        val auth = "${Environment.user()}:${Environment.userAuthentication()}"
         val encoded = Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))
 
         httpHeaders.set(HttpHeaders.AUTHORIZATION, "Basic " + String(encoded))

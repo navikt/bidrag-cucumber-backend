@@ -10,10 +10,6 @@ internal class Environment {
 
     companion object ManagedEnvironment {
         internal var offline = false
-        internal var user = System.getProperty(USERNAME) ?: throw IllegalStateException("Fant ikke brukernavn til kjøringen")
-        internal var user_authentication = System.getProperty(USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til nav-bruker")
-        internal var testUser = System.getProperty(TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
-        internal var testAuthentication = System.getProperty(TEST_USER_PASSWORD) ?: throw IllegalStateException("Fant ikke passord til testbruker")
         private var environment: String? = null
 
         fun fetch(): String {
@@ -33,6 +29,11 @@ internal class Environment {
         fun use(miljo: String) {
             environment = miljo
         }
+
+        fun user() = System.getProperty(USERNAME) ?: throw IllegalStateException("Fant ikke brukernavn til kjøringen")
+        fun userAuthentication() = System.getProperty(USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til nav-bruker")
+        fun testUser() = System.getProperty(TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
+        fun testAuthentication() = System.getProperty(TEST_USER_PASSWORD) ?: throw IllegalStateException("Fant ikke passord til testbruker")
     }
 
     internal fun initRestTemplate(url: String): RestTemplate {
