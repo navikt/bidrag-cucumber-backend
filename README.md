@@ -88,3 +88,8 @@ etter konstanten `FASIT_URL` i `src/test/kotlin/no/nav/bidrag/cucumber/constants
 
 Miljøet vil teknisk sett alltid være q0 når man kjører lokalt, men dette har ingen betydning. Alle ressurser som brukes, forventer at urlene er satt i
 `fasit.offline.<type>.json` når man kjører lokalt; som regel localhost...
+
+#### Sikkerhet
+
+Kjører du en mikrotjeneste som bruker en annen mikrotjeneste, må begge applikasjonene startes lokalt for at integrering skal fungere. Jw-token generert
+for localhost blir gjenbrukt når den kjommuniserer med andre mikrotjenester.
