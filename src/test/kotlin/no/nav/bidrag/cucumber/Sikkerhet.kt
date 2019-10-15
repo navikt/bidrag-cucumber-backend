@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber
 
+import no.nav.security.oidc.test.support.jersey.TestTokenGeneratorResource
 import org.springframework.http.HttpMethod
 
 class Sikkerhet {
@@ -7,15 +8,8 @@ class Sikkerhet {
 
     internal fun fetchIdToken(): String {
         if (Environment.offline) {
-            val restTemplate = Environment().initRestTemplate("http://localhost:8090/bidrag-dokument")
-
-            return try {
-                "Bearer " + restTemplate.getForObject<String>("/local/jwt", String::class.java)
-            } catch (e: Exception) {
-                val exception = "${e.javaClass.simpleName}: ${e.message}"
-                println(exception)
-                exception
-            }
+            val testTokenGeneratorResource = TestTokenGeneratorResource()
+            return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
         }
 
         val miljo = Environment().fetch()
