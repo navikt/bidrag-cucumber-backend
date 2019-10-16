@@ -26,14 +26,15 @@ internal class Environment {
             return environment ?: Q0
         }
 
+        fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
+        fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til testbruker")
+
         fun use(miljo: String) {
             environment = miljo
         }
 
-        fun user() = System.getProperty(USERNAME) ?: throw IllegalStateException("Fant ikke brukernavn til kjøringen")
-        fun userAuthentication() = System.getProperty(USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til nav-bruker")
-        fun testUser() = System.getProperty(TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
-        fun testAuthentication() = System.getProperty(TEST_USER_PASSWORD) ?: throw IllegalStateException("Fant ikke passord til testbruker")
+        fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke brukernavn til kjøringen")
+        fun userAuthentication() = System.getProperty(CREDENTIALS_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til nav-bruker")
     }
 
     internal fun initRestTemplate(url: String): RestTemplate {

@@ -19,6 +19,16 @@ class Sikkerhet {
             return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
         }
 
+        try {
+            return fetchOnlineIdToken()
+        } catch (e: RuntimeException) {
+            val exception = "${e.javaClass.simpleName}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
+            System.err.println("Feil ved henting av online id token, ${exception}")
+            throw e
+        }
+    }
+
+    private fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
         val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
         val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)
