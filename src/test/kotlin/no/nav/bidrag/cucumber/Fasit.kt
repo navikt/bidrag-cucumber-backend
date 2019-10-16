@@ -70,7 +70,7 @@ data class FasitResurs(
 
     private fun hentPassordUrl(secrets: Any?): String? {
         if (secrets != null) {
-            @Suppress("UNCHECKED_CAST") val password = (secrets as Map<String, Map<String, String>>)["password"]
+            @Suppress("UNCHECKED_CAST") val password = (secrets as Map<String, Map<String, String?>>)["password"]
             return if (password != null) password["ref"] else null
         }
 

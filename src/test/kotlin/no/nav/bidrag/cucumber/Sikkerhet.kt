@@ -22,7 +22,7 @@ class Sikkerhet {
         try {
             return fetchOnlineIdToken()
         } catch (e: RuntimeException) {
-            val exception = "${e.javaClass.simpleName}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
+            val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
             System.err.println("Feil ved henting av online id token, ${exception}")
             throw e
         }
