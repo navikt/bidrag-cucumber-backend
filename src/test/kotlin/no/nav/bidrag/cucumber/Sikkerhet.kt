@@ -25,7 +25,7 @@ class Sikkerhet {
 
     private fun hentFasitRessurs(miljo: String): FasitResurs {
         val openIdConnect = "OpenIdConnect"
-        val fasitRessursUrl = fasit.hentRessursUrl(
+        val fasitRessursUrl = fasit.buildUriString(
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$OIDC_ALIAS", "zone=$FASIT_ZONE", "usage=false"
         )
 
