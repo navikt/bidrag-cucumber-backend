@@ -54,12 +54,12 @@ class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 
 data class FasitResurs(
         internal val alias: String,
-        internal val type: String,
+        private val type: String,
         private val ressurser: MutableMap<String, String?> = HashMap()
 ) {
     constructor(jsonMap: Map<String, *>) : this(
             alias = jsonMap["alias"] as String,
-            type = jsonMap["type"]as String
+            type = jsonMap["type"] as String
     ) {
         @Suppress("UNCHECKED_CAST") val properties = jsonMap["properties"] as Map<String, String>
         ressurser["url"] = properties["url"]
