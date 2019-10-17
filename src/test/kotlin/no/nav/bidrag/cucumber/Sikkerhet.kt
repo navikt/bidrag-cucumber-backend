@@ -72,7 +72,7 @@ class Sikkerhet {
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        return authMap.get("idToken") as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
+        return authMap.get("tokenId") as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
