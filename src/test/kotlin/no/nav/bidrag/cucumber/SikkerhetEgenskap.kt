@@ -1,7 +1,6 @@
 package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
-import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
 
 class SikkerhetEgenskap {
@@ -11,19 +10,8 @@ class SikkerhetEgenskap {
         Environment.use(miljo)
     }
 
-    @Når("man sjekker at token er gyldig")
-    fun `man sjekker at token er gyldig`() {
-//        assertThat(Environment().fetchToken()).isOk() todo: implementer og returner et web token og sjekk at det er gyldig
+    @Så("kommer det ikke noen exception ved henting av id token")
+    fun `sa kommer det ikke noen exception ved henting av id token`() {
+        Sikkerhet().fetchIdToken()
     }
-
-    @Når("man sjekker at bruker-token er gyldig")
-    fun `man sjekker at bruker-token er gyldig`() {
-//        assertThat(Environment().fetchUsrerToken()).isOk() todo: implementer og returner et bruker-token(?) og sjekk at det er gyldig
-    }
-
-    @Så("skal token ha følgende properties:")
-    fun `skal token_ha folgende properties`(properties: Map<String, String>) {
-        // todo: implementer
-    }
-
 }

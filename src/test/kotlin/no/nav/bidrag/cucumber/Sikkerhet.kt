@@ -75,7 +75,7 @@ class Sikkerhet {
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
         val httpEntityWithHeaders = initHttpEntity(
-                "client_id=bidrag-ui-q0&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
+                "client_id=bidrag-ui-${Environment.fetch()}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
                 header(HttpHeaders.CACHE_CONTROL, "no-cache"),
                 header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded"),
                 header(HttpHeaders.COOKIE, "nav-isso=$tokenIdForAuthenticatedTestUser")
