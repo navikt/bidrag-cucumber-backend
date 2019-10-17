@@ -9,7 +9,10 @@ private const val Q0 = "q0"
 internal class Environment {
 
     companion object ManagedEnvironment {
+
+        // blir satt av Fasit når den forsøker å finne fasit-ressurs for en resttjeneste og feiler med org.springframework.web.client.ResourceAccessException
         internal var offline = false
+
         private var environment: String? = null
 
         fun fetch(): String {

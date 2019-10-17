@@ -5,6 +5,7 @@ import no.nav.bidrag.commons.CorrelationId
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.springframework.http.HttpHeaders
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
@@ -34,7 +35,7 @@ open class Fasit {
     internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitResurs {
         val fasitJson = try {
             fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
-        } catch (e: Exception) {
+        } catch (e: ResourceAccessException) {
             Environment.offline = true
             Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8)
         }
