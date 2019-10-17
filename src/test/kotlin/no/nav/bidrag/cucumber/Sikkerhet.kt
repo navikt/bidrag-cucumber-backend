@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
-import java.net.URL
 
 class Sikkerhet {
     private val fasit = Fasit()
@@ -41,11 +40,10 @@ class Sikkerhet {
     private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitResurs {
         val openIdConnect = "OpenIdConnect"
         val fasitRessursUrl = fasit.buildUriString(
-                URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$OIDC_ALIAS", "zone=$FASIT_ZONE", "usage=false"
+                URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        val fasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, OIDC_ALIAS, openIdConnect)
-        return fasitRessurs
+        return fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
     }
 
     private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitResurs): String {
@@ -93,9 +91,10 @@ class Sikkerhet {
     }
 
     private fun hentIdToken(codeFraLocationHeader: String, passordOpenAm: String): String {
+        val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.fetch()}:$passordOpenAm"
         val httpEntityWithHeaders = initHttpEntity(
                 "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=$URL_ISSO_REDIRECT",
-                header(HttpHeaders.AUTHORIZATION, "Basic $passordOpenAm"),
+                header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(openApAuth.toByteArray(Charsets.UTF_8)))),
                 header(HttpHeaders.CACHE_CONTROL, "no-cache"),
                 header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
         )
