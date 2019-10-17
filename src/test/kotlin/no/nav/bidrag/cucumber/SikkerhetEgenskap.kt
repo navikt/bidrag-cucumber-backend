@@ -4,7 +4,7 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
 
-class EnvironmentEgenskap {
+class SikkerhetEgenskap {
 
     @Gitt("jeg bruker miljø: {string}")
     fun `jeg bruker`(miljo: String) {
