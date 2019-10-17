@@ -43,7 +43,8 @@ Cucumber støtter flere språk og for mer detaljert oversikt over funksjonalitet
 
 ### Kjøring
 
-Alle kotlin-cucumber-tester kjører på en jvm bruker JUnit som plattform. Derfor kan testene bli utført i hvilken som helt editor som støtter JUnit.
+Alle kotlin-cucumber-tester kjører på en jvm og bruker JUnit som plattform. Derfor kan testene bli utført i hvilken som helt editor som støtter JUnit,
+samt utføring fra bygg-verktøy som maven.
 
 Testene kan også kjøres fra kommandolinja med maven - `mvn test`
 
