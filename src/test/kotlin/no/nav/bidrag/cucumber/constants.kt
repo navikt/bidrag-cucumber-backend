@@ -9,7 +9,7 @@ internal const val ENVIRONMENT = "ENVIRONMENT"
 
 // constants for code
 internal const val FASIT_ZONE = "fss"
-internal const val OIDC_ALIAS = "bidrag-dokument-ui-oidc"
+internal const val OIDC_ALIAS = "bidrag-ui-oidc"
 
 internal const val URL_FASIT = "https://fasit.adeo.no/api/v2/resources"
 internal const val URL_ISSO = "https://isso-q.adeo.no:443/isso/json/authenticate?authIndexType=service&authIndexValue=ldapservice"
