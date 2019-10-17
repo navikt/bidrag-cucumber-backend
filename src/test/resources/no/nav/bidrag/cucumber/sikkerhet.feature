@@ -1,36 +1,16 @@
 # language: no
 @bidrag-cucumber
-Egenskap: bidrag-cucumber: environment
+Egenskap: bidrag-cucumber: sikkerhet
   Sjekker at oidc token fungerer for bidrag-ui
 
-  Scenario: Sjekk at vi får et gyldig id_token i 'q0'
+  Scenario: Sjekk at vi kan hente et id_token i 'q0'
     Gitt jeg bruker miljø: 'q0'
-    Når man sjekker at token er gyldig
-    Så skal token ha følgende properties:
-      | aud       | bidrag-ui-q0 |
-      | sub       | bidrag-ui-q0 |
-      | tokenType | JWTToken              |
+    Så kommer det ikke noen exception ved henting av id token
 
-  Scenario: Sjekk at vi får et gyldig id_token i 'q0' for testbruker
-    Gitt jeg bruker miljø: 'q0'
-    Når man sjekker at bruker-token er gyldig
-    Så skal token ha følgende properties:
-      | aud       | bidrag-ui-q0  |
-      | sub       | $process.env.test_user |
-      | tokenType | JWTToken               |
-
-  Scenario: Sjekk at vi får et gyldig id_token i 'q1'
+  Scenario: Sjekk at vi kan hente et id_token i 'q1'
     Gitt jeg bruker miljø: 'q1'
-    Når man sjekker at token er gyldig
-    Så skal token ha følgende properties:
-      | aud       | bidrag-ui-q1 |
-      | sub       | bidrag-ui-q1 |
-      | tokenType | JWTToken              |
+    Så kommer det ikke noen exception ved henting av id token
 
-  Scenario: Sjekk at vi får et gyldig id_token i 'q4'
+  Scenario: Sjekk at vi kan hente et id_token i 'q4'
     Gitt jeg bruker miljø: 'q4'
-    Når man sjekker at token er gyldig
-    Så skal token ha følgende properties:
-      | aud       | bidrag-ui-q4 |
-      | sub       | bidrag-ui-q4 |
-      | tokenType | JWTToken              |
+    Så kommer det ikke noen exception ved henting av id token
