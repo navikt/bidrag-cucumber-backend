@@ -4,6 +4,8 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
+import java.util.*
+import kotlin.collections.HashMap
 
 class RestTjenesteEgenskap() {
     companion object Manage {
@@ -28,9 +30,7 @@ class RestTjenesteEgenskap() {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
         val annenHttpStatus = HttpStatus.valueOf(enAnnenHttpStatus.toInt())
 
-        assertThat(hentHttpStatus())
-                .`as`("HttpStatus for " + hentEndpointUrl()).isNotEqualTo(httpStatus)
-                .`as`("HttpStatus for " + hentEndpointUrl()).isNotEqualTo(annenHttpStatus)
+        assertThat(hentHttpStatus()).`as`("HttpStatus for " + hentEndpointUrl()).isNotIn(EnumSet.of(httpStatus, annenHttpStatus))
     }
 
     fun get(endpointUrl: String) {
