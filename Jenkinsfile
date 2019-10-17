@@ -1,6 +1,6 @@
 node {
    def repo = "navikt"
-   def sourceapp = "bidrag-cucumber"
+   def sourceapp = "bidrag-cucumber-backend"
 
     stage("#1: Checkout code") {
         println("[INFO] Clean workspace")
@@ -46,3 +46,4 @@ node {
 
         cucumber buildStatus: 'UNSTABLE', fileIncludePattern:'**/cucumber.json'
     }
+}
