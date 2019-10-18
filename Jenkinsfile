@@ -33,7 +33,7 @@ node {
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
                           "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
                 )
-            } catch (err) { } // Test failures should not terminate the pipeline
+            } catch (err) { println(err) } // Test failures should not terminate the pipeline
         }
     }
 
