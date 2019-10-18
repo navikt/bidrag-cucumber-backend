@@ -15,6 +15,10 @@ internal class Environment {
 
         private var environment: String? = null
 
+        fun createCorrelationHeader(): String {
+            return "cucumber(${java.lang.Long.toHexString(System.currentTimeMillis())})"
+        }
+
         fun fetch(): String {
             if (environment != null) {
                 return environment as String

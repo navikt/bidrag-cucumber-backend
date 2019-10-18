@@ -1,13 +1,17 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.bidrag.commons.CorrelationId
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory
+import org.apache.http.impl.client.HttpClients
+import org.apache.http.ssl.SSLContexts
 import org.springframework.http.HttpHeaders
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
+import java.security.cert.X509Certificate
 
 open class Fasit {
 
@@ -17,11 +21,33 @@ open class Fasit {
         val miljo = Environment.fetch()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
-        val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(), fasitRessurs.url())
-        httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER, CorrelationId::fetchCorrelationIdForThread)
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION, Sikkerhet()::fetchIdToken)
+
+        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererSsl()
+
+        val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
+        httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationHeader() }
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
         return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitRessurs.url())
+    }
+
+    private fun hentHttpRequestFactorySomIgnorererSsl(): HttpComponentsClientHttpRequestFactory {
+        val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
+        val sslContext = SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy)
+                .build()
+
+        val csf = SSLConnectionSocketFactory(sslContext)
+
+        val httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build()
+
+        val requestFactory = HttpComponentsClientHttpRequestFactory()
+
+        requestFactory.httpClient = httpClient
+
+       return requestFactory
     }
 
     internal fun buildUriString(url: String, vararg queries: String): String {
