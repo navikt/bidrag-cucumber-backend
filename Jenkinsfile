@@ -15,7 +15,7 @@ node {
         }
 
         println("[INFO] cucumber options")
-        sh(script: 'export CUCUMBER_OPTIONS= -Dcucumber.options=\'--tags "@bidrag-cucumber or @bidrag-dokument"\'')
+        sh(script: "export CUCUMBER_OPTIONS= -Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'")
     }
 
     stage("#2 Cucumber tests with kotlin") {
