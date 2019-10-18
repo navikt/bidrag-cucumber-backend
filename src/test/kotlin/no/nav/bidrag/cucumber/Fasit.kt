@@ -3,13 +3,15 @@ package no.nav.bidrag.cucumber
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
-import org.apache.http.conn.ssl.NoopHostnameVerifier
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.HttpClients
+import org.apache.http.ssl.SSLContexts
 import org.springframework.http.HttpHeaders
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
+import java.security.cert.X509Certificate
 
 open class Fasit {
 
@@ -30,11 +32,22 @@ open class Fasit {
     }
 
     private fun hentHttpRequestFactorySomIgnorererSsl(): HttpComponentsClientHttpRequestFactory {
-        val httpClient = HttpClients.custom().setSSLHostnameVerifier(NoopHostnameVerifier()).build()
-        val httpComponentsClientHttpRequestFactory = HttpComponentsClientHttpRequestFactory()
-        httpComponentsClientHttpRequestFactory.httpClient = httpClient
+        val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
+        val sslContext = SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy)
+                .build()
 
-        return httpComponentsClientHttpRequestFactory
+        val csf = SSLConnectionSocketFactory(sslContext)
+
+        val httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build()
+
+        val requestFactory = HttpComponentsClientHttpRequestFactory()
+
+        requestFactory.httpClient = httpClient
+
+       return requestFactory
     }
 
     internal fun buildUriString(url: String, vararg queries: String): String {
