@@ -13,6 +13,9 @@ node {
                 sh(script: "git checkout ${BRANCH}", returnStatus:true)
             }
         }
+
+        println("[INFO] cucumber options")
+        sh(script: 'export CUCUMBER_OPTIONS= -Dcucumber.options=\'--tags "@bidrag-cucumber or @bidrag-dokument"\'')
     }
 
     stage("#2 Cucumber tests with kotlin") {
@@ -25,7 +28,7 @@ node {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                           "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
-                          "mvn clean test " +
+                          "mvn clean test $CUCUMBER_OPTIONS" +
                           "  -DENVIRONMENT=${NaisEnvironment}" +
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
                           "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
