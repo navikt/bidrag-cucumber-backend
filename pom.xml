@@ -11,6 +11,7 @@
 
   <properties>
     <!-- dependencies -->
+    <apache-httpcomponenents.version>4.5.10</apache-httpcomponenents.version>
     <assertj.version>3.13.2</assertj.version>
     <bidrag-commons.version>0.1.14</bidrag-commons.version>
     <clucumber.version>2.2.0</clucumber.version>
@@ -42,6 +43,11 @@
     </dependency>
 
     <!-- third party dependencies -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${apache-httpcomponenents.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
