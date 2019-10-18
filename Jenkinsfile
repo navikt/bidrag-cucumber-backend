@@ -25,9 +25,9 @@ node {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                           "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
-                          "mvn clean test \\" +
-                          "  -DENVIRONMENT=${NaisEnvironment} \\" +
-                          "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH} \\" +
+                          "mvn clean test " +
+                          "  -DENVIRONMENT=${NaisEnvironment}" +
+                          "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
                           "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
                 )
             } catch (err) { } // Test failures should not terminate the pipeline
