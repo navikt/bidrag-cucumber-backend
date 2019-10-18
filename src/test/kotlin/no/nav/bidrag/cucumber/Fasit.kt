@@ -31,6 +31,16 @@ open class Fasit {
         return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitRessurs.url())
     }
 
+    internal fun hentBidragDokumentFasitRessurs() {
+        try {
+            val miljo = Environment.fetch()
+            val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=$miljo")
+            hentFasitRessurs(resourceUrl, "BidragDokument", "rest")
+        } catch (e: IllegalStateException) {
+            // do nothing (offline blir satt av feilende kode)
+        }
+    }
+
     private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
         val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
         val sslContext = SSLContexts.custom()
@@ -47,7 +57,7 @@ open class Fasit {
 
         requestFactory.httpClient = httpClient
 
-       return requestFactory
+        return requestFactory
     }
 
     internal fun buildUriString(url: String, vararg queries: String): String {
