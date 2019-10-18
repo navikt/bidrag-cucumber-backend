@@ -36,16 +36,10 @@ node {
 
     stage("#3 Create cucumber report") {
         println("[INFO] Create cucumber reports")
-
-        withCredentials([
-                usernamePassword(credentialsId: 'naisUploader', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
-                usernamePassword(credentialsId: TestUserID, usernameVariable: 'TEST_USER', passwordVariable: 'TEST_PASS')
-            ]) {
-            sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
-                      "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
-                      "mvn cluecumber-report:reporting"
-            )
-        }
+        sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
+                  "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
+                  "mvn cluecumber-report:reporting"
+        )
 
         cucumber buildStatus: 'UNSTABLE', fileIncludePattern:'**/cucumber.json'
     }
