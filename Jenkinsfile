@@ -19,7 +19,7 @@ node {
         println("[INFO] Run cucumber tests with kotlin")
 
         withCredentials([
-                usernamePassword(credentialsId: 'naisUploader', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
+                usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
                 usernamePassword(credentialsId: TestUserID, usernameVariable: 'TEST_USER', passwordVariable: 'TEST_PASS')
             ]) {
             try {
