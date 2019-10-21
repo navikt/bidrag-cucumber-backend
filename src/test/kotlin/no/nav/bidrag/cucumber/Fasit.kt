@@ -41,7 +41,7 @@ open class Fasit {
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
 
-        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererSsl()
+        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
 
         val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationHeader() }
@@ -50,7 +50,7 @@ open class Fasit {
         return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitRessurs.url())
     }
 
-    private fun hentHttpRequestFactorySomIgnorererSsl(): HttpComponentsClientHttpRequestFactory {
+    private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
         val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
         val sslContext = SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
