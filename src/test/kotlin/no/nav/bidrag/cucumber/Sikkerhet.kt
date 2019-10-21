@@ -37,16 +37,16 @@ class Sikkerhet {
         return "Bearer " + hentIdToken(codeFraLocationHeader, passordOpenAm)
     }
 
-    private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitResurs {
+    private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitRessurs {
         val openIdConnect = "OpenIdConnect"
-        val fasitRessursUrl = fasit.buildUriString(
+        val fasitRessursUrl = Fasit.buildUriString(
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
         return fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
     }
 
-    private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitResurs): String {
+    private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitRessurs): String {
         val auth = "${Environment.user()}:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))

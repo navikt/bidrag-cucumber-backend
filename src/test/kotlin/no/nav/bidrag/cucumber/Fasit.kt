@@ -15,14 +15,33 @@ import java.security.cert.X509Certificate
 
 open class Fasit {
 
-    private var fasitTemplate = RestTemplate()
+    companion object {
+        private var fasitTemplate = RestTemplate()
+
+        internal fun buildUriString(url: String, vararg queries: String): String {
+            val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
+            queries.forEach { resourceUrl.query(it) }
+
+            return resourceUrl.toUriString()
+        }
+
+        internal fun hentFasitRessursSomJson(resourceUrl: String): FasitJson {
+            val fasitJson = try {
+                fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
+            } catch (e: ResourceAccessException) {
+                return FasitJson()
+            }
+
+            return FasitJson(fasitJson, false)
+        }
+    }
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment.fetch()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
 
-        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererSsl()
+        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
 
         val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationHeader() }
@@ -31,7 +50,7 @@ open class Fasit {
         return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitRessurs.url())
     }
 
-    private fun hentHttpRequestFactorySomIgnorererSsl(): HttpComponentsClientHttpRequestFactory {
+    private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
         val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
         val sslContext = SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
@@ -47,31 +66,25 @@ open class Fasit {
 
         requestFactory.httpClient = httpClient
 
-       return requestFactory
+        return requestFactory
     }
 
-    internal fun buildUriString(url: String, vararg queries: String): String {
-        val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
-
-        queries.forEach { resourceUrl.query(it) }
-
-        return resourceUrl.toUriString()
-    }
-
-    internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitResurs {
-        val fasitJson = try {
-            fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
-        } catch (e: ResourceAccessException) {
-            Environment.offline = true
-            Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8)
-        }
-
-        val listeFraFasit = ObjectMapper().readValue(fasitJson, List::class.java)
-        @Suppress("UNCHECKED_CAST") val listeOverRessurser: List<FasitResurs> = listeFraFasit.map { FasitResurs(it as Map<String, *>) }
-
+    internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitRessurs {
+        val fasitJson = hentFasitRessursSomJson(resourceUrl)
+        val listeFraFasit: List<Map<String, *>> = mapFasitJsonTilListeAvRessurser(fasitJson, type)
+        val listeOverRessurser: List<FasitRessurs> = listeFraFasit.map { FasitRessurs(it) }
         val fasitRessurs = listeOverRessurser.find { it.alias == alias }
 
         return fasitRessurs ?: throw IllegalStateException("Unable to find '$alias' from $URL_FASIT (${offlineStatus(type)}))")
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun mapFasitJsonTilListeAvRessurser(fasitJson: FasitJson, type: String): List<Map<String, Any>> {
+        return if (fasitJson.offline)
+            ObjectMapper().readValue(Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8), List::class.java)
+                    as List<Map<String, Any>>
+        else
+            ObjectMapper().readValue(fasitJson.json, List::class.java) as List<Map<String, Any>>
     }
 
     private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
@@ -79,7 +92,7 @@ open class Fasit {
 
 class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 
-data class FasitResurs(
+data class FasitRessurs(
         internal val alias: String,
         private val type: String,
         private val ressurser: MutableMap<String, String?> = HashMap()
@@ -106,4 +119,8 @@ data class FasitResurs(
 
     fun url() = ressurser["url"] ?: "ingen url for $alias"
     fun passordUrl() = ressurser["passord.url"] ?: "ingen url for $alias"
+}
+
+internal class FasitJson(val json: String?, val offline: Boolean) {
+    constructor() : this(null, true)
 }

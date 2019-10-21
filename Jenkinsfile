@@ -15,8 +15,8 @@ node {
         }
     }
 
-    stage("#2 Cucumber tests with kotlin") {
-        println("[INFO] Run cucumber tests with kotlin")
+    stage("#2 Cucumber tests for backend") {
+        println("[INFO] Run cucumber tests for backend")
 
         withCredentials([
                 usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
@@ -25,12 +25,12 @@ node {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                           "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
-                          "mvn clean test " +
+                          "mvn clean test ${CucumberTag}" +
                           "  -DENVIRONMENT=${NaisEnvironment}" +
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
                           "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
                 )
-            } catch (err) { } // Test failures should not terminate the pipeline
+            } catch (err) { println("SOMETHING FISHY HAPPENED: " + err) } // Failures should not terminate the pipeline
         }
     }
 

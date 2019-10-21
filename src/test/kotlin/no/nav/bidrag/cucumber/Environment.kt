@@ -10,10 +10,10 @@ internal class Environment {
 
     companion object ManagedEnvironment {
 
-        // blir satt av Fasit når den forsøker å finne fasit-ressurs for en resttjeneste og feiler med org.springframework.web.client.ResourceAccessException
-        internal var offline = false
-
+        private val onlineResourceUrl = Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
         private var environment: String? = null
+
+        internal val offline by lazy { Fasit.hentFasitRessursSomJson(onlineResourceUrl).offline }
 
         fun createCorrelationHeader(): String {
             return "cucumber(${java.lang.Long.toHexString(System.currentTimeMillis())})"
@@ -24,7 +24,7 @@ internal class Environment {
                 return environment as String
             }
 
-            if (offline) {
+            if (offline ) {
                 return Q0
             }
 
