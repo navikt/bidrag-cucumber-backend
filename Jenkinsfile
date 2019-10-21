@@ -2,7 +2,7 @@ node {
    def repo = "navikt"
    def sourceapp = "bidrag-cucumber-backend"
 
-    stage("#1: Checkout code") {
+    stage("#1: Checkout code and set up enviroment") {
         println("[INFO] Clean workspace")
         cleanWs()
 
@@ -13,12 +13,21 @@ node {
                 sh(script: "git checkout ${BRANCH}", returnStatus:true)
             }
         }
+
+        println("[INFO] cucumber options")
+        enviroment {
+            CUCUMBER_OPTIONS = "-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'"
+        }
+
+        println("[INFO] list enviroment")
+        def fields = env.getEnvironment()
+        fields.each {
+            key, value -> println("[INFO] ${key} = ${value}");
+        }
     }
 
     stage("#2 Cucumber tests for backend") {
         println("[INFO] Run cucumber tests for backend")
-        println("[INFO] cucumber options")
-        sh(script: "export CUCUMBER_OPTIONS=-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'")
 
         withCredentials([
                 usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
