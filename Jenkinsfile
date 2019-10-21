@@ -15,17 +15,7 @@ node {
         }
     }
 
-    stage("#2 set up") {
-        println("[INFO] cucumber options")
-        environment {
-            CUCUMBER_OPTIONS = "-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'"
-        }
-
-        println("[INFO] debug enviroment")
-        sh 'env'
-    }
-
-    stage("#3 Cucumber tests for backend") {
+    stage("#2 Cucumber tests for backend") {
         println("[INFO] Run cucumber tests for backend")
 
         withCredentials([
@@ -35,7 +25,7 @@ node {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                           "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
-                          "mvn clean test ${env.CUCUMBER_OPTIONS}" +
+                          "mvn clean test ${CucumberTag}" +
                           "  -DENVIRONMENT=${NaisEnvironment}" +
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
                           "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
@@ -44,7 +34,7 @@ node {
         }
     }
 
-    stage("#4 Create cucumber report") {
+    stage("#3 Create cucumber report") {
         println("[INFO] Create cucumber reports")
         sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                   "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
