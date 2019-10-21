@@ -21,11 +21,8 @@ node {
             CUCUMBER_OPTIONS = "-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'"
         }
 
-        println("[INFO] list enviroment")
-        def fields = env.getEnvironment()
-        fields.each {
-            key, value -> println("[INFO] ${key} = ${value}");
-        }
+        println("[INFO] debug enviroment")
+        sh 'env'
     }
 
     stage("#3 Cucumber tests for backend") {
