@@ -18,8 +18,8 @@ node {
         sh(script: "export CUCUMBER_OPTIONS=-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'")
     }
 
-    stage("#2 Cucumber tests with kotlin") {
-        println("[INFO] Run cucumber tests with kotlin")
+    stage("#2 Cucumber tests for backend") {
+        println("[INFO] Run cucumber tests for backend")
 
         withCredentials([
                 usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
