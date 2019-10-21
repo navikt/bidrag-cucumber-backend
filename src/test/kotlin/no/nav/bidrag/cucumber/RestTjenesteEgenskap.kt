@@ -33,13 +33,6 @@ class RestTjenesteEgenskap() {
         assertThat(hentHttpStatus()).`as`("HttpStatus for " + hentEndpointUrl()).isNotIn(EnumSet.of(httpStatus, annenHttpStatus))
     }
 
-    @Så("skal http status være {string}")
-    fun `skal http status vaere`(httpStatus: String) {
-        val status = HttpStatus.valueOf(httpStatus.toInt())
-
-        assertThat(restTjeneste.httpStatus).isEqualTo(status)
-    }
-
     fun get(endpointUrl: String) {
         if (restTjenester.containsKey(alias)) {
             restTjenester.get(alias)!!.exchangeGet(endpointUrl)
