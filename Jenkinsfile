@@ -17,7 +17,7 @@ node {
 
     stage("#2 set up") {
         println("[INFO] cucumber options")
-        enviroment {
+        environment {
             CUCUMBER_OPTIONS = "-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'"
         }
 
