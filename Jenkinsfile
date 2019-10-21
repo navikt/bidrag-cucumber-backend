@@ -2,7 +2,7 @@ node {
    def repo = "navikt"
    def sourceapp = "bidrag-cucumber-backend"
 
-    stage("#1: Checkout code and set up enviroment") {
+    stage("#1: Checkout code") {
         println("[INFO] Clean workspace")
         cleanWs()
 
@@ -13,7 +13,9 @@ node {
                 sh(script: "git checkout ${BRANCH}", returnStatus:true)
             }
         }
+    }
 
+    stage("#2 set up") {
         println("[INFO] cucumber options")
         enviroment {
             CUCUMBER_OPTIONS = "-Dcucumber.options='--tags \"@bidrag-cucumber or @bidrag-dokument\"'"
@@ -26,7 +28,7 @@ node {
         }
     }
 
-    stage("#2 Cucumber tests for backend") {
+    stage("#3 Cucumber tests for backend") {
         println("[INFO] Run cucumber tests for backend")
 
         withCredentials([
@@ -45,7 +47,7 @@ node {
         }
     }
 
-    stage("#3 Create cucumber report") {
+    stage("#4 Create cucumber report") {
         println("[INFO] Create cucumber reports")
         sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                   "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
