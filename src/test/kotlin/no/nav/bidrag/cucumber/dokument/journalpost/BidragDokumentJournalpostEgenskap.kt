@@ -2,13 +2,11 @@ package no.nav.bidrag.cucumber.dokument.journalpost
 
 import io.cucumber.java.no.Gitt
 import no.nav.bidrag.cucumber.CacheRestTjeneste
-import no.nav.bidrag.cucumber.RestTjeneste
 import no.nav.bidrag.cucumber.RestTjenesteEgenskap
 
 class BidragDokumentJournalpostEgenskap {
 
     private var restTjenesteEgenskap = RestTjenesteEgenskap()
-    private lateinit var testdataRestTjeneste: RestTjeneste
 
     @Gitt("jeg henter journalpost for sak {string} med id {string}")
     fun `jeg henter journalpost for sak med id`(saksnummer: String, onlineJournalpostId: String) {
