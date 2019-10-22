@@ -1,9 +1,6 @@
 package no.nav.bidrag.cucumber
 
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.http.*
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
 
@@ -37,5 +34,15 @@ class RestTjeneste(
         httpHeaders.add("ERROR_REST_SERVICE", alias)
 
         return httpHeaders
+    }
+
+    fun put(endpointUrl: String, journalpostJson: String) {
+        this.endpointUrl = rest.baseUrl + endpointUrl
+
+        try {
+            rest.template.put(endpointUrl, HttpEntity(journalpostJson))
+        } catch (e: HttpStatusCodeException) {
+            System.err.println("OPPDATERING FEILET: ${this.endpointUrl}: $e")
+        }
     }
 }
