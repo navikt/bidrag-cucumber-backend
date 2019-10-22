@@ -9,8 +9,8 @@ Egenskap: bidrag-dokument-journalpost
     Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" med id "BID-19650256"
         Så skal http status være '200'
-        Og resultatet skal være et objekt
-        Og objektet skal ha følgende properties:
+        Og resultatet er et objekt
+        Og objektet har følgende properties:
             | avsenderNavn  |
             | dokumentDato  |
             | dokumentType  |
@@ -21,8 +21,8 @@ Egenskap: bidrag-dokument-journalpost
     Scenario: Sjekk at vi får korrekt data i 'dokumenter' for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" med id "BID-19650256"
         Så skal http status være '200'
-        Og resultatet skal være et objekt
-        Og objektet skal ha følgende properties:
+        Og resultatet er et objekt
+        Og objektet har følgende properties:
             | dokumenter |
         Og 'dokumenter' skal ha følgende properties:
             | dokumentreferanse |
@@ -31,29 +31,29 @@ Egenskap: bidrag-dokument-journalpost
 
     Scenario: Sjekk at vi får korrekt gjelderAktor for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" med id "BID-32352090"
-        Så statuskoden skal være '200'
-        Og resultatet skal være et objekt
-        Og objektet skal ha følgende properties:
+        Så skal http status være '200'
+        Og resultatet er et objekt
+        Og objektet har følgende properties:
             | gjelderAktor |
         Og 'gjelderAktor' skal ha følgende properties:
             | ident     |
 
     Scenario: Sjekk at vi får en sakjournal for sak/fagområde
         Gitt jeg henter journalposter for sak "0000003" med fagområde "BID"
-        Så statuskoden skal være '200'
+        Så skal http status være '200'
         Og skal resultatet være en liste
         Og hvert element i listen skal ha 'fagomrade' = 'BID'
 
     Scenario: Sjekk at ukjent id gir 204
         Gitt jeg henter journalpost for sak "0000003" med id "BID-12345"
-        Så statuskoden skal være '204'
+        Så skal http status være '204'
 
     Scenario: Sjekk at id uten prefix gir 400
         Gitt jeg henter journalpost for sak "0000003" med id "12345"
-        Så statuskoden skal være '400'
+        Så skal http status være '400'
 
     Scenario: Sjekk at journalpost kan oppdateres - Sylfest Strutle
-        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -69,12 +69,12 @@ Egenskap: bidrag-dokument-journalpost
             "journaldato": "2006-05-09"
             }
             """
-        Så statuskoden skal være '202'
+        Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
         Og objektet skal ha 'avsenderNavn' = 'Strutle, Sylfest'
 
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
-        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -90,12 +90,12 @@ Egenskap: bidrag-dokument-journalpost
             "journaldato": "2006-05-09"
             }
             """
-        Så statuskoden skal være '202'
+        Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
         Og objektet skal ha 'avsenderNavn' = 'Bær, Bjarne'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
-        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -112,12 +112,12 @@ Egenskap: bidrag-dokument-journalpost
             "dokumentDato": "2001-01-01"
             }
             """
-        Så statuskoden skal være '202'
+        Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
         Og objektet skal ha 'dokumentDato' = '2001-01-01'
 
     Scenario: Sjekk at dokumentDator kan oppdateres til 2001-02-01
-        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -134,6 +134,6 @@ Egenskap: bidrag-dokument-journalpost
             "dokumentDato": "2001-02-01"
             }
             """
-        Så statuskoden skal være '202'
+        Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
         Og objektet skal ha 'dokumentDato' = '2001-02-01'
