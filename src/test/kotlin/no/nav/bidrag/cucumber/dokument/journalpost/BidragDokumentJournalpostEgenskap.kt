@@ -1,9 +1,7 @@
 package no.nav.bidrag.cucumber.dokument.journalpost
 
 import io.cucumber.java.no.Gitt
-import no.nav.bidrag.cucumber.CacheRestTjeneste
 import no.nav.bidrag.cucumber.RestTjenesteEgenskap
-import org.springframework.http.HttpEntity
 
 class BidragDokumentJournalpostEgenskap {
 

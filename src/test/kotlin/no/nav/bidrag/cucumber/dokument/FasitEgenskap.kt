@@ -11,7 +11,7 @@ class FasitEgenskap {
 
     @Når("det gjøres et kall til {string}")
     fun `det gjores et kall til`(endpointUrl: String) {
-        restTjenesteEgenskap.get(endpointUrl)
+        restTjenesteEgenskap.exchangeGet(endpointUrl)
     }
 
     @Så("skal responsen inneholde json med property {string} og verdi {string}")
