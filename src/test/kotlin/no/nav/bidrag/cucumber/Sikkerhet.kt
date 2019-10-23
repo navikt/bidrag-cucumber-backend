@@ -10,6 +10,11 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 
 class Sikkerhet {
+
+    companion object {
+        private lateinit var onlineToken:String
+    }
+
     private val fasit = Fasit()
 
     internal fun fetchIdToken(): String {
@@ -19,7 +24,8 @@ class Sikkerhet {
         }
 
         try {
-            return fetchOnlineIdToken()
+            onlineToken = fetchOnlineIdToken()
+            return onlineToken
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
             System.err.println("Feil ved henting av online id token, ${exception}")
