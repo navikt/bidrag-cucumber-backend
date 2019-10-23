@@ -14,15 +14,16 @@ import kotlin.collections.ArrayList
 class RestTjenesteEgenskap {
     companion object Manage {
         private lateinit var alias: String
+        private lateinit var restTjeneste: RestTjeneste
 
-        private fun hentEndpointUrl() = CacheRestTjeneste.hent(alias).endpointUrl
-        private fun hentHttpStatus() = CacheRestTjeneste.hent(alias).httpStatus
-        private fun hentResponse() = CacheRestTjeneste.hent(alias).response
+        private fun hentEndpointUrl() = restTjeneste.endpointUrl
+        private fun hentHttpStatus() = restTjeneste.httpStatus
+        private fun hentResponse() = restTjeneste.response
     }
 
     @Gitt("resttjeneste {string}")
     fun `gitt resttjenste`(alias: String) {
-        CacheRestTjeneste.hent(alias)
+        restTjeneste = RestTjeneste(alias)
         Manage.alias = alias
     }
 
@@ -117,16 +118,13 @@ class RestTjenesteEgenskap {
         return manglendeProps
     }
 
-    fun get(endpointUrl: String) {
-        CacheRestTjeneste.hent(alias).exchangeGet(endpointUrl)
-    }
-
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
-        return CacheRestTjeneste.hent(alias).exchangeGet(endpointUrl)
+        return restTjeneste.exchangeGet(endpointUrl)
     }
 
     fun response() = hentResponse()
+
     fun put(endpointUrl: String, journalpostJson: String) {
-        CacheRestTjeneste.hent(alias).put(endpointUrl, journalpostJson)
+        restTjeneste.put(endpointUrl, journalpostJson)
     }
 }
