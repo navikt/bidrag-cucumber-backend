@@ -16,6 +16,7 @@ import java.security.cert.X509Certificate
 open class Fasit {
 
     companion object {
+        private val cacheRestTemplateMedBaseUrl = CacheRestTemplateMedBaseUrl()
         private var fasitTemplate = RestTemplate()
 
         internal fun buildUriString(url: String, vararg queries: String): String {
@@ -37,6 +38,10 @@ open class Fasit {
     }
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
+        return cacheRestTemplateMedBaseUrl.hentEllerLag(alias)
+    }
+
+    private fun initRestTemplate(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment.fetch()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
@@ -88,6 +93,21 @@ open class Fasit {
     }
 
     private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
+
+    private class CacheRestTemplateMedBaseUrl(private val cache: MutableMap<String, RestTemplateMedBaseUrl> = HashMap()) {
+
+        fun hentEllerLag(alias: String): RestTemplateMedBaseUrl {
+            if (cache.containsKey(alias)) {
+                return cache[alias]!!
+            }
+
+            val restTemplateMedBaseUrl = Fasit().initRestTemplate(alias)
+
+            cache[alias] = restTemplateMedBaseUrl
+
+            return restTemplateMedBaseUrl
+        }
+    }
 }
 
 class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)

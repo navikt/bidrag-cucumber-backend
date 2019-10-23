@@ -2,7 +2,7 @@ package no.nav.bidrag.cucumber
 
 class CacheRestTjeneste {
     companion object {
-        private val restTjenester = HashMap<String, RestTjeneste>()
+        private val restTjenester: MutableMap<String, RestTjeneste> = HashMap()
 
         internal fun hent(alias: String): RestTjeneste {
             if (!restTjenester.containsKey(alias)) {

@@ -38,9 +38,14 @@ class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.endpointUrl = rest.baseUrl + endpointUrl
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+
+        val jsonEntity = HttpEntity(journalpostJson, headers)
 
         try {
-            rest.template.put(endpointUrl, HttpEntity(journalpostJson))
+            println(jsonEntity)
+            println(rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java))
         } catch (e: HttpStatusCodeException) {
             System.err.println("OPPDATERING FEILET: ${this.endpointUrl}: $e")
             throw e
