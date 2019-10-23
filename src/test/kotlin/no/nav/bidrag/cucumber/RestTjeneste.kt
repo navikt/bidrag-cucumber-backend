@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber
 
+import no.nav.bidrag.commons.CorrelationId
 import org.springframework.http.*
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
@@ -16,9 +17,10 @@ class RestTjeneste(
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         this.endpointUrl = rest.baseUrl + endpointUrl
+        val header = correlationIdHeader()
 
         val stringEntity: ResponseEntity<String> = try {
-            rest.template.exchange(endpointUrl, HttpMethod.GET, null, String::class.java)
+            rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
         } catch (e: HttpStatusCodeException) {
             ResponseEntity(addAliasToHeader(), e.statusCode)
         }
@@ -27,6 +29,13 @@ class RestTjeneste(
         httpStatus = stringEntity.statusCode
 
         return stringEntity
+    }
+
+    private fun correlationIdHeader(): HttpHeaders {
+        val headers = HttpHeaders()
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, Environment.createCorrelationHeader())
+
+        return headers
     }
 
     private fun addAliasToHeader(): MultiValueMap<String, String> {
@@ -38,7 +47,7 @@ class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val headers = HttpHeaders()
+        val headers = correlationIdHeader()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)
