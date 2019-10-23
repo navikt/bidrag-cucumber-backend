@@ -53,7 +53,7 @@ Egenskap: bidrag-dokument-journalpost
         Så skal http status være '400'
 
     Scenario: Sjekk at journalpost kan oppdateres - Sylfest Strutle
-        Gitt jeg endrer journalpost med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -74,7 +74,7 @@ Egenskap: bidrag-dokument-journalpost
         Og objektet skal ha 'avsenderNavn' = 'Strutle, Sylfest'
 
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
-        Gitt jeg endrer journalpost med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -95,7 +95,7 @@ Egenskap: bidrag-dokument-journalpost
         Og objektet skal ha 'avsenderNavn' = 'Bær, Bjarne'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
-        Gitt jeg endrer journalpost med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,
@@ -117,7 +117,7 @@ Egenskap: bidrag-dokument-journalpost
         Og objektet skal ha 'dokumentDato' = '2001-01-01'
 
     Scenario: Sjekk at dokumentDator kan oppdateres til 2001-02-01
-        Gitt jeg endrer journalpost med id 'BID-30040789' til:
+        Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
             """
             {
             "journalpostId": 30040789,

@@ -126,4 +126,7 @@ class RestTjenesteEgenskap {
     }
 
     fun response() = hentResponse()
+    fun put(endpointUrl: String, journalpostJson: String) {
+        CacheRestTjeneste.hent(alias).put(endpointUrl, journalpostJson)
+    }
 }
