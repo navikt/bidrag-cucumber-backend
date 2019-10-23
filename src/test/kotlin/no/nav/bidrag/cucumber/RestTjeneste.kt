@@ -43,6 +43,7 @@ class RestTjeneste(
             rest.template.put(endpointUrl, HttpEntity(journalpostJson))
         } catch (e: HttpStatusCodeException) {
             System.err.println("OPPDATERING FEILET: ${this.endpointUrl}: $e")
+            throw e
         }
     }
 }

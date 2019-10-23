@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber.dokument.journalpost
 import io.cucumber.java.no.Gitt
 import no.nav.bidrag.cucumber.CacheRestTjeneste
 import no.nav.bidrag.cucumber.RestTjenesteEgenskap
+import org.springframework.http.HttpEntity
 
 class BidragDokumentJournalpostEgenskap {
 
@@ -18,8 +19,8 @@ class BidragDokumentJournalpostEgenskap {
         restTjenesteEgenskap.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
 
-    @Gitt("jeg endrer journalpost med id {string} til:")
-    fun `jeg endrer journalpost med id til`(journalpostId: String, journalpostJson: String) {
-        CacheRestTjeneste.hent("bidragDokumentTestdata").put("/journalpoost/$journalpostId", journalpostJson)
+    @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
+    fun `jeg endrer journalpost med id til`(saksnummer: String, journalpostId: String, journalpostJson: String) {
+        restTjenesteEgenskap.put("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
     }
 }
