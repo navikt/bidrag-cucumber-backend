@@ -5,7 +5,7 @@ import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
@@ -16,7 +16,7 @@ class BidragDokumentJournalpostEgenskap {
 
     @Before
     fun `sett cucumber scenario`(scenario: Scenario) {
-        RestTjeneste.use(scenario)
+        BidragCucumberScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten bidragDokumentJournalpost")

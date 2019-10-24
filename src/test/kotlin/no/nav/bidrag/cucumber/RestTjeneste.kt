@@ -1,7 +1,6 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.cucumber.core.api.Scenario
 import no.nav.bidrag.commons.CorrelationId
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -14,23 +13,13 @@ import org.springframework.web.client.HttpStatusCodeException
 import java.util.LinkedHashMap
 
 @Suppress("UNCHECKED_CAST")
-open class RestTjeneste(
+open class RestTjeneste (
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl,
         private var endpointUrl: String = alias,
         private var response: String? = null
 
-) {
-
-    companion object {
-        private var scenario: Scenario? = null
-        private var correlationIdForScenario: String? = null
-
-        fun use(scenario: Scenario) {
-            this.scenario = scenario
-            correlationIdForScenario = Environment.createCorrelationIdValue()
-        }
-    }
+): BidragCucumberScenarioManager() {
 
     private lateinit var httpStatus: HttpStatus
 
@@ -61,20 +50,9 @@ open class RestTjeneste(
     private fun httpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
 
-        writeToCucumberScenario(
-                "Link til kibana for correlation-id: $correlationIdForScenario\n\n" +
-                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
-        )
-
         headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
 
         return headers
-    }
-
-    private fun writeToCucumberScenario(message: String) {
-        if (scenario != null) {
-            scenario!!.write(message)
-        }
     }
 
     private fun headerWithAlias(): MultiValueMap<String, String> {
