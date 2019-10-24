@@ -30,7 +30,7 @@ open class Fasit {
             val fasitJson = try {
                 fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
             } catch (e: ResourceAccessException) {
-                return FasitJson()
+                return FasitJson(true)
             }
 
             return FasitJson(fasitJson, false)
@@ -45,10 +45,10 @@ open class Fasit {
         val miljo = Environment.fetch()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
-
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
+        val httpHeaderRestTemplate = Environment()
+                .setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
 
-        val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationHeader() }
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
@@ -142,5 +142,5 @@ data class FasitRessurs(
 }
 
 internal class FasitJson(val json: String?, val offline: Boolean) {
-    constructor() : this(null, true)
+    constructor(offline: Boolean) : this(null, offline)
 }
