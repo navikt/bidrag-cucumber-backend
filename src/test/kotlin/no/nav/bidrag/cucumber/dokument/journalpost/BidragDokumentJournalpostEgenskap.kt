@@ -65,7 +65,7 @@ class BidragDokumentJournalpostEgenskap {
     fun objektet_skal_ha(key: String, value: String) {
         val responseObject = restTjenesteJournalpost.hentResponseSomMap()
 
-        assertThat(responseObject["key"]).isEqualTo(value)
+        assertThat(responseObject[key]).`as`("json response (${restTjenesteJournalpost.hentResponse()})").isEqualTo(value)
     }
 
     @Så("objektet har følgende properties:")
