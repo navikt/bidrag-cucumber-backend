@@ -1,8 +1,11 @@
 package no.nav.bidrag.cucumber.dokument.journalpost
 
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
@@ -10,6 +13,11 @@ import org.springframework.http.HttpStatus
 private lateinit var restTjenesteJournalpost: RestTjenesteJournalpost
 
 class BidragDokumentJournalpostEgenskap {
+
+    @Before
+    fun `sett cucumber scenario`(scenario: Scenario) {
+        RestTjeneste.use(scenario)
+    }
 
     @Gitt("resttjenesten bidragDokumentJournalpost")
     fun `gitt resttjenesten bidragDokumenJournalpost`() {

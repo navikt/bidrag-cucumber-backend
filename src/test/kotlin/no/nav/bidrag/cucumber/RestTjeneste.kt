@@ -1,6 +1,7 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.cucumber.core.api.Scenario
 import no.nav.bidrag.commons.CorrelationId
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -15,11 +16,21 @@ import java.util.LinkedHashMap
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
         private val alias: String,
-        private val rest: RestTemplateMedBaseUrl
+        private val rest: RestTemplateMedBaseUrl,
+        private var endpointUrl: String = alias,
+        private var response: String? = null
+
 ) {
-    private var endpointUrl: String = alias
+
+    companion object {
+        private var scenario: Scenario? = null
+
+        fun use(scenario: Scenario) {
+            this.scenario = scenario
+        }
+    }
+
     private lateinit var httpStatus: HttpStatus
-    private var response: String? = null
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
@@ -31,7 +42,7 @@ open class RestTjeneste(
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val header = headerWithCorrelationId()
+        val header = httpHeadersWithCorrelationId()
 
         val stringEntity: ResponseEntity<String> = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
@@ -45,11 +56,24 @@ open class RestTjeneste(
         return stringEntity
     }
 
-    private fun headerWithCorrelationId(): HttpHeaders {
+    private fun httpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
-        headers.add(CorrelationId.CORRELATION_ID_HEADER, Environment.createCorrelationHeader())
+        val cucumberCorrelationId = Environment.createCorrelationHeader()
+
+        writeToCucumberScenario(
+                "Link til kibana for correlation-id: $cucumberCorrelationId\n\n" +
+                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$cucumberCorrelationId\"),sort:!('@timestamp',desc))"
+        )
+
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, cucumberCorrelationId)
 
         return headers
+    }
+
+    private fun writeToCucumberScenario(message: String) {
+        if (scenario != null) {
+            scenario!!.write(message)
+        }
     }
 
     private fun headerWithAlias(): MultiValueMap<String, String> {
@@ -61,7 +85,7 @@ open class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val headers = headerWithCorrelationId()
+        val headers = httpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)
