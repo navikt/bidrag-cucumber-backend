@@ -62,7 +62,7 @@ open class RestTjeneste(
 
         writeToCucumberScenario(
                 "Link til kibana for correlation-id: $cucumberCorrelationId\n\n" +
-                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$cucumberCorrelationId\"),sort:!('@timestamp',desc))"
+                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$cucumberCorrelationId\"),sort:!('@timestamp',desc))\n"
         )
 
         headers.add(CorrelationId.CORRELATION_ID_HEADER, cucumberCorrelationId)
