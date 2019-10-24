@@ -16,6 +16,7 @@ import java.security.cert.X509Certificate
 open class Fasit {
 
     companion object {
+        private val cacheRestTemplateMedBaseUrl = CacheRestTemplateMedBaseUrl()
         private var fasitTemplate = RestTemplate()
 
         internal fun buildUriString(url: String, vararg queries: String): String {
@@ -29,7 +30,7 @@ open class Fasit {
             val fasitJson = try {
                 fasitTemplate.getForObject<String>(resourceUrl, String::class.java)
             } catch (e: ResourceAccessException) {
-                return FasitJson()
+                return FasitJson(true)
             }
 
             return FasitJson(fasitJson, false)
@@ -37,13 +38,17 @@ open class Fasit {
     }
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
+        return cacheRestTemplateMedBaseUrl.hentEllerLag(alias)
+    }
+
+    private fun initRestTemplate(alias: String): RestTemplateMedBaseUrl {
         val miljo = Environment.fetch()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
-
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
+        val httpHeaderRestTemplate = Environment()
+                .setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
 
-        val httpHeaderRestTemplate = Environment().hentRestTemplate(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
         httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationHeader() }
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
@@ -88,6 +93,21 @@ open class Fasit {
     }
 
     private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
+
+    private class CacheRestTemplateMedBaseUrl(private val cache: MutableMap<String, RestTemplateMedBaseUrl> = HashMap()) {
+
+        fun hentEllerLag(alias: String): RestTemplateMedBaseUrl {
+            if (cache.containsKey(alias)) {
+                return cache[alias]!!
+            }
+
+            val restTemplateMedBaseUrl = Fasit().initRestTemplate(alias)
+
+            cache[alias] = restTemplateMedBaseUrl
+
+            return restTemplateMedBaseUrl
+        }
+    }
 }
 
 class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
@@ -122,5 +142,5 @@ data class FasitRessurs(
 }
 
 internal class FasitJson(val json: String?, val offline: Boolean) {
-    constructor() : this(null, true)
+    constructor(offline: Boolean) : this(null, offline)
 }

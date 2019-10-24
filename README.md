@@ -73,24 +73,3 @@ mvn cluecumber-report:reporting
 ```
 
 Man kan også gjøre både testing og rapportgenerering i et steg med `mvn package`
-
-### Kjøring lokalt
-
-#### Fasit
-
-Man kan starte applikasjonene lokalt og kjøre cucumber-testene lokalt på egen maskin uten å være avhengig av tilgang til fasit 
-for ressurser der. Lokal kjøring støttes ved at det ligger en rekke json ressurser som er hentet fra et fasit miljø og som er
-tilpasset lokal kjøring. Eks. på offline json fil er for rest-tjenester: `src/test/resources/no/nav/bidrag/cucumber/fasit.offline.rest.json`
-
-Hvis man sitter på en maskin som også har tilgang til fasit men ønsker å kjøre lokalt, så må man bare endre fasit url slik at den ikke finnes, se
-etter konstanten `FASIT_URL` i `src/test/kotlin/no/nav/bidrag/cucumber/constants.kt`
-
-#### Miljø - q0/q1/q4 vs localhost
-
-Miljøet vil teknisk sett alltid være q0 når man kjører lokalt, men dette har ingen betydning. Alle ressurser som brukes, forventer at urlene er satt i
-`fasit.offline.<type>.json` når man kjører lokalt; som regel localhost...
-
-#### Sikkerhet
-
-Kjører du en mikrotjeneste som bruker en annen mikrotjeneste, må begge applikasjonene startes lokalt for at integrering skal fungere. Jw-token generert
-for localhost blir gjenbrukt når den kjommuniserer med andre mikrotjenester.

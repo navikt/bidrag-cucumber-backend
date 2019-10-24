@@ -24,7 +24,7 @@ internal class Environment {
                 return environment as String
             }
 
-            if (offline ) {
+            if (offline) {
                 return Q0
             }
 
@@ -45,10 +45,10 @@ internal class Environment {
     }
 
     internal fun initRestTemplate(url: String): RestTemplate {
-        return hentRestTemplate(RestTemplate(), url)
+        return setBaseUrlPa(RestTemplate(), url)
     }
 
-    internal fun <T : RestTemplate> hentRestTemplate(restTemplate: T, url: String): T {
+    internal fun <T : RestTemplate> setBaseUrlPa(restTemplate: T, url: String): T {
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(url)
 
         return restTemplate
@@ -56,10 +56,30 @@ internal class Environment {
 
     private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
         override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-            return URI.create(baseUrl)
+            if (uriVariables.isNotEmpty()) {
+                val queryString = StringBuilder()
+                uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
+
+                return URI.create(baseUrl + uriTemplate + queryString)
+            }
+
+            return URI.create(baseUrl + uriTemplate)
         }
 
         override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
+            if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
+                val queryString = StringBuilder("&")
+                uriVariables.forEach {
+                    if (it != null && queryString.length == 1) {
+                        queryString.append("$it")
+                    } else if (it != null) {
+                        queryString.append("?$it")
+                    }
+                }
+
+                return URI.create(baseUrl + uriTemplate + queryString)
+            }
+
             return URI.create(baseUrl + uriTemplate)
         }
     }
