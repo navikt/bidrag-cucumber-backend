@@ -1,28 +1,41 @@
 package no.nav.bidrag.cucumber
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.CorrelationId
-import org.springframework.http.*
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
+import java.util.LinkedHashMap
 
-class RestTjeneste(
+@Suppress("UNCHECKED_CAST")
+open class RestTjeneste(
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl
 ) {
-    internal var endpointUrl: String = alias
-    internal var httpStatus: HttpStatus = HttpStatus.I_AM_A_TEAPOT
-    internal var response: String? = null
+    private var endpointUrl: String = alias
+    private lateinit var httpStatus: HttpStatus
+    private var response: String? = null
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
+    fun hentHttpStatus() = httpStatus
+    fun hentResponse() = response
+    fun hentResponseSomListe() = ObjectMapper().readValue(response, List::class.java) as List<Map<String, Any>>
+    fun hentResponseSomMap() = ObjectMapper().readValue(response, Map::class.java) as Map<String, Any>
+
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val header = correlationIdHeader()
+        val header = headerWithCorrelationId()
 
         val stringEntity: ResponseEntity<String> = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
         } catch (e: HttpStatusCodeException) {
-            ResponseEntity(addAliasToHeader(), e.statusCode)
+            ResponseEntity(headerWithAlias(), e.statusCode)
         }
 
         response = stringEntity.body
@@ -31,14 +44,14 @@ class RestTjeneste(
         return stringEntity
     }
 
-    private fun correlationIdHeader(): HttpHeaders {
+    private fun headerWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, Environment.createCorrelationHeader())
 
         return headers
     }
 
-    private fun addAliasToHeader(): MultiValueMap<String, String> {
+    private fun headerWithAlias(): MultiValueMap<String, String> {
         val httpHeaders = HttpHeaders()
         httpHeaders.add("ERROR_REST_SERVICE", alias)
 
@@ -47,17 +60,34 @@ class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val headers = correlationIdHeader()
+        val headers = headerWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)
 
         try {
             println(jsonEntity)
-            println(rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java))
+            httpStatus = rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java).statusCode
         } catch (e: HttpStatusCodeException) {
             System.err.println("OPPDATERING FEILET: ${this.endpointUrl}: $e")
             throw e
         }
+    }
+
+    fun hentManglendeProperties(objects: List<*>, properties: List<String>): List<String> {
+        val manglendeProps = ArrayList<String>()
+
+        objects.forEach {
+            @Suppress("UNCHECKED_CAST") manglendeProps.addAll(hentManglendeProperties(it as LinkedHashMap<String, *>, properties))
+        }
+
+        return manglendeProps
+    }
+
+    fun hentManglendeProperties(objects: LinkedHashMap<*, *>, properties: List<String>): List<String> {
+        val manglendeProps = ArrayList<String>()
+        properties.forEach { if (!objects.containsKey(it)) manglendeProps.add(it) }
+
+        return manglendeProps
     }
 }
