@@ -116,7 +116,7 @@ Egenskap: bidrag-dokument-journalpost
         Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
         Og objektet skal ha 'dokumentDato' = '2001-01-01'
 
-    Scenario: Sjekk at dokumentDator kan oppdateres til 2001-02-01
+    Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
             """
             {
