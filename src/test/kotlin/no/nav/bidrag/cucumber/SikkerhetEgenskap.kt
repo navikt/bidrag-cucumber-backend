@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Så
+import org.assertj.core.api.Assertions.assertThat
 
 class SikkerhetEgenskap {
 
@@ -10,8 +11,8 @@ class SikkerhetEgenskap {
         Environment.use(miljo)
     }
 
-    @Så("kommer det ikke noen exception ved henting av id token")
-    fun `sa kommer det ikke noen exception ved henting av id token`() {
-        Sikkerhet().fetchIdToken()
+    @Så("kan vi hente id token")
+    fun `sa kan vi hente id token`() {
+        assertThat(Sikkerhet().fetchOnlineIdToken()).isNotEmpty()
     }
 }
