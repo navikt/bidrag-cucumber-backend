@@ -45,10 +45,10 @@ internal class Environment {
     }
 
     internal fun initRestTemplate(url: String): RestTemplate {
-        return hentRestTemplate(RestTemplate(), url)
+        return setBaseUrlPa(RestTemplate(), url)
     }
 
-    internal fun <T : RestTemplate> hentRestTemplate(restTemplate: T, url: String): T {
+    internal fun <T : RestTemplate> setBaseUrlPa(restTemplate: T, url: String): T {
         restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(url)
 
         return restTemplate
@@ -56,7 +56,7 @@ internal class Environment {
 
     private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
         override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-            return URI.create(baseUrl)
+            return URI.create(baseUrl + uriTemplate)
         }
 
         override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
