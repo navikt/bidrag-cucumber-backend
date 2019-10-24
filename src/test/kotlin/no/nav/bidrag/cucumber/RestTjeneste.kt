@@ -24,9 +24,11 @@ open class RestTjeneste(
 
     companion object {
         private var scenario: Scenario? = null
+        private var correlationIdForScenario: String? = null
 
         fun use(scenario: Scenario) {
             this.scenario = scenario
+            correlationIdForScenario = Environment.createCorrelationIdValue()
         }
     }
 
@@ -58,14 +60,13 @@ open class RestTjeneste(
 
     private fun httpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
-        val cucumberCorrelationId = Environment.createCorrelationHeader()
 
         writeToCucumberScenario(
-                "Link til kibana for correlation-id: $cucumberCorrelationId\n\n" +
-                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$cucumberCorrelationId\"),sort:!('@timestamp',desc))\n"
+                "Link til kibana for correlation-id: $correlationIdForScenario\n\n" +
+                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
         )
 
-        headers.add(CorrelationId.CORRELATION_ID_HEADER, cucumberCorrelationId)
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
 
         return headers
     }
