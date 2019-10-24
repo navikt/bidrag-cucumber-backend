@@ -23,6 +23,7 @@ open class RestTjeneste(
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
+    fun hentEndpointUrl() = endpointUrl
     fun hentHttpStatus() = httpStatus
     fun hentResponse() = response
     fun hentResponseSomListe() = ObjectMapper().readValue(response, List::class.java) as List<Map<String, Any>>
