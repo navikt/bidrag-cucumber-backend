@@ -35,6 +35,8 @@ open class RestTjeneste (
         this.endpointUrl = rest.baseUrl + endpointUrl
         val header = httpHeadersWithCorrelationId()
 
+        writeToCucumberScenario("GET ${this.endpointUrl}")
+
         val stringEntity: ResponseEntity<String> = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
         } catch (e: HttpStatusCodeException) {
@@ -43,6 +45,8 @@ open class RestTjeneste (
 
         response = stringEntity.body
         httpStatus = stringEntity.statusCode
+
+        writeToCucumberScenario("$httpStatus\n$response")
 
         return stringEntity
     }
