@@ -6,6 +6,7 @@ open class BidragCucumberScenarioManager {
     companion object {
         private val scenarioMessages = HashSet<ScenarioMessage>()
         private var scenario: Scenario? = null
+        var scenarioName: String? = null
 
         var correlationIdForScenario: String? = null
 
@@ -13,6 +14,7 @@ open class BidragCucumberScenarioManager {
             this.scenario = scenario
             correlationIdForScenario = Environment.createCorrelationIdValue()
             scenarioMessages.clear()
+            scenarioName = scenario.name
         }
 
         fun writeOnceToCucumberScenario(scenarioMessage: ScenarioMessage, message: String) {

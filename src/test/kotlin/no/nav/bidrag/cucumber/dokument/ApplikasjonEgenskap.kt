@@ -14,7 +14,7 @@ class ApplikasjonEgenskap {
 
     @Gitt("resttjenesten bidragDokument")
     fun `gitt resttjensten`() {
-        restTjeneste = RestTjeneste("bidragDokument")
+        restTjeneste = RestTjenesteDokument()
     }
 
     @Når("det gjøres et kall til {string}")
