@@ -4,6 +4,7 @@ import io.cucumber.core.api.Scenario
 
 open class BidragCucumberScenarioManager {
     companion object {
+        const val ADD_LINEFEED = "&add.linefeed"
         private val scenarioMessages = HashSet<ScenarioMessage>()
         private var scenario: Scenario? = null
         var scenarioName: String? = null
@@ -26,7 +27,7 @@ open class BidragCucumberScenarioManager {
 
         fun writeToCucumberScenario(message: String) {
             if (scenario != null) {
-                scenario!!.write(message)
+                scenario!!.write("<p>\n${message.replace(ADD_LINEFEED, "\n<br>")}\n</p>")
             }
         }
     }

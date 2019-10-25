@@ -13,13 +13,13 @@ import org.springframework.web.client.HttpStatusCodeException
 import java.util.LinkedHashMap
 
 @Suppress("UNCHECKED_CAST")
-open class RestTjeneste (
+open class RestTjeneste(
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl,
         private var endpointUrl: String = alias,
         private var response: String? = null
 
-): BidragCucumberScenarioManager() {
+) : BidragCucumberScenarioManager() {
 
     private lateinit var httpStatus: HttpStatus
 
@@ -46,7 +46,7 @@ open class RestTjeneste (
         response = stringEntity.body
         httpStatus = stringEntity.statusCode
 
-        writeToCucumberScenario("$httpStatus\n$response")
+        writeToCucumberScenario("$httpStatus$ADD_LINEFEED$response")
 
         return stringEntity
     }
@@ -57,7 +57,7 @@ open class RestTjeneste (
 
         writeOnceToCucumberScenario(
                 ScenarioMessage.CORELATION_ID,
-                "<p>\nLink til kibana for correlation-id: $correlationIdForScenario. Gjelder for '$scenarioName'\n</p>\n" +
+                "Link til kibana for correlation-id: $correlationIdForScenario. Gjelder for scenario: '$scenarioName'$ADD_LINEFEED$ADD_LINEFEED" +
                         "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
         )
 
