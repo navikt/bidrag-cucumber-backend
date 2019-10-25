@@ -33,7 +33,7 @@ class Sikkerhet {
         }
     }
 
-    private fun fetchOnlineIdToken(): String {
+    fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
         val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
         val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)

@@ -13,13 +13,15 @@ import org.springframework.web.client.HttpStatusCodeException
 import java.util.LinkedHashMap
 
 @Suppress("UNCHECKED_CAST")
-open class RestTjeneste(
+open class RestTjeneste (
         private val alias: String,
-        private val rest: RestTemplateMedBaseUrl
-) {
-    private var endpointUrl: String = alias
+        private val rest: RestTemplateMedBaseUrl,
+        private var endpointUrl: String = alias,
+        private var response: String? = null
+
+): BidragCucumberScenarioManager() {
+
     private lateinit var httpStatus: HttpStatus
-    private var response: String? = null
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
@@ -31,7 +33,9 @@ open class RestTjeneste(
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val header = headerWithCorrelationId()
+        val header = httpHeadersWithCorrelationId()
+
+        writeToCucumberScenario("GET ${this.endpointUrl}")
 
         val stringEntity: ResponseEntity<String> = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
@@ -42,12 +46,20 @@ open class RestTjeneste(
         response = stringEntity.body
         httpStatus = stringEntity.statusCode
 
+        writeToCucumberScenario("$httpStatus\n$response")
+
         return stringEntity
     }
 
-    private fun headerWithCorrelationId(): HttpHeaders {
+    private fun httpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
-        headers.add(CorrelationId.CORRELATION_ID_HEADER, Environment.createCorrelationHeader())
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
+
+        writeOnceToCucumberScenario(
+                ScenarioMessage.CORELATION_ID,
+                "<p>\nLink til kibana for correlation-id: $correlationIdForScenario. Gjelder for '$scenarioName'\n</p>\n" +
+                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
+        )
 
         return headers
     }
@@ -61,7 +73,7 @@ open class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.endpointUrl = rest.baseUrl + endpointUrl
-        val headers = headerWithCorrelationId()
+        val headers = httpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)

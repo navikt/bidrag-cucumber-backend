@@ -1,8 +1,11 @@
 package no.nav.bidrag.cucumber.dokument
 
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
@@ -12,9 +15,14 @@ private lateinit var restTjeneste: RestTjeneste
 
 class ApplikasjonEgenskap {
 
+    @Before
+    fun `sett cucumber scenario`(scenario: Scenario) {
+        BidragCucumberScenarioManager.use(scenario)
+    }
+
     @Gitt("resttjenesten bidragDokument")
     fun `gitt resttjensten`() {
-        restTjeneste = RestTjeneste("bidragDokument")
+        restTjeneste = RestTjenesteDokument()
     }
 
     @Når("det gjøres et kall til {string}")

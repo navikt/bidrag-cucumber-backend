@@ -15,8 +15,8 @@ internal class Environment {
 
         internal val offline by lazy { Fasit.hentFasitRessursSomJson(onlineResourceUrl).offline }
 
-        fun createCorrelationHeader(): String {
-            return "cucumber(${java.lang.Long.toHexString(System.currentTimeMillis())})"
+        fun createCorrelationIdValue(): String {
+            return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
         fun fetch(): String {
