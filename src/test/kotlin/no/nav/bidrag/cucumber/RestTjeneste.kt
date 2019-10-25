@@ -53,7 +53,7 @@ open class RestTjeneste (
 
         writeOnceToCucumberScenario(
                 ScenarioMessage.CORELATION_ID,
-                "<p>Link til kibana for correlation-id: $correlationIdForScenario. Gjelder for '$scenarioName'</p>" +
+                "<p>\nLink til kibana for correlation-id: $correlationIdForScenario. Gjelder for '$scenarioName'\n</p>\n" +
                         "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
         )
 
