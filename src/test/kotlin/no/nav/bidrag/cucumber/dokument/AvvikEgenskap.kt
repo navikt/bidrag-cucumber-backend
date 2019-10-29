@@ -9,6 +9,7 @@ import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 
 class AvvikEgenskap {
@@ -57,5 +58,25 @@ class AvvikEgenskap {
 
         assertThat(restTjenesteAvvik.hentHttpStatus()).`as`("HttpStatus for ${restTjenesteAvvik.hentEndpointUrl()}")
                 .isEqualTo(httpStatus)
+    }
+
+    @Når("jeg ber om gyldige avviksvalg for journalpost")
+    fun `jeg ber om gyldige avviksvalg for journalpost`() {
+        restTjenesteAvvik.exchangeGet(avvikData.endepunktUrl)
+    }
+
+    @Og("listen med valg skal kun inneholde:")
+    fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
+        val funnetAvvikstyper = ArrayList(
+                restTjenesteAvvik.hentResponse()!!
+                        .removePrefix("[")
+                        .removeSuffix("]")
+                .split(",")
+        )
+
+        assertAll(
+                { assertThat(forventedeAvvik).`as`("$forventedeAvvik vs $funnetAvvikstyper").hasSize(funnetAvvikstyper.size) },
+                { forventedeAvvik.forEach{forventetAvvik -> assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\""))} }
+        )
     }
 }
