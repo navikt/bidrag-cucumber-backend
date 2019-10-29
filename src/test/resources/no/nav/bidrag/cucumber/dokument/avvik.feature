@@ -33,3 +33,10 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Gitt avvikstype 'BESTILL_ORIGINAL'
     Når jeg oppretter avvik
     Så skal http status for avvik være '201'
+
+  Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
+    Gitt avvikstype 'BESTILL_ORIGINAL'
+    Når jeg oppretter avvik
+    Og jeg ber om gyldige avviksvalg for journalpost
+    Så skal http status for avvik være '200'
+    Og listen med valg skal ikke inneholde 'BESTILL_ORIGINAL'
