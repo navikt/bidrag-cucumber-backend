@@ -57,7 +57,7 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Når jeg oppretter avvik
     Så skal http status for avvik være '201'
 
-  Scenario: Sjekk at jeg kan endre fagområde til FAR
+  Scenario: Sjekk at man kan endre fagområde til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og avvikstypen har beskrivelse 'FAR'
     Når jeg oppretter avvik
@@ -69,3 +69,8 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Når jeg oppretter avvik
     Og jeg oppretter avvik
     Så skal http status for avvik være '400'
+
+  Scenario: Sjekk at man kan feilføre sak
+    Gitt avvikstype 'FEILFORE_SAK'
+    Når jeg oppretter avvik
+    Så skal http status for avvik være '200'
