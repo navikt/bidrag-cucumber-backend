@@ -18,7 +18,18 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og endepunkt url er '/sak/0000003/journal/BID-34111047/avvik'
     Og enhetsnummer for avvik er '4806'
 
+  Scenario: Sjekk avviksvalg for gitt journalpost
+    Når jeg ber om gyldige avviksvalg for journalpost
+    Så skal http status for avvik være '200'
+    Og listen med valg skal kun inneholde:
+      | BESTILL_ORIGINAL      |
+      | BESTILL_RESKANNING    |
+      | BESTILL_SPLITTING     |
+      | ENDRE_FAGOMRADE       |
+      | INNG_TIL_UTG_DOKUMENT |
+      | FEILFORE_SAK          |
+
   Scenario: Sjekk at man kan bestille original
-  Gitt avvikstype 'BESTILL_ORIGINAL'
-  Når jeg oppretter avvik
-  Så skal http status for avvik være '201'
+    Gitt avvikstype 'BESTILL_ORIGINAL'
+    Når jeg oppretter avvik
+    Så skal http status for avvik være '201'
