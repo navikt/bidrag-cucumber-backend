@@ -75,8 +75,8 @@ class AvvikEgenskap {
         )
 
         assertAll(
-                { assertThat(forventedeAvvik).`as`("$forventedeAvvik vs $funnetAvvikstyper").hasSize(funnetAvvikstyper.size) },
-                { forventedeAvvik.forEach { forventetAvvik -> assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) } }
+                { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
+                { assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) }
         )
     }
 
