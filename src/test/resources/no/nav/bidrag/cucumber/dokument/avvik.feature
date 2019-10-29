@@ -40,3 +40,8 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og jeg ber om gyldige avviksvalg for journalpost
     Så skal http status for avvik være '200'
     Og listen med valg skal ikke inneholde 'BESTILL_ORIGINAL'
+
+  Scenario: Sjekk at kan bestille reskannning
+    Gitt avvikstype 'BESTILL_RESKANNING'
+    Når jeg oppretter avvik
+    Så skal http status for avvik være '201'
