@@ -56,3 +56,9 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og avvikstypen har beskrivelse 'Splitt på midten'
     Når jeg oppretter avvik
     Så skal http status for avvik være '201'
+
+  Scenario: Sjekk at jeg kan endre fagområde til FAR
+    Gitt avvikstype 'ENDRE_FAGOMRADE'
+    Og avvikstypen har beskrivelse 'FAR'
+    Når jeg oppretter avvik
+    Så skal http status for avvik være '200'
