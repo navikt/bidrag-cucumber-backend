@@ -50,3 +50,9 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Gitt avvikstype 'BLAH_BLAH_LAH_123'
     Når jeg oppretter avvik
     Så skal http status for avvik være '400'
+
+  Scenario: Sjekk at man kan bestille splitting
+    Gitt avvikstype 'BESTILL_SPLITTING'
+    Og avvikstypen har beskrivelse 'Splitt på midten'
+    Når jeg oppretter avvik
+    Så skal http status for avvik være '201'
