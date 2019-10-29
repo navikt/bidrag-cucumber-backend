@@ -62,3 +62,10 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og avvikstypen har beskrivelse 'FAR'
     Når jeg oppretter avvik
     Så skal http status for avvik være '200'
+
+  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
+    Gitt avvikstype 'ENDRE_FAGOMRADE'
+    Og avvikstypen har beskrivelse 'FAR'
+    Når jeg oppretter avvik
+    Og jeg oppretter avvik
+    Så skal http status for avvik være '400'
