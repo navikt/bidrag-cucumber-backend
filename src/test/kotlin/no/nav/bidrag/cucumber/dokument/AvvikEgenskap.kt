@@ -71,12 +71,24 @@ class AvvikEgenskap {
                 restTjenesteAvvik.hentResponse()!!
                         .removePrefix("[")
                         .removeSuffix("]")
-                .split(",")
+                        .split(",")
         )
 
         assertAll(
                 { assertThat(forventedeAvvik).`as`("$forventedeAvvik vs $funnetAvvikstyper").hasSize(funnetAvvikstyper.size) },
-                { forventedeAvvik.forEach{forventetAvvik -> assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\""))} }
+                { forventedeAvvik.forEach { forventetAvvik -> assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) } }
         )
+    }
+
+    @Og("listen med valg skal ikke inneholde {string}")
+    fun `listen med valg skal ikke inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = ArrayList(
+                restTjenesteAvvik.hentResponse()!!
+                        .removePrefix("[")
+                        .removeSuffix("]")
+                        .split(",")
+        )
+
+        assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
 }
