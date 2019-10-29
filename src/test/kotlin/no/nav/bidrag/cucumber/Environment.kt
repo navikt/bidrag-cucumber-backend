@@ -4,11 +4,10 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriTemplateHandler
 import java.net.URI
 
-private const val Q0 = "q0"
-
 internal class Environment {
 
     companion object ManagedEnvironment {
+        private const val Q0 = "q0"
 
         private val onlineResourceUrl = Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
         private var environment: String? = null
@@ -53,34 +52,34 @@ internal class Environment {
 
         return restTemplate
     }
+}
 
-    private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
-        override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-            if (uriVariables.isNotEmpty()) {
-                val queryString = StringBuilder()
-                uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
+internal class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
+    override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
+        if (uriVariables.isNotEmpty()) {
+            val queryString = StringBuilder()
+            uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
 
-                return URI.create(baseUrl + uriTemplate + queryString)
-            }
-
-            return URI.create(baseUrl + uriTemplate)
+            return URI.create(baseUrl + uriTemplate + queryString)
         }
 
-        override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
-            if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
-                val queryString = StringBuilder("&")
-                uriVariables.forEach {
-                    if (it != null && queryString.length == 1) {
-                        queryString.append("$it")
-                    } else if (it != null) {
-                        queryString.append("?$it")
-                    }
+        return URI.create(baseUrl + uriTemplate)
+    }
+
+    override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
+        if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
+            val queryString = StringBuilder("&")
+            uriVariables.forEach {
+                if (it != null && queryString.length == 1) {
+                    queryString.append("$it")
+                } else if (it != null) {
+                    queryString.append("?$it")
                 }
-
-                return URI.create(baseUrl + uriTemplate + queryString)
             }
 
-            return URI.create(baseUrl + uriTemplate)
+            return URI.create(baseUrl + uriTemplate + queryString)
         }
+
+        return URI.create(baseUrl + uriTemplate)
     }
 }

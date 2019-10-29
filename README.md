@@ -63,7 +63,7 @@ For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cu
 Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgende maven kommando blir da utført:
 
 ``` 
-mvn test -Dcucumber.options='--tags "@bidrag-cucumber or @<valgt-applikasjon>"' 
+mvn test -Dcucumber.options='--tags "@<valgt-applikasjon>"' 
 ``` 
 
 Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:

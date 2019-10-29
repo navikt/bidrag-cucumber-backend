@@ -13,29 +13,29 @@ import org.springframework.web.client.HttpStatusCodeException
 import java.util.LinkedHashMap
 
 @Suppress("UNCHECKED_CAST")
-open class RestTjeneste (
+open class RestTjeneste(
         private val alias: String,
-        private val rest: RestTemplateMedBaseUrl,
-        private var endpointUrl: String = alias,
+        protected val rest: RestTemplateMedBaseUrl,
+        private var debugFullUrl: String = alias,
         private var response: String? = null
 
-): BidragCucumberScenarioManager() {
+) : BidragCucumberScenarioManager() {
 
-    private lateinit var httpStatus: HttpStatus
+    protected lateinit var httpStatus: HttpStatus
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
-    fun hentEndpointUrl() = endpointUrl
+    fun hentEndpointUrl() = debugFullUrl
     fun hentHttpStatus() = httpStatus
     fun hentResponse() = response
     fun hentResponseSomListe() = ObjectMapper().readValue(response, List::class.java) as List<Map<String, Any>>
     fun hentResponseSomMap() = ObjectMapper().readValue(response, Map::class.java) as Map<String, Any>
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
-        this.endpointUrl = rest.baseUrl + endpointUrl
+        debugFullUrl = rest.baseUrl + endpointUrl
         val header = httpHeadersWithCorrelationId()
 
-        writeToCucumberScenario("GET ${this.endpointUrl}")
+        writeToCucumberScenario("GET ${this.debugFullUrl}")
 
         val stringEntity: ResponseEntity<String> = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
@@ -46,19 +46,20 @@ open class RestTjeneste (
         response = stringEntity.body
         httpStatus = stringEntity.statusCode
 
-        writeToCucumberScenario("$httpStatus\n$response")
+        writeToCucumberScenario("$httpStatus")
+        writeToCucumberScenario("$response")
 
         return stringEntity
     }
 
-    private fun httpHeadersWithCorrelationId(): HttpHeaders {
+    protected fun httpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
 
         writeOnceToCucumberScenario(
-                ScenarioMessage.CORELATION_ID,
-                "<p>\nLink til kibana for correlation-id: $correlationIdForScenario. Gjelder for '$scenarioName'\n</p>\n" +
-                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
+                ScenarioMessage.CORRELATION_ID,
+                "Link til kibana for correlation-id: $correlationIdForScenario",
+                "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))"
         )
 
         return headers
@@ -72,7 +73,7 @@ open class RestTjeneste (
     }
 
     fun put(endpointUrl: String, journalpostJson: String) {
-        this.endpointUrl = rest.baseUrl + endpointUrl
+        this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = httpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
@@ -82,9 +83,22 @@ open class RestTjeneste (
             println(jsonEntity)
             httpStatus = rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java).statusCode
         } catch (e: HttpStatusCodeException) {
-            System.err.println("OPPDATERING FEILET: ${this.endpointUrl}: $e")
+            System.err.println("OPPDATERING FEILET: ${this.debugFullUrl}: $e")
             throw e
         }
+    }
+
+    fun post(endpointUrl: String, avvikshendelse: HttpEntity<String>) {
+        debugFullUrl = rest.baseUrl + endpointUrl
+
+        val responseEntity: ResponseEntity<String> = try {
+            rest.template.postForEntity(endpointUrl, avvikshendelse, String::class.java)
+        } catch (e: HttpStatusCodeException) {
+            ResponseEntity(e.statusCode)
+        }
+
+        httpStatus = responseEntity.statusCode
+
     }
 
     fun hentManglendeProperties(objects: List<*>, properties: List<String>): List<String> {
