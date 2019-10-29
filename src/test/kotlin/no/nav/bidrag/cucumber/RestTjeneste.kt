@@ -46,7 +46,8 @@ open class RestTjeneste(
         response = stringEntity.body
         httpStatus = stringEntity.statusCode
 
-        writeToCucumberScenario("$httpStatus$ADD_LINEFEED$response")
+        writeToCucumberScenario("$httpStatus")
+        writeToCucumberScenario("$response")
 
         return stringEntity
     }
@@ -57,8 +58,8 @@ open class RestTjeneste(
 
         writeOnceToCucumberScenario(
                 ScenarioMessage.CORRELATION_ID,
-                "Link til kibana for correlation-id: $correlationIdForScenario. Gjelder for scenario: '$scenarioName'$ADD_LINEFEED$ADD_LINEFEED" +
-                        "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))\n"
+                "Link til kibana for correlation-id: $correlationIdForScenario",
+                "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))"
         )
 
         return headers
