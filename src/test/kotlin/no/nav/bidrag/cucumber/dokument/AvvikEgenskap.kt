@@ -91,4 +91,9 @@ class AvvikEgenskap {
 
         assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
+
+    @Og("avvikstypen har beskrivelse {string}")
+    fun avvikstypen_har_beskrivelse(beskrivelse: String) {
+        avvikData.beskrivelse = beskrivelse
+    }
 }
