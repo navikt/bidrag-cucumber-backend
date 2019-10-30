@@ -36,11 +36,10 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
       | journalfortAv |
       | innhold       |
 
-#  Scenario: Sjekk at sak uten tall gir HttpStatus 400 - Bad Request
-#  When jeg henter journalposter for sak "XYZ" med fagområde "BID"
-#  Then statuskoden skal være '400'
-#
-#
+  Scenario: Sjekk at sak uten tall gir HttpStatus 400 - Bad Request
+    Gitt jeg henter journalpost for sak "XYZ" som har id "BID" med bidragDokument
+    Så skal http status for testen være '400'
+
 #  Scenario: Sjekk at journalpost kan oppdateres - James Bond
 #  When jeg endrer journalpost for sak '0000004' med id 'BID-30040789' til:
 #  """
