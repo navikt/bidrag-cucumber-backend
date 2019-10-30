@@ -60,28 +60,28 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Så skal http status for testen være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
     Og responsen skal inneholde 'avsenderNavn' = 'Bond, James'
-#
-#  Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
-#  When jeg endrer journalpost for sak '0000004' med id 'BID-30040789' til:
-#  """
-#            {
-#            "journalpostId": 30040789,
-#            "saksnummer": {
-#            "erTilknyttetNySak": false,
-#            "saksnummer": "0000004",
-#            "saksnummerSomSkalErstattes":
-#            "0000004"
-#            },
-#            "gjelder": "***REMOVED***",
-#            "avsenderNavn": "Trygdekontoret",
-#            "beskrivelse": "Søknad, Bidrag",
-#            "journaldato": "2006-05-09"
-#            }
-#            """
-#  Then statuskoden skal være '202'
-#  And jeg henter journalpost for sak '0000004' med id 'BID-30040789'
-#  And objektet skal ha 'avsenderNavn' = 'Trygdekontoret'
-#
+
+  Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
+    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+            """
+            {
+            "journalpostId": 30040789,
+            "saksnummer": {
+            "erTilknyttetNySak": false,
+            "saksnummer": "0000004",
+            "saksnummerSomSkalErstattes":
+            "0000004"
+            },
+            "gjelder": "***REMOVED***",
+            "avsenderNavn": "Trygdekontoret",
+            "beskrivelse": "Søknad, Bidrag",
+            "journaldato": "2006-05-09"
+            }
+            """
+    Så skal http status for testen være '202'
+    Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
+    Og responsen skal inneholde 'avsenderNavn' = 'Trygdekontoret'
+
 #  Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
 #  When jeg endrer journalpost for sak '0000004' med id 'BID-30040789' til:
 #  """
