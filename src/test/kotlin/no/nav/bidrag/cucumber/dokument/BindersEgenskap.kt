@@ -1,9 +1,12 @@
 package no.nav.bidrag.cucumber.dokument
 
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import no.nav.bidrag.cucumber.Environment
 import no.nav.bidrag.cucumber.Fasit
 import org.assertj.core.api.Assertions.assertThat
@@ -13,6 +16,11 @@ class BindersEgenskap {
 
     companion object {
         lateinit var restTjeneste: RestTjenesteDokument
+    }
+
+    @Before
+    fun `adminstrer scenario`(scenario: Scenario) {
+        BidragCucumberScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten bidragDokument")
