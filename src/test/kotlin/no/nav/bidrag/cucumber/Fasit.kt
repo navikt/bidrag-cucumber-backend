@@ -1,7 +1,6 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.bidrag.commons.web.CorrelationIdFilter
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.HttpClients
@@ -35,6 +34,11 @@ open class Fasit {
 
             return FasitJson(fasitJson, false)
         }
+
+        internal fun hentFasitRessurs(vararg queries: String): FasitRessurs {
+            val resourceUrl = buildUriString(URL_FASIT, *queries)
+            return Fasit().hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
+        }
     }
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
@@ -49,7 +53,6 @@ open class Fasit {
         val httpHeaderRestTemplate = Environment()
                 .setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fasitRessurs.url())
 
-        httpHeaderRestTemplate.addHeaderGenerator(CorrelationIdFilter.CORRELATION_ID_HEADER) { Environment.createCorrelationIdValue() }
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
         return RestTemplateMedBaseUrl(httpHeaderRestTemplate, fasitRessurs.url())
