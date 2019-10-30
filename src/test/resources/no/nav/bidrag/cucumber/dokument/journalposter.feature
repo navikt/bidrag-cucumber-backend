@@ -13,7 +13,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
   Scenario: Sjekk operativt health endpoint
     Når jeg kaller helsetjenesten
     Så skal http status for testen være '200'
-    Og helsestatus skal inneholde 'status' = 'UP'
+    Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får en sakjournal for en sak
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID" ned bidragDokument
@@ -40,26 +40,26 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Gitt jeg henter journalpost for sak "XYZ" som har id "BID" med bidragDokument
     Så skal http status for testen være '400'
 
-#  Scenario: Sjekk at journalpost kan oppdateres - James Bond
-#  When jeg endrer journalpost for sak '0000004' med id 'BID-30040789' til:
-#  """
-#            {
-#            "journalpostId": 30040789,
-#            "saksnummer": {
-#            "erTilknyttetNySak": false,
-#            "saksnummer": "0000004",
-#            "saksnummerSomSkalErstattes":
-#            "0000004"
-#            },
-#            "gjelder": "29118044353",
-#            "avsenderNavn": "Bond, James",
-#            "beskrivelse": "Søknad, Bidrag",
-#            "journaldato": "2006-05-09"
-#            }
-#            """
-#  Then statuskoden skal være '202'
-#  And jeg henter journalpost for sak '0000004' med id 'BID-30040789'
-#  And objektet skal ha 'avsenderNavn' = 'Bond, James'
+  Scenario: Sjekk at journalpost kan oppdateres - James Bond
+    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+            """
+            {
+            "journalpostId": 30040789,
+            "saksnummer": {
+            "erTilknyttetNySak": false,
+            "saksnummer": "0000004",
+            "saksnummerSomSkalErstattes":
+            "0000004"
+            },
+            "gjelder": "29118044353",
+            "avsenderNavn": "Bond, James",
+            "beskrivelse": "Søknad, Bidrag",
+            "journaldato": "2006-05-09"
+            }
+            """
+    Så skal http status for testen være '202'
+    Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
+    Og responsen skal inneholde 'avsenderNavn' = 'Bond, James'
 #
 #  Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
 #  When jeg endrer journalpost for sak '0000004' med id 'BID-30040789' til:
