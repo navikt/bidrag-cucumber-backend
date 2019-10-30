@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus
 
 class JournalposterEgenskap {
 
-    companion object{
+    companion object {
         lateinit var restTjeneste: RestTjenesteDokument
     }
 
@@ -24,7 +24,7 @@ class JournalposterEgenskap {
 
     @Gitt("resttjenesten bidragDokument til testing av journalposter")
     fun `resttjenesten bidragDokument`() {
-       restTjeneste = RestTjenesteDokument()
+        restTjeneste = RestTjenesteDokument()
     }
 
     @Når("jeg kaller helsetjenesten")
@@ -46,8 +46,8 @@ class JournalposterEgenskap {
         assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
     }
 
-    @Gitt("jeg henter journalposter for sak {string} med fagområde {string} i bidrag-dokument")
-    fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
+    @Gitt("jeg henter journalposter for sak {string} som har fagområde {string} ned bidragDokument")
+    fun `jeg henter journalposter for sak som har fagomrade`(saksnummer: String, fagomrade: String) {
         restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
 
@@ -64,6 +64,26 @@ class JournalposterEgenskap {
         responseObject.forEach { element ->
             properties.forEach { verifyer.assertThat(element).`as`("missing $it in jp: ${element["journalpostId"]})").containsKey(it) }
         }
+
+        verifyer.assertAll()
+    }
+
+    @Gitt("jeg henter journalpost for sak {string} som har id {string} med bidragDokument")
+    fun `jeg henter journalpost for sak som har id`(saksnummer: String, journalpostId: String) {
+        restTjeneste.exchangeGet("/sak/$saksnummer/journal/$journalpostId")
+    }
+
+    @Og("så skal responsen være et objekt")
+    fun `skal responsen vaere et objekt`() {
+        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("{").isNotEqualTo("{}")
+    }
+
+    @Og("følgende properties skal ligge i responsen:")
+    fun `folgende properties skal ligge i responsen`(properties: List<String>) {
+        val verifyer = SoftAssertions()
+        val responseObject = restTjeneste.hentResponseSomMap()
+
+        properties.forEach { verifyer.assertThat(responseObject).`as`("missing $it in jp: ${responseObject["journalpostId"]})").containsKey(it) }
 
         verifyer.assertAll()
     }

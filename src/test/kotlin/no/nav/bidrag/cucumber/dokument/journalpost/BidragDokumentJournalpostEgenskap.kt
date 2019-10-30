@@ -25,8 +25,8 @@ class BidragDokumentJournalpostEgenskap {
     }
 
     @Gitt("jeg henter journalpost for sak {string} med id {string}")
-    fun `jeg henter journalpost for sak med id`(saksnummer: String, onlineJournalpostId: String) {
-        restTjenesteJournalpost.exchangeGet("/sak/$saksnummer/journal/$onlineJournalpostId")
+    fun `jeg henter journalpost for sak med id`(saksnummer: String, journalpostId: String) {
+        restTjenesteJournalpost.exchangeGet("/sak/$saksnummer/journal/$journalpostId")
     }
 
     @Gitt("jeg henter journalposter for sak {string} med fagområde {string}")
