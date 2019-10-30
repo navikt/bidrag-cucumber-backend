@@ -8,6 +8,7 @@ import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
 class JournalposterEgenskap {
@@ -43,5 +44,27 @@ class JournalposterEgenskap {
         val responseObject = restTjeneste.hentResponseSomMap()
 
         assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
+    }
+
+    @Gitt("jeg henter journalposter for sak {string} med fagområde {string} i bidrag-dokument")
+    fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
+        restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+    }
+
+    @Og("så skal responsen være en liste")
+    fun `skal responsen vaere en liste`() {
+        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
+    }
+
+    @Og("hvert element i listen skal ha følgende properties satt:")
+    fun `hvert element i listen skal ha folgende properties satt`(properties: List<String>) {
+        val verifyer = SoftAssertions()
+        val responseObject = restTjeneste.hentResponseSomListe()
+
+        responseObject.forEach { element ->
+            properties.forEach { verifyer.assertThat(element).`as`("missing $it in jp: ${element["journalpostId"]})").containsKey(it) }
+        }
+
+        verifyer.assertAll()
     }
 }
