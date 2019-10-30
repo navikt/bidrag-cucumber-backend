@@ -39,8 +39,8 @@ class JournalposterEgenskap {
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
-    @Og("helsestatus skal inneholde {string} = {string}")
-    fun `helsestatus skal inneholde`(key: String, value: String) {
+    @Og("responsen skal inneholde {string} = {string}")
+    fun `responsen skal inneholde`(key: String, value: String) {
         val responseObject = restTjeneste.hentResponseSomMap()
 
         assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
@@ -86,5 +86,10 @@ class JournalposterEgenskap {
         properties.forEach { verifyer.assertThat(responseObject).`as`("missing $it in jp: ${responseObject["journalpostId"]})").containsKey(it) }
 
         verifyer.assertAll()
+    }
+
+    @Gitt("jeg endrer journalpost for sak {string} som har id {string} for bidragDokument:")
+    fun `jeg endrer journalpost for sak som har id`(saksnummer: String, journalpostId: String, json: String) {
+            restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", json)
     }
 }

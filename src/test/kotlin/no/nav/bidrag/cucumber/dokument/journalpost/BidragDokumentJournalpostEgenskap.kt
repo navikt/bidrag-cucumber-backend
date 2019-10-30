@@ -10,9 +10,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
-private lateinit var restTjenesteJournalpost: RestTjenesteJournalpost
-
 class BidragDokumentJournalpostEgenskap {
+
+    companion object {
+        private lateinit var restTjenesteJournalpost: RestTjenesteJournalpost
+    }
 
     @Before
     fun `sett cucumber scenario`(scenario: Scenario) {
