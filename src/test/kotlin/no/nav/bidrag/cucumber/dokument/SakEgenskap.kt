@@ -42,7 +42,6 @@ class SakEgenskap {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Så("hver journal i listen skal ha {string} = {string}")
     fun `hvert journal i listen skal ha`(key: String, value: String) {
         val verifyer = SoftAssertions()
@@ -50,6 +49,20 @@ class SakEgenskap {
 
         responseObject.forEach {
             verifyer.assertThat(it.get(key)).`as`("id: ${it.get("journalpostId")}").isEqualTo(value)
+        }
+
+        verifyer.assertAll()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Så("hver journal i listen skal ha objektet {string} med følgende properties:")
+    fun `hvert journal i listen skal ha objekt med properties`(objektNavn: String, properties: List<String>) {
+        val verifyer = SoftAssertions()
+        val responseObject = restTjeneste.hentResponseSomListe()
+
+        responseObject.forEach { jp ->
+            val objekt = jp[objektNavn] as Map<String, *>
+            properties.forEach { verifyer.assertThat(objekt).`as`("id: ${jp.get("journalpostId")}").containsKey(it) }
         }
 
         verifyer.assertAll()
