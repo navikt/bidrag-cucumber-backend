@@ -7,6 +7,7 @@ import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
 class SakEgenskap {
@@ -39,4 +40,18 @@ class SakEgenskap {
     @Og("så skal journalresponsen være en liste")
     fun `skal journalresponsen vaere en liste`() {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
-    }}
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Så("hver journal i listen skal ha {string} = {string}")
+    fun `hvert journal i listen skal ha`(key: String, value: String) {
+        val verifyer = SoftAssertions()
+        val responseObject = restTjeneste.hentResponseSomListe()
+
+        responseObject.forEach {
+            verifyer.assertThat(it.get(key)).`as`("id: ${it.get("journalpostId")}").isEqualTo(value)
+        }
+
+        verifyer.assertAll()
+    }
+}
