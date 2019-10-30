@@ -16,13 +16,13 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og helsestatus skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får en sakjournal for en sak
-  When jeg henter journalposter for sak "0000003" med fagområde "BID"
-  Then statuskoden skal være '200'
-  And skal resultatet være en liste
-  And hvert element i listen skal ha følgende properties satt:
-  | fagomrade    |
-  | dokumenter   |
-  | dokumentDato |
+    Gitt jeg henter journalposter for sak "0000003" med fagområde "BID" i bidrag-dokument
+    Så skal http status for testen være '200'
+    Og så skal responsen være en liste
+    Og hvert element i listen skal ha følgende properties satt:
+      | fagomrade    |
+      | dokumenter   |
+      | dokumentDato |
 
   Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
   When jeg henter journalpost for sak "0000003" med id "BID-19650256"
