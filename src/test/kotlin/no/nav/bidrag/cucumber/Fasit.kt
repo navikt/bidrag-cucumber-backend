@@ -34,6 +34,11 @@ open class Fasit {
 
             return FasitJson(fasitJson, false)
         }
+
+        internal fun hentFasitRessurs(vararg queries: String): FasitRessurs {
+            val resourceUrl = buildUriString(URL_FASIT, *queries)
+            return Fasit().hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
+        }
     }
 
     internal fun hentRestTemplateFor(alias: String): RestTemplateMedBaseUrl {
