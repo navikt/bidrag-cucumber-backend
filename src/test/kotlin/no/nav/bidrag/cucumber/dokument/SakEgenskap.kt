@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber.dokument
 import io.cucumber.core.api.Scenario
 import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
+import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
@@ -26,7 +27,7 @@ class SakEgenskap {
         restTjeneste = RestTjenesteDokument()
     }
 
-    @Gitt("jeg henter journalposter for sak {string} som har fagområde {string} med bidragDokument")
+    @Når("jeg henter journalposter for sak {string} som har fagområde {string} med bidragDokument")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
         restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
