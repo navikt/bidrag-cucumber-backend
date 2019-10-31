@@ -4,10 +4,11 @@ import no.nav.bidrag.cucumber.X_ENHETSNUMMER_HEADER
 import org.springframework.http.HttpHeaders
 
 data class AvvikData(
-        val endepunktUrl: String,
         var avvikstype: String = "ikke satt",
         var enhetsnummer: String = "ikke satt",
-        var beskrivelse: String? = null
+        var beskrivelse: String? = null,
+        var saksnummer: String? = null,
+        private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()
 ) {
     fun hentAvvikshendelse(): String {
         return if (beskrivelse == null) "{\"avvikType\":\"$avvikstype\",\"enhetsnummer\":\"$enhetsnummer\"}"
@@ -18,4 +19,6 @@ data class AvvikData(
         httpHeaders[X_ENHETSNUMMER_HEADER] = enhetsnummer
         return httpHeaders
     }
+
+    fun lagEndepunktUrl()= "/sak/$saksnummer/journal/${journalpostIdForAvvikstype[avvikstype]}/avvik"
 }

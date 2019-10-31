@@ -6,11 +6,10 @@ import org.springframework.http.MediaType
 
 class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
-    fun post(avvikData: AvvikData) {
+    fun opprettAvvik(avvikData: AvvikData) {
         val headers = avvikData.leggTilEnhetsnummer(httpHeadersWithCorrelationId())
         headers.contentType = MediaType.APPLICATION_JSON_UTF8
 
-        val avvikshendelse = HttpEntity(avvikData.hentAvvikshendelse(), headers)
-        post(avvikData.endepunktUrl, avvikshendelse)
+        post(avvikData.lagEndepunktUrl(), HttpEntity(avvikData.hentAvvikshendelse(), headers))
     }
 }

@@ -88,12 +88,13 @@ open class RestTjeneste(
         }
     }
 
-    fun post(endpointUrl: String, avvikshendelse: HttpEntity<String>) {
+    fun post(endpointUrl: String, jsonEntity: HttpEntity<String>) {
         debugFullUrl = rest.baseUrl + endpointUrl
 
         val responseEntity: ResponseEntity<String> = try {
-            rest.template.postForEntity(endpointUrl, avvikshendelse, String::class.java)
+            rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
+            System.err.println("OPPRETTING FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
         }
 
