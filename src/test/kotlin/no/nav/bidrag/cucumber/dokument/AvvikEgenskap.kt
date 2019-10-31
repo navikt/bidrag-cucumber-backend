@@ -49,7 +49,7 @@ class AvvikEgenskap {
 
     @Når("jeg oppretter avvik")
     fun `jeg oppretter avvik`() {
-        restTjenesteAvvik.post(avvikData)
+        restTjenesteAvvik.opprettAvvik(avvikData)
     }
 
     @Så("skal http status for avvik være {string}")
@@ -62,7 +62,7 @@ class AvvikEgenskap {
 
     @Når("jeg ber om gyldige avviksvalg for journalpost")
     fun `jeg ber om gyldige avviksvalg for journalpost`() {
-        restTjenesteAvvik.exchangeGet(avvikData.endepunktUrl)
+        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrl())
     }
 
     @Og("listen med valg skal kun inneholde:")
