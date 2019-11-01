@@ -66,12 +66,7 @@ class AvvikEgenskap {
 
     @Og("listen med valg skal kun inneholde:")
     fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
-        val funnetAvvikstyper = ArrayList(
-                restTjenesteAvvik.hentResponse()!!
-                        .removePrefix("[")
-                        .removeSuffix("]")
-                        .split(",")
-        )
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
 
         assertAll(
                 { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
@@ -81,12 +76,7 @@ class AvvikEgenskap {
 
     @Og("listen med valg skal ikke inneholde {string}")
     fun `listen med valg skal ikke inneholde`(avvikstype: String) {
-        val funnetAvvikstyper = ArrayList(
-                restTjenesteAvvik.hentResponse()!!
-                        .removePrefix("[")
-                        .removeSuffix("]")
-                        .split(",")
-        )
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
