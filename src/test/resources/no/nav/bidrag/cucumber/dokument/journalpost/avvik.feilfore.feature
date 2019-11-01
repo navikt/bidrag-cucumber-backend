@@ -35,10 +35,11 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Når jeg oppretter avviket
     Så skal http status for avviksbehandlingen være '200'
 
-#    Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
-#        When jeg ber om gyldige avviksvalg for journalpost
-#        Then statuskoden skal være '200'
-#		And listen med valg skal ikke inneholde 'FEILFORE_SAK'
+  Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
+    Når jeg oppretter avviket
+    Og jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Så skal http status for avviksbehandlingen være '200'
+#    Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'
 #
 #    Scenario: Sjekk at oppgave blir laget for bestill original
 #        When jeg søker etter oppgaver for journalpost
