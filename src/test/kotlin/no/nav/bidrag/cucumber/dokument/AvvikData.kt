@@ -5,12 +5,16 @@ import org.springframework.http.HttpHeaders
 
 data class AvvikData(
         var beskrivelse: String? = null,
+        private var journalpostId: String? = null,
         val saksnummer: String,
-        private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()
+        val clearJournalpostIdForAvvikstype: Boolean = false
 ) {
+    companion object {
+        private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()
+    }
+
     lateinit var avvikstype: String
     lateinit var enhetsnummer: String
-    lateinit var journalpostId: String
 
     constructor(saksnummer: String, journalpostId: String) : this(saksnummer = saksnummer) {
         this.journalpostId = journalpostId
