@@ -76,4 +76,14 @@ class AvvikEgenskap {
 
         assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
+
+    @Gitt("beskrivelsen {string}")
+    fun beskrivelsen(beskrivelse: String) {
+        avvikData.beskrivelse = beskrivelse
+    }
+
+    @Når("jeg oppretter avviket")
+    fun jeg_oppretter_avviket() {
+        restTjenesteAvvik.opprettAvvikForAvvikstype(avvikData)
+    }
 }

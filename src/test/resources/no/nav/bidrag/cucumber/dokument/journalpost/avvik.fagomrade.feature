@@ -30,12 +30,11 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'ENDRE_FAGOMRADE'
 
-#  Scenario: Sjekk at jeg kan endre fagområde til FAR
-#    Given avvikstype 'ENDRE_FAGOMRADE'
-#    And beskrivelse 'FAR'
-#    When jeg kaller avvik endpoint
-#    Then statuskoden skal være '200'
-#
+  Scenario: Sjekk at jeg kan endre fagområde til FAR
+    Gitt beskrivelsen 'FAR'
+    Når jeg oppretter avviket
+    Så skal http status for avviksbehandlingen være '200'
+
 #  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
 #    Given avvikstype 'ENDRE_FAGOMRADE'
 #    And beskrivelse 'FAR'
