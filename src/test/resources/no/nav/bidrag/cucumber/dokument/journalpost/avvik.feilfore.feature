@@ -26,22 +26,22 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
         }
         """
 
-#  Scenario: Sjekk avviksvalg for gitt journalpost
-#    When jeg ber om gyldige avviksvalg for journalpost
-#    Then statuskoden skal være '200'
-#    And listen med valg skal inneholde 'FEILFORE_SAK'
-##
-##    Scenario: Sjekk at man kan feilfore sak
-##        Given avvikstype 'FEILFORE_SAK'
-##        When jeg kaller avvik endpoint
-##        Then statuskoden skal være '200'
-##
-##    Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
-##        When jeg ber om gyldige avviksvalg for journalpost
-##        Then statuskoden skal være '200'
-##		And listen med valg skal ikke inneholde 'FEILFORE_SAK'
-##
-##    Scenario: Sjekk at oppgave blir laget for bestill original
-##        When jeg søker etter oppgaver for journalpost
-##        Then statuskoden skal være '200'
+  Scenario: Sjekk avviksvalg for gitt journalpost
+    Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Så skal http status for avviksbehandlingen være '200'
+    Og listen med avvikstyper skal inneholde 'FEILFORE_SAK'
+
+#    Scenario: Sjekk at man kan feilfore sak
+#        Given avvikstype 'FEILFORE_SAK'
+#        When jeg kaller avvik endpoint
+#        Then statuskoden skal være '200'
+#
+#    Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
+#        When jeg ber om gyldige avviksvalg for journalpost
+#        Then statuskoden skal være '200'
+#		And listen med valg skal ikke inneholde 'FEILFORE_SAK'
+#
+#    Scenario: Sjekk at oppgave blir laget for bestill original
+#        When jeg søker etter oppgaver for journalpost
+#        Then statuskoden skal være '200'
 #
