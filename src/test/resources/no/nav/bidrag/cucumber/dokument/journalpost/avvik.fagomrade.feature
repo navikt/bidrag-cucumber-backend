@@ -5,6 +5,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
   Bakgrunn: Opprett og cache journapost og sett felles params så vi slipper å gjenta for hvert scenario.
     Gitt resttjenesten bidragDokumentJournalpost for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'ENDRE_FAGOMRADE'
+    Og enhetsnummeret '4806' til avviksbehandlingen
     Og opprettet, samt cachet journalpost:
         """
         {
@@ -23,13 +24,12 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
         "saksnummer": "0000003"
         }
         """
-#    And enhetsnummer '4806'
-#
+
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
-#    And listen med valg skal inneholde 'ENDRE_FAGOMRADE'
-#
+    Og listen med avvikstyper skal inneholde 'ENDRE_FAGOMRADE'
+
 #  Scenario: Sjekk at jeg kan endre fagområde til FAR
 #    Given avvikstype 'ENDRE_FAGOMRADE'
 #    And beskrivelse 'FAR'

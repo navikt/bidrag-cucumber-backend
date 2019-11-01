@@ -1,21 +1,27 @@
 package no.nav.bidrag.cucumber.dokument.journalpost
 
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.dokument.AvvikData
 import no.nav.bidrag.cucumber.dokument.RestTjenesteAvvik
+import no.nav.bidrag.cucumber.dokument.RestTjenesteTestdata
 import org.assertj.core.api.Assertions.assertThat
-import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 
 class AvvikEgenskap {
     companion object Managed {
-        lateinit var avviksbehandling: String
-        private val opprettetJournalpostIdForAvvik: MutableMap<String, String> = HashMap()
+        private lateinit var avvikData: AvvikData
         private lateinit var restTjenesteAvvik: RestTjenesteAvvik
-        private lateinit var saksnummer: String
+    }
+
+    @Before
+    fun `use scenario`(scenario: Scenario) {
+        BidragCucumberScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten bidragDokumentJournalpost for avviksbehandling")
@@ -24,14 +30,14 @@ class AvvikEgenskap {
     }
 
     @Og("saksnummer {string} for avviksbehandling av {string}")
-    fun `saksnummer for avviksbehandling`(saksnummer: String, avviksbehandling: String) {
-        Managed.saksnummer = saksnummer
-        Managed.avviksbehandling = avviksbehandling
+    fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
+        avvikData = AvvikData(saksnummer = saksnummer)
+        avvikData.avvikstype = avvikstype
     }
 
     @Når("jeg ber om gyldige avviksvalg med bidragDokumentJournalpost")
     fun `jeg ber om gyldige avviksvalg med bidragDokumentJournalpost`() {
-        restTjenesteAvvik.exchangeGet("/sak/$saksnummer/journal/BID-${opprettetJournalpostIdForAvvik[avviksbehandling]}/avvik")
+        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
     }
 
     @Så("skal http status for avviksbehandlingen være {string}")
@@ -41,15 +47,33 @@ class AvvikEgenskap {
         assertThat(restTjenesteAvvik.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
+    @Gitt("enhetsnummeret {string} til avviksbehandlingen")
+    fun `enhetsnummeret til avviksbehandlingen`(enhetsnummer: String) {
+        avvikData.enhetsnummer = enhetsnummer
+    }
+
     @Og("opprettet, samt cachet journalpost:")
     fun `opprettet samt cachet journalpost`(jpJson: String) {
-        if (!opprettetJournalpostIdForAvvik.containsKey(avviksbehandling)) {
-            val restTjenesteTestdata = RestTjeneste("bidragDokumentTestdata")
-            restTjenesteTestdata.post("/journalpost", HttpEntity(jpJson))
+        if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
+            val restTjenesteTestdata = RestTjenesteTestdata()
+
+            restTjenesteTestdata.opprettJournalpost(jpJson)
             assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
 
             val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
-            opprettetJournalpostIdForAvvik[avviksbehandling] = opprettetJpMap["journalpostId"] as String
+            avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
         }
+    }
+
+    @Og("listen med avvikstyper skal inneholde {string}")
+    fun listen_med_avvikstyper_skal_inneholde(avvikstype: String) {
+        val funnetAvvikstyper = ArrayList(
+                restTjenesteAvvik.hentResponse()!!
+                        .removePrefix("[")
+                        .removeSuffix("]")
+                        .split(",")
+        )
+
+        assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 }

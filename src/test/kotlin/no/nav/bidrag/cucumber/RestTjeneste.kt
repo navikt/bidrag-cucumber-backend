@@ -98,6 +98,7 @@ open class RestTjeneste(
         }
 
         httpStatus = responseEntity.statusCode
+        response = responseEntity.body
 
     }
 
