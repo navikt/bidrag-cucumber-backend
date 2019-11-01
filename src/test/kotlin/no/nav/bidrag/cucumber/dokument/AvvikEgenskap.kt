@@ -31,15 +31,14 @@ class AvvikEgenskap {
         restTjenesteForManipuleringAvDatabase.put("/journalpost/$journalpostId", json)
     }
 
-    @Og("endepunkt url er {string}")
-    fun `endepunkt url er`(endepunktUrl: String) {
-        avvikData = AvvikData(endepunktUrl)
+    @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
+    fun `endepunkt url er`(saksnummer: String, journalpostId: String) {
+        avvikData = AvvikData(saksnummer = saksnummer, journalpostId = journalpostId)
     }
 
     @Og("enhetsnummer for avvik er {string}")
     fun `enhetsnummer for avvik er`(enhetsnummer: String) {
         avvikData.enhetsnummer = enhetsnummer
-
     }
 
     @Gitt("avvikstype {string}")
