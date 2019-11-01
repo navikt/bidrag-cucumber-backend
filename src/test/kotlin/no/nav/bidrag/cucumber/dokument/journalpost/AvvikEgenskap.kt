@@ -52,8 +52,8 @@ class AvvikEgenskap {
         avvikData.enhetsnummer = enhetsnummer
     }
 
-    @Og("opprettet, samt cachet journalpost:")
-    fun `opprettet samt cachet journalpost`(jpJson: String) {
+    @Og("opprett journalpost og ta vare på journalpostId:")
+    fun `opprett journalpost og ta vare pa journalpostId`(jpJson: String) {
         if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
             val restTjenesteTestdata = RestTjenesteTestdata()
 

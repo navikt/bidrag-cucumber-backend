@@ -2,11 +2,11 @@
 @bidrag-dokument-journalpost
 Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
 
-  Bakgrunn: Opprett og cache journapost og sett felles params så vi slipper å gjenta for hvert scenario.
+  Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
     Gitt resttjenesten bidragDokumentJournalpost for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'ENDRE_FAGOMRADE'
     Og enhetsnummeret '4806' til avviksbehandlingen
-    Og opprettet, samt cachet journalpost:
+    Og opprett journalpost og ta vare på journalpostId:
         """
         {
         "avsenderNavn": "Cucumber Test",
