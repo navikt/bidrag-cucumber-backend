@@ -33,7 +33,7 @@ open class RestTjeneste(
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         debugFullUrl = rest.baseUrl + endpointUrl
-        val header = httpHeadersWithCorrelationId()
+        val header = initHttpHeadersWithCorrelationId()
 
         writeToCucumberScenario("GET ${this.debugFullUrl}")
 
@@ -52,7 +52,7 @@ open class RestTjeneste(
         return stringEntity
     }
 
-    protected fun httpHeadersWithCorrelationId(): HttpHeaders {
+    protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
 
@@ -73,7 +73,7 @@ open class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.debugFullUrl = rest.baseUrl + endpointUrl
-        val headers = httpHeadersWithCorrelationId()
+        val headers = initHttpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)

@@ -7,9 +7,17 @@ import org.springframework.http.MediaType
 class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
     fun opprettAvvik(avvikData: AvvikData) {
-        val headers = avvikData.leggTilEnhetsnummer(httpHeadersWithCorrelationId())
+        post(avvikData.lagEndepunktUrl(), initEntityMedHeaders(avvikData))
+    }
+
+    fun opprettAvvikForAvvikstype(avvikData: AvvikData) {
+        post(avvikData.lagEndepunktUrlForAvvikstype(), initEntityMedHeaders(avvikData))
+    }
+
+    private fun initEntityMedHeaders(avvikData: AvvikData): HttpEntity<String> {
+        val headers = avvikData.leggTilEnhetsnummer(initHttpHeadersWithCorrelationId())
         headers.contentType = MediaType.APPLICATION_JSON_UTF8
 
-        post(avvikData.lagEndepunktUrl(), HttpEntity(avvikData.hentAvvikshendelse(), headers))
+        return HttpEntity(avvikData.hentAvvikshendelse(), headers)
     }
 }
