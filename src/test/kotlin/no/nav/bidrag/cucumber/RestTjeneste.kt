@@ -33,7 +33,7 @@ open class RestTjeneste(
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         debugFullUrl = rest.baseUrl + endpointUrl
-        val header = httpHeadersWithCorrelationId()
+        val header = initHttpHeadersWithCorrelationId()
 
         writeToCucumberScenario("GET ${this.debugFullUrl}")
 
@@ -52,12 +52,11 @@ open class RestTjeneste(
         return stringEntity
     }
 
-    protected fun httpHeadersWithCorrelationId(): HttpHeaders {
+    protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
 
-        writeOnceToCucumberScenario(
-                ScenarioMessage.CORRELATION_ID,
+        writeToCucumberScenario(
                 "Link til kibana for correlation-id: $correlationIdForScenario",
                 "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))"
         )
@@ -74,7 +73,7 @@ open class RestTjeneste(
 
     fun put(endpointUrl: String, journalpostJson: String) {
         this.debugFullUrl = rest.baseUrl + endpointUrl
-        val headers = httpHeadersWithCorrelationId()
+        val headers = initHttpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)
@@ -88,16 +87,18 @@ open class RestTjeneste(
         }
     }
 
-    fun post(endpointUrl: String, avvikshendelse: HttpEntity<String>) {
+    fun post(endpointUrl: String, jsonEntity: HttpEntity<String>) {
         debugFullUrl = rest.baseUrl + endpointUrl
 
         val responseEntity: ResponseEntity<String> = try {
-            rest.template.postForEntity(endpointUrl, avvikshendelse, String::class.java)
+            rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
+            System.err.println("OPPRETTING FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
         }
 
         httpStatus = responseEntity.statusCode
+        response = responseEntity.body
 
     }
 
