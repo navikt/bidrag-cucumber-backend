@@ -28,12 +28,12 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
         }
         """
 
-  Scenario: Sjekk avviksvalg for gitt journalpost
+  Scenario: Sjekk avviksvalg for gitt journalpost inneholder BESTILL_ORIGINAL
     Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
-  Scenario: Sjekk at kan bestille original
+  Scenario: Sjekk at man kan bestille original
     Når jeg oppretter avviket
     Så skal http status for avviksbehandlingen være '201'
 
