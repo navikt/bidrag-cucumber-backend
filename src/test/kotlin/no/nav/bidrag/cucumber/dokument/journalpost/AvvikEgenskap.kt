@@ -1,0 +1,89 @@
+package no.nav.bidrag.cucumber.dokument.journalpost
+
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
+import io.cucumber.java.no.Gitt
+import io.cucumber.java.no.Når
+import io.cucumber.java.no.Og
+import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.dokument.AvvikData
+import no.nav.bidrag.cucumber.dokument.RestTjenesteAvvik
+import no.nav.bidrag.cucumber.dokument.RestTjenesteTestdata
+import org.assertj.core.api.Assertions.assertThat
+import org.springframework.http.HttpStatus
+
+class AvvikEgenskap {
+    companion object Managed {
+        private lateinit var avvikData: AvvikData
+        private lateinit var restTjenesteAvvik: RestTjenesteAvvik
+    }
+
+    @Before
+    fun `use scenario`(scenario: Scenario) {
+        BidragCucumberScenarioManager.use(scenario)
+    }
+
+    @Gitt("resttjenesten bidragDokumentJournalpost for avviksbehandling")
+    fun `gitt resttjenesten bidragDokumenJournalpost`() {
+        restTjenesteAvvik = RestTjenesteAvvik("bidragDokumentJournalpost")
+    }
+
+    @Og("saksnummer {string} for avviksbehandling av {string}")
+    fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
+        avvikData = AvvikData(saksnummer = saksnummer)
+        avvikData.avvikstype = avvikstype
+    }
+
+    @Når("jeg ber om gyldige avviksvalg med bidragDokumentJournalpost")
+    fun `jeg ber om gyldige avviksvalg med bidragDokumentJournalpost`() {
+        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
+    }
+
+    @Så("skal http status for avviksbehandlingen være {string}")
+    fun `skal http status for avviksbehandlingen vaere`(kode: String) {
+        val httpStatus = HttpStatus.valueOf(kode.toInt())
+
+        assertThat(restTjenesteAvvik.hentHttpStatus()).isEqualTo(httpStatus)
+    }
+
+    @Gitt("enhetsnummeret {string} til avviksbehandlingen")
+    fun `enhetsnummeret til avviksbehandlingen`(enhetsnummer: String) {
+        avvikData.enhetsnummer = enhetsnummer
+    }
+
+    @Og("opprettet, samt cachet journalpost:")
+    fun `opprettet samt cachet journalpost`(jpJson: String) {
+        if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
+            val restTjenesteTestdata = RestTjenesteTestdata()
+
+            restTjenesteTestdata.opprettJournalpost(jpJson)
+            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
+
+            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
+            avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
+        }
+    }
+
+    @Og("listen med avvikstyper skal inneholde {string}")
+    fun listen_med_avvikstyper_skal_inneholde(avvikstype: String) {
+        val funnetAvvikstyper = ArrayList(
+                restTjenesteAvvik.hentResponse()!!
+                        .removePrefix("[")
+                        .removeSuffix("]")
+                        .split(",")
+        )
+
+        assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
+    }
+
+    @Gitt("beskrivelsen {string}")
+    fun beskrivelsen(beskrivelse: String) {
+        avvikData.beskrivelse = beskrivelse
+    }
+
+    @Når("jeg oppretter avviket")
+    fun jeg_oppretter_avviket() {
+        restTjenesteAvvik.opprettAvvikForAvvikstype(avvikData)
+    }
+}
