@@ -33,11 +33,10 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
-#  Scenario: Sjekk at kan bestille original
-#    Given avvikstype 'BESTILL_ORIGINAL'
-#    When jeg kaller avvik endpoint
-#    Then statuskoden skal være '201'
-#
+  Scenario: Sjekk at kan bestille original
+    Når jeg oppretter avviket
+    Så skal http status for avviksbehandlingen være '201'
+
 #  Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
 #    When jeg ber om gyldige avviksvalg for journalpost
 #    Then statuskoden skal være '200'
