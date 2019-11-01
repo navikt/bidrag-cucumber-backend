@@ -35,14 +35,12 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
     Når jeg oppretter avviket
     Så skal http status for avviksbehandlingen være '200'
 
-  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra BID til BID
-    Gitt beskrivelsen 'BID'
+  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
+    Gitt beskrivelsen 'FAR'
     Når jeg oppretter avviket
     Så skal http status for avviksbehandlingen være '400'
 
   Scenario: Sjekk at jeg kan endre fagområde tilbake til BID
-    Gitt beskrivelsen 'FAR'
-    Når jeg oppretter avviket
-    Og beskrivelsen 'BID'
+    Gitt beskrivelsen 'BID'
     Når jeg oppretter avviket
     Så skal http status for avviksbehandlingen være '200'
