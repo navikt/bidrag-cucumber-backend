@@ -20,4 +20,11 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
         return HttpEntity(avvikData.hentAvvikshendelse(), headers)
     }
+
+    fun hentResponseSomListeAvStrenger() = ArrayList(
+            (hentResponse() as String)
+                    .removePrefix("[")
+                    .removeSuffix("]")
+                    .split(",")
+    )
 }

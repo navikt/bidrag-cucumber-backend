@@ -66,15 +66,17 @@ class AvvikEgenskap {
     }
 
     @Og("listen med avvikstyper skal inneholde {string}")
-    fun listen_med_avvikstyper_skal_inneholde(avvikstype: String) {
-        val funnetAvvikstyper = ArrayList(
-                restTjenesteAvvik.hentResponse()!!
-                        .removePrefix("[")
-                        .removeSuffix("]")
-                        .split(",")
-        )
+    fun `listen med avvikstyper skal inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
+    }
+
+    @Og("listen med avvikstyper skal ikke inneholde {string}")
+    fun `listen med avvikstyper skal ikke inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+
+        assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
 
     @Gitt("beskrivelsen {string}")
