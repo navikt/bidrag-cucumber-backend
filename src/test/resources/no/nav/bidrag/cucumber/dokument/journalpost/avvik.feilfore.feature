@@ -31,11 +31,10 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'FEILFORE_SAK'
 
-#    Scenario: Sjekk at man kan feilfore sak
-#        Given avvikstype 'FEILFORE_SAK'
-#        When jeg kaller avvik endpoint
-#        Then statuskoden skal være '200'
-#
+  Scenario: Sjekk at man kan feilfore sak
+    Når jeg oppretter avviket
+    Så skal http status for avviksbehandlingen være '200'
+
 #    Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
 #        When jeg ber om gyldige avviksvalg for journalpost
 #        Then statuskoden skal være '200'
