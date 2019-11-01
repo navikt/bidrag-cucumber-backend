@@ -33,10 +33,6 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'INNG_TIL_UTG_DOKUMENT'
 
-#  Scenario: Sjekk at jeg kan bestille splitting
-#    Given avvikstype 'INNG_TIL_UTG_DOKUMENT'
-#    When jeg kaller avvik endpoint
-#    Then statuskoden skal være '200'
-#
-#
-#
+  Scenario: Sjekk at jeg kan opprette avvik inngående til utgående
+    Når jeg oppretter avviket
+    Så skal http status for avviksbehandlingen være '200'
