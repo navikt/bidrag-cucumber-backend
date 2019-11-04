@@ -85,7 +85,7 @@ class AvvikEgenskap {
         avvikData.beskrivelse = beskrivelse
     }
 
-    @Når("jeg oppretter avviket")
+    @Når("jeg oppretter avvik med bidragDokumentJournalpost")
     fun jeg_oppretter_avviket() {
         restTjenesteAvvik.opprettAvvikForAvvikstype(avvikData)
     }

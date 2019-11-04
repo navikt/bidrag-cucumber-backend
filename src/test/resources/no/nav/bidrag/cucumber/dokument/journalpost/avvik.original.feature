@@ -34,7 +34,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
     Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at man kan bestille original
-    Når jeg oppretter avviket
+    Når jeg oppretter avvik med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '201'
 
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
