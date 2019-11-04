@@ -33,7 +33,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Og listen med avvikstyper skal inneholde 'BESTILL_RESKANNING'
 
   Scenario: Sjekk at reskanning kan bestilles
-    Når jeg oppretter avviket
+    Når jeg oppretter avvik med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '201'
 
 #  Scenario: Sjekk at oppgave blir laget for reskanning

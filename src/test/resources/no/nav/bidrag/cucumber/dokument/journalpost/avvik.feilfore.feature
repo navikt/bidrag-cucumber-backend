@@ -32,11 +32,11 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Og listen med avvikstyper skal inneholde 'FEILFORE_SAK'
 
   Scenario: Sjekk at man kan feilfore sak
-    Når jeg oppretter avviket
+    Når jeg oppretter avvik med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
 
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
-    Når jeg oppretter avviket
+    Når jeg oppretter avvik med bidragDokumentJournalpost
     Og jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
 #todo fix:    Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'

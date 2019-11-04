@@ -31,46 +31,46 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
 
   Scenario: Sjekk at man kan bestille original
     Gitt avvikstype 'BESTILL_ORIGINAL'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '201'
 
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
     Gitt avvikstype 'BESTILL_ORIGINAL'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Og jeg ber om gyldige avviksvalg for journalpost
     Så skal http status for avvik være '200'
     Og listen med valg skal ikke inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at man kan bestille reskannning
     Gitt avvikstype 'BESTILL_RESKANNING'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '201'
 
   Scenario: Sjekk at man ikke kan bestille ukjent avvik
     Gitt avvikstype 'BLAH_BLAH_LAH_123'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '400'
 
   Scenario: Sjekk at man kan bestille splitting
     Gitt avvikstype 'BESTILL_SPLITTING'
     Og avvikstypen har beskrivelse 'Splitt på midten'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '201'
 
   Scenario: Sjekk at man kan endre fagområde til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og avvikstypen har beskrivelse 'FAR'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '200'
 
   Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og avvikstypen har beskrivelse 'FAR'
-    Når jeg oppretter avvik
-    Og jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
+    Og jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '400'
 
   Scenario: Sjekk at man kan feilføre sak
     Gitt avvikstype 'FEILFORE_SAK'
-    Når jeg oppretter avvik
+    Når jeg oppretter avvik med bidragDokument
     Så skal http status for avvik være '200'

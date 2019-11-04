@@ -34,5 +34,5 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
     Og listen med avvikstyper skal inneholde 'INNG_TIL_UTG_DOKUMENT'
 
   Scenario: Sjekk at jeg kan opprette avvik inngående til utgående
-    Når jeg oppretter avviket
+    Når jeg oppretter avvik med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
