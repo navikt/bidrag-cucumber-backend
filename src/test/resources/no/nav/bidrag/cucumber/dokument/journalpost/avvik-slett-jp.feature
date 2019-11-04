@@ -38,7 +38,7 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal ikke inneholde 'SLETT_JOURNALPOST'
 
-#  Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
-#  When jeg henter journalposter for sak '0000003' med fagområde 'BID'
-#  Then statuskoden skal være '200'
-#  And listen med journalposter skal ikke inneholde journalpost.'journalpostId'
+  Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
+    Når jeg henter journalposter for sak '0000003' med fagområde 'BID' for å sjekke avviksbehandling
+    Så skal http status for avviksbehandlingen være '200'
+    Og listen med journalposter skal ikke inneholde id for journalposten
