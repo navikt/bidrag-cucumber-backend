@@ -17,6 +17,7 @@ class AvvikEgenskap {
     companion object Managed {
         private lateinit var avvikData: AvvikData
         private lateinit var restTjenesteAvvik: RestTjenesteAvvik
+        private lateinit var restTjenesteOppgaver: OppgaverRestTjeneste
     }
 
     @Before
@@ -87,5 +88,25 @@ class AvvikEgenskap {
     @Når("jeg oppretter avviket")
     fun jeg_oppretter_avviket() {
         restTjenesteAvvik.opprettAvvikForAvvikstype(avvikData)
+    }
+
+    @Gitt("jeg søker etter oppgaver for journalpost")
+    fun `jeg soker etter oppgaver for journalpost`() {
+        restTjenesteOppgaver = OppgaverRestTjeneste()
+        restTjenesteOppgaver.finnOppgaverFor(avvikData)
+    }
+
+    @Så("skal http status for oppgavesøket være {string}")
+    fun `skal http status for oppgavesoket_vaere`(kode: String) {
+        val httpStatus = HttpStatus.valueOf(kode.toInt())
+
+        assertThat(restTjenesteOppgaver.hentHttpStatus()).isEqualTo(httpStatus)
+    }
+
+    @Og("søkeresultatet skal inneholde en oppgave")
+    fun `sokeresultatet skal inneholde en oppgave`() {
+        val response = restTjenesteOppgaver.hentResponse()
+
+        assertThat(response).contains("\"antallTreffTotalt\":1")
     }
 }
