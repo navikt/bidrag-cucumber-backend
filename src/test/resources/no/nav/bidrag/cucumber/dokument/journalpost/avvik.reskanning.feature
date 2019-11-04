@@ -32,11 +32,10 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_RESKANNING'
 
-#  Scenario: Sjekk at reskanning kan bestilles
-#    Given avvikstype 'BESTILL_RESKANNING'
-#    When jeg kaller avvik endpoint
-#    And statuskoden skal være '201'
-#
+  Scenario: Sjekk at reskanning kan bestilles
+    Når jeg oppretter avviket
+    Så skal http status for avviksbehandlingen være '201'
+
 #  Scenario: Sjekk at oppgave blir laget for reskanning
 #    When jeg søker etter oppgaver for journalpost
 #    Then statuskoden skal være '200'
