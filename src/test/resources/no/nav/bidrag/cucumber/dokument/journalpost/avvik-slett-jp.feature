@@ -29,10 +29,10 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'SLETT_JOURNALPOST'
 
-#  Scenario: Sjekk at jeg kan slette journalpost
-#    Når jeg oppretter avvik med bidragDokumentJournalpost
-#    Så skal http status for avviksbehandlingen være '200'
-#
+  Scenario: Sjekk at jeg kan slette journalpost
+    Når jeg oppretter avvik med bidragDokumentJournalpost
+    Så skal http status for avviksbehandlingen være '200'
+
 #  Scenario: Sjekk avviksvalg for gitt journalpost
 #  When jeg ber om gyldige avviksvalg for journalpost
 #  Then statuskoden skal være '200'
