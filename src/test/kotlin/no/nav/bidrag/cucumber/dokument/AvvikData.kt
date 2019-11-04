@@ -30,6 +30,7 @@ data class AvvikData(
         return httpHeaders
     }
 
+    fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(journalpostIdForAvvikstype[avvikstype]!!))
     fun harIkkeJournalpostIdForAvvikstype() = !journalpostIdForAvvikstype.containsKey(avvikstype)
     fun lagEndepunktUrl() = "/sak/$saksnummer/journal/$journalpostId/avvik"
     fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${journalpostIdForAvvikstype[avvikstype]}/avvik"
@@ -38,4 +39,5 @@ data class AvvikData(
     fun leggTilJournalpostIdForAvvikstype(journalpostId: String) {
         journalpostIdForAvvikstype[avvikstype] = journalpostId
     }
+
 }
