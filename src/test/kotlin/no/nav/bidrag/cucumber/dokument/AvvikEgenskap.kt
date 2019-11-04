@@ -46,8 +46,8 @@ class AvvikEgenskap {
         avvikData.avvikstype = avvikstype
     }
 
-    @Når("jeg oppretter avvik")
-    fun `jeg oppretter avvik`() {
+    @Når("jeg oppretter avvik med bidragDokument")
+    fun `jeg oppretter avvik med bidragDokument`() {
         restTjenesteAvvik.opprettAvvik(avvikData)
     }
 
