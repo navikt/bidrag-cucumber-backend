@@ -33,12 +33,11 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_SPLITTING'
 
-#  Scenario: Sjekk at jeg kan bestille splitting
-#    Given avvikstype 'BESTILL_SPLITTING'
-#    And beskrivelse 'Splitt på midten'
-#    When jeg kaller avvik endpoint
-#    Then statuskoden skal være '201'
-#
+  Scenario: Sjekk at jeg kan bestille splitting
+    Gitt beskrivelsen 'splitt midt på'
+    Når jeg oppretter avvik med bidragDokumentJournalpost
+    Så skal http status for avviksbehandlingen være '201'
+
 #  Scenario: Sjekk at oppgave blir laget for splitting
 #    When jeg søker etter oppgaver for journalpost
 #    Then statuskoden skal være '200'
