@@ -41,8 +41,8 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
     Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal ikke inneholde 'BESTILL_ORIGINAL'
-#
-#  Scenario: Sjekk at oppgave blir laget for bestill original
-#    When jeg søker etter oppgaver for journalpost
-#    Then statuskoden skal være '200'
-#
+
+  Scenario: Sjekk at oppgave blir laget for bestill original
+    Gitt jeg søker etter oppgaver for journalpost
+    Så skal http status for oppgavesøket være '200'
+# todo fix:    Og søkeresultatet skal inneholde en oppgave
