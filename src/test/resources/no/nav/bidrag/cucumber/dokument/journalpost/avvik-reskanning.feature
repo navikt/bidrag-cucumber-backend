@@ -36,9 +36,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Når jeg oppretter avvik med bidragDokumentJournalpost
     Så skal http status for avviksbehandlingen være '201'
 
-
   Scenario: Sjekk at oppgave blir laget for reskanning
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
-    Og søkeresultatet skal inneholde en oppgave
 # todo fix:    Og søkeresultatet skal inneholde en oppgave
