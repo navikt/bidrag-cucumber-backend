@@ -1,7 +1,7 @@
 # bidrag-cucumber-backend
 Integrasjonstester for backend mikrotjenester i bidrag
 
-Kotlin gjør det enkelt å skape lett leselig tester som bruker `Gherkin`-filer (*.feature) med norsk tekst som ligger i `src/test/resources/<pakkenavn>`
+Kotlin gjør det enkelt å skape lett leselig tester og dette er satt opp med `Gherkin`-filer (*.feature) som har norsk tekst og ligger i `src/test/resources/<pakkenavn>`
 
 BDD (Behaviour driven development) beskrives i `Gherkin`-filene som kjører automatiserte tester på bakgrunnen av funksjonaliteten som skal støttes.
 Eks: på en `gherkin` fil på norsk 
@@ -13,12 +13,12 @@ Eks: på en `gherkin` fil på norsk
 04:   <detaljert beskrivelse av egenskapen>
 05: 
 06:   Scenario: fant ikke person
-07:    Gitt liste med "ansatte"
+07:    Gitt liste over "tidligere ansatte"
 09:    Når man forsøker å finne "Ola"
 09:    Så skal svaret være "Ola" er ikke ansatt her
 10:
 11:  Scenario: fant person
-12:    Gitt liste med "ansatte"
+12:    Gitt liste over "ansatte"
 13:    Når man forsøker å finne "Per"
 14:    Så skal svaret være "Per" er i "kantina"
 ```
@@ -66,6 +66,8 @@ Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgen
 mvn test -Dcucumber.options='--tags "@<valgt-applikasjon>"' 
 ``` 
 
+### Test rapportering
+
 Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:
 
 ```
@@ -73,3 +75,5 @@ mvn cluecumber-report:reporting
 ```
 
 Man kan også gjøre både testing og rapportgenerering i et steg med `mvn install`
+
+Siden testing blir gjennomført av jenkins, blir cucumber sin egen jenkins-plugin brukt.
