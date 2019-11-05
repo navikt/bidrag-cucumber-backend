@@ -45,4 +45,4 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
   Scenario: Sjekk at oppgave blir laget for bestill original
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
-# todo fix:    Og søkeresultatet skal inneholde en oppgave
+    Og søkeresultatet skal inneholde en oppgave

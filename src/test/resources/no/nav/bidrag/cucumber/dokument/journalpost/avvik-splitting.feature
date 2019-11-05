@@ -41,4 +41,4 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
   Scenario: Sjekk at oppgave blir laget for splitting
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
-# todo fix:    Og søkeresultatet skal inneholde en oppgave
+    Og søkeresultatet skal inneholde en oppgave
