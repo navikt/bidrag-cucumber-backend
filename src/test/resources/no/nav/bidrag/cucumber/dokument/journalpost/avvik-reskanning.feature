@@ -39,4 +39,4 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
   Scenario: Sjekk at oppgave blir laget for reskanning
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
-# todo fix:    Og søkeresultatet skal inneholde en oppgave
+    Og søkeresultatet skal inneholde en oppgave
