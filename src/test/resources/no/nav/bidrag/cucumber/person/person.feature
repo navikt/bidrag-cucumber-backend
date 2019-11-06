@@ -19,6 +19,7 @@ Egenskap: bidrag-person
     Når jeg henter informasjon for ident '1000065629588'
     Så skal http status fra bidragPerson være '200'
 
-#  Scenario: Sjekk at ugyldig person-id returnerer NO CONTENT (204) respons
-#    When jeg henter informasjon for ident '27067299999'
-#    Then statuskoden skal være '204'
+  Scenario: Sjekk at ugyldig person-id returnerer NO CONTENT (204) respons
+    Gitt resttjenesten bidragPerson
+    Når jeg henter informasjon for ident '27067299999'
+    Så skal http status fra bidragPerson være '204'
