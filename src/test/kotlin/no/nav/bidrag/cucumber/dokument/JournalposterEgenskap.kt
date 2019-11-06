@@ -27,11 +27,6 @@ class JournalposterEgenskap {
         restTjeneste = RestTjenesteDokument()
     }
 
-    @Når("jeg kaller helsetjenesten")
-    fun `jeg kaller helsetjenesten`() {
-        restTjeneste.exchangeGet("/actuator/health")
-    }
-
     @Så("skal http status for testen være {string}")
     fun `skal http status vaere`(enHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())

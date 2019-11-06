@@ -11,9 +11,10 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Gitt resttjenesten bidragDokument til testing av journalposter
 
   Scenario: Sjekk operativt health endpoint
+    Gitt resttjenesten 'bidragDokumentJournalpost' for sjekk av helsedata
     Når jeg kaller helsetjenesten
-    Så skal http status for testen være '200'
-    Og responsen skal inneholde 'status' = 'UP'
+    Så skal http status for helsesjekken være '200'
+    Og helseresponsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får en sakjournal for en sak
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID" ned bidragDokument

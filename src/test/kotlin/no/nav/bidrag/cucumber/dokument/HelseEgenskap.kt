@@ -18,8 +18,8 @@ class HelseEgenskap {
         restTjeneste = RestTjeneste(alias)
     }
 
-    @Når("jeg sjekker resttjenestens status")
-    fun `jeg sjekker resttjenestens status`() {
+    @Når("jeg kaller helsetjenesten")
+    fun `jeg kaller helsetjenesten`() {
         restTjeneste.exchangeGet("/actuator/health")
     }
 
