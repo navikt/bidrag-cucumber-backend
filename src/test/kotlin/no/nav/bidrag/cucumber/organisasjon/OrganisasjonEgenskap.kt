@@ -34,4 +34,9 @@ class OrganisasjonEgenskap {
     fun `jeg henter enheter for saksbehandler med ident`(ident: String) {
         restTjeneste.exchangeGet("/saksbehandler/enhetsliste/$ident")
     }
+
+    @Når("jeg henter enheter for arbeidsfordeling med diskresjonskode {string} og geografisk tilknytning {string}")
+    fun `jeg henter enheter for arbeidsfordeling med diskresjonskode og geografisk tilknytning`(diskresjonskode: String, geografiskTilknytning: String) {
+        restTjeneste.exchangeGet("/arbeidsfordeling/enhetsliste/?diskresjonskode=$diskresjonskode&geografiskTilknytning=$geografiskTilknytning")
+    }
 }

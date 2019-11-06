@@ -19,7 +19,7 @@ Egenskap: bidrag-organisasjon
     Når jeg henter enheter for saksbehandler med ident 'Z992022'
     Så skal http status fra bidragOrganisasjon være '200'
 
-#  Scenario: Sjekk at hent av enheter for arbeidsfordeling returnerer OK (200) respons
-#    Gitt resttjenesten bidragOrganisasjon
-#    Når jeg henter enheter for arbeidsfordeling med diskresjonskode 'SPSF' og geografisk tilknytning '0301'
-#    Så statuskoden skal være '200'
+  Scenario: Sjekk at hent av enheter for arbeidsfordeling returnerer OK (200) respons
+    Gitt resttjenesten bidragOrganisasjon
+    Når jeg henter enheter for arbeidsfordeling med diskresjonskode 'SPSF' og geografisk tilknytning '0301'
+    Så skal http status fra bidragOrganisasjon være '200'
