@@ -30,6 +30,13 @@ class HelseEgenskap {
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
+    @Og("header {string} skal være {string}")
+    fun `header skal vaere`(headerName: String, headerValue: String) {
+        val headere = restTjeneste.hentHttpHeaders()
+
+        assertThat(headere[headerName]?.first()).isEqualTo(headerValue)
+    }
+
     @Og("helseresponsen skal inneholde {string} = {string}")
     fun `helseresponsen skal inneholde`(key: String, value: String) {
         val responseObject = restTjeneste.hentResponseSomMap()
