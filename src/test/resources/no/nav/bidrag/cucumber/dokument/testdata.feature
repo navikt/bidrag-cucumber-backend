@@ -6,6 +6,6 @@ Egenskap: bidrag-dokument-testdata
 
   Scenario: Sjekk at health endpoint er operativt
     Gitt resttjenesten 'bidragDokumentTestdata' for sjekk av helsedata
-    Når jeg sjekker resttjenestens status
+    Når jeg kaller helsetjenesten
     Så skal http status for helsesjekken være '200'
     Og helseresponsen skal inneholde 'status' = 'UP'
