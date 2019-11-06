@@ -29,4 +29,9 @@ class OrganisasjonEgenskap {
 
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
+
+    @Når("jeg henter enheter for saksbehandler med ident {string}")
+    fun `jeg henter enheter for saksbehandler med ident`(ident: String) {
+        restTjeneste.exchangeGet("/saksbehandler/enhetsliste/$ident")
+    }
 }
