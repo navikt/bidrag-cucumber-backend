@@ -18,8 +18,8 @@ class HelseEgenskap {
         restTjeneste = RestTjeneste(alias)
     }
 
-    @Når("jeg sjekker resttjenestens status")
-    fun `jeg sjekker resttjenestens status`() {
+    @Når("jeg kaller helsetjenesten")
+    fun `jeg kaller helsetjenesten`() {
         restTjeneste.exchangeGet("/actuator/health")
     }
 
@@ -28,6 +28,13 @@ class HelseEgenskap {
         val httpStatus = HttpStatus.valueOf(kode.toInt())
 
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
+    }
+
+    @Og("header {string} skal være {string}")
+    fun `header skal vaere`(headerName: String, headerValue: String) {
+        val headere = restTjeneste.hentHttpHeaders()
+
+        assertThat(headere[headerName]?.first()).isEqualTo(headerValue)
     }
 
     @Og("helseresponsen skal inneholde {string} = {string}")

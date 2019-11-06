@@ -15,21 +15,20 @@ import java.util.LinkedHashMap
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
         private val alias: String,
-        protected val rest: RestTemplateMedBaseUrl,
-        private var debugFullUrl: String = alias,
-        private var response: String? = null
-
+        private val rest: RestTemplateMedBaseUrl
 ) : BidragCucumberScenarioManager() {
 
-    protected lateinit var httpStatus: HttpStatus
+    private lateinit var debugFullUrl: String
+    private lateinit var responseEntity: ResponseEntity<String>
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 
     fun hentEndpointUrl() = debugFullUrl
-    fun hentHttpStatus() = httpStatus
-    fun hentResponse() = response
-    fun hentResponseSomListe() = ObjectMapper().readValue(response, List::class.java) as List<Map<String, Any>>
-    fun hentResponseSomMap() = ObjectMapper().readValue(response, Map::class.java) as Map<String, Any>
+    fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
+    fun hentHttpStatus(): HttpStatus = responseEntity.statusCode
+    fun hentResponse(): String? = responseEntity.body
+    fun hentResponseSomListe() = ObjectMapper().readValue(responseEntity.body, List::class.java) as List<Map<String, Any>>
+    fun hentResponseSomMap() = ObjectMapper().readValue(responseEntity.body, Map::class.java) as Map<String, Any>
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         debugFullUrl = rest.baseUrl + endpointUrl
@@ -37,19 +36,16 @@ open class RestTjeneste(
 
         writeToCucumberScenario("GET ${this.debugFullUrl}")
 
-        val stringEntity: ResponseEntity<String> = try {
+        responseEntity = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
         } catch (e: HttpStatusCodeException) {
             ResponseEntity(headerWithAlias(), e.statusCode)
         }
 
-        response = stringEntity.body
-        httpStatus = stringEntity.statusCode
+        writeToCucumberScenario("${responseEntity.statusCode}")
+        writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
 
-        writeToCucumberScenario("$httpStatus")
-        writeToCucumberScenario("$response")
-
-        return stringEntity
+        return responseEntity
     }
 
     protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {
@@ -80,7 +76,7 @@ open class RestTjeneste(
 
         try {
             println(jsonEntity)
-            httpStatus = rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java).statusCode
+            responseEntity = rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
             System.err.println("OPPDATERING FEILET: ${this.debugFullUrl}: $e")
             throw e
@@ -90,16 +86,12 @@ open class RestTjeneste(
     fun post(endpointUrl: String, jsonEntity: HttpEntity<String>) {
         debugFullUrl = rest.baseUrl + endpointUrl
 
-        val responseEntity: ResponseEntity<String> = try {
+        responseEntity = try {
             rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
             System.err.println("OPPRETTING FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
         }
-
-        httpStatus = responseEntity.statusCode
-        response = responseEntity.body
-
     }
 
     fun hentManglendeProperties(objects: List<*>, properties: List<String>): List<String> {
