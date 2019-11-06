@@ -9,11 +9,11 @@ Egenskap: bidrag-organisasjon
     Og header 'content-type' skal være 'application/json'
     Og helseresponsen skal inneholde 'status' = 'UP'
 
-#  Scenario: Sjekk at gyldig saksbehandler-id returnerer OK (200) respons
-#    Gitt resttjenesten bidragOrganisasjon
-#    Når jeg henter informasjon for ldap ident 'H153959'
-#    Så statuskoden skal være '200'
-#
+  Scenario: Sjekk at gyldig saksbehandler-id returnerer OK (200) respons
+    Gitt resttjenesten bidragOrganisasjon
+    Når jeg henter informasjon for ldap ident 'H153959'
+    Så skal http status fra bidragOrganisasjon være '200'
+
 #  Scenario: Sjekk at hent av enheter for saksbehandler-id returnerer OK (200) respons
 #    Gitt resttjenesten bidragOrganisasjon
 #    Når jeg henter enheter for saksbehandler med ident 'Z992022'
