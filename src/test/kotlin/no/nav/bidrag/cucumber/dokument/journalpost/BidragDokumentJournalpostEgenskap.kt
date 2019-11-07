@@ -41,13 +41,6 @@ class BidragDokumentJournalpostEgenskap {
         restTjenesteJournalpost.put("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
     }
 
-    @Så("skal http status være {string}")
-    fun `skal http status vaere`(enHttpStatus: String) {
-        val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
-
-        assertThat(restTjenesteJournalpost.hentHttpStatus()).isEqualTo(httpStatus)
-    }
-
     @Og("resultatet er et objekt")
     fun `resultatet_vaere et objekt`() {
         assertThat(restTjenesteJournalpost.hentResponse()).isNotNull()

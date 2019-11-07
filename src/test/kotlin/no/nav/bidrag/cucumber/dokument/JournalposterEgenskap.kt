@@ -7,15 +7,13 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
 class JournalposterEgenskap {
-
-    companion object {
-        lateinit var restTjeneste: RestTjenesteDokument
-    }
 
     @Before
     fun `administrer bidrag cucumber backend`(scenario: Scenario) {
@@ -49,18 +47,6 @@ class JournalposterEgenskap {
     @Og("så skal responsen være en liste")
     fun `skal responsen vaere en liste`() {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
-    }
-
-    @Og("hvert element i listen skal ha følgende properties satt:")
-    fun `hvert element i listen skal ha folgende properties satt`(properties: List<String>) {
-        val verifyer = SoftAssertions()
-        val responseObject = restTjeneste.hentResponseSomListe()
-
-        responseObject.forEach { element ->
-            properties.forEach { verifyer.assertThat(element).`as`("missing $it in jp: ${element["journalpostId"]})").containsKey(it) }
-        }
-
-        verifyer.assertAll()
     }
 
     @Gitt("jeg henter journalpost for sak {string} som har id {string} med bidragDokument")

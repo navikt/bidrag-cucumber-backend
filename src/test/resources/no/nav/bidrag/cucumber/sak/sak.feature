@@ -13,12 +13,13 @@ Egenskap: bidrag-sak
     Og header 'content-type' skal være 'application/json;charset=UTF-8'
     Og helseresponsen skal inneholde 'status' = 'UP'
 
-#  Scenario: Sjekk at vi får bidragssaker som involverer person angitt
-#  When jeg henter bidragssaker for person med fnr "10099447805"
-#  Then statuskoden skal være '200'
-#  And hvert element i listen skal ha følgende properties satt:
-#  | roller       |
-#  | eierfogd     |
-#  | saksstatus   |
-#  | kategori     |
-#  | erParagraf19 |
+  Scenario: Sjekk at vi får bidragssaker som involverer person angitt
+    Gitt resttjenesten 'bidragSak'
+    Når jeg henter bidragssaker for person med fnr "10099447805"
+    Så skal http status være '200'
+    Og hvert element i listen skal ha følgende properties satt:
+      | roller       |
+      | eierfogd     |
+      | saksstatus   |
+      | kategori     |
+      | erParagraf19 |
