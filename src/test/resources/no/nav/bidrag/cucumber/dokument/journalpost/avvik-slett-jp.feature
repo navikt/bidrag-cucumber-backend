@@ -3,9 +3,9 @@
 Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
 
   Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
-    Gitt resttjenesten bidragDokumentJournalpost for avviksbehandling
+    Gitt resttjenesten 'bidragDokumentJournalpost' for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'SLETT_JOURNALPOST'
-    Og enhetsnummeret '4806' til avviksbehandlingen
+    Og enhetsnummer for avvik er '4806'
     Og opprett journalpost og ta vare på journalpostId:
         """
         {
@@ -25,18 +25,18 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
         """
 
   Scenario: Sjekk avviksvalg for gitt journalpost
-    Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
-    Og listen med avvikstyper skal inneholde 'SLETT_JOURNALPOST'
+    Og listen med valg skal inneholde 'SLETT_JOURNALPOST'
 
   Scenario: Sjekk at jeg kan slette journalpost
-    Når jeg oppretter avvik med bidragDokumentJournalpost
+    Når jeg oppretter avvik
     Så skal http status for avviksbehandlingen være '200'
 
   Scenario: Sjekk avviksvalg for gitt journalpost ikke inneholder slett journalpost
-    Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
-    Og listen med avvikstyper skal ikke inneholde 'SLETT_JOURNALPOST'
+    Og listen med valg skal ikke inneholde 'SLETT_JOURNALPOST'
 
   Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
     Når jeg henter journalposter for sak '0000003' med fagområde 'BID' for å sjekke avviksbehandling

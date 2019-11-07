@@ -124,4 +124,18 @@ class AvvikEgenskaper {
             avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
         }
     }
+
+    @Når("jeg henter journalposter for sak {string} med fagområde {string} for å sjekke avviksbehandling")
+    fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
+        restTjenesteAvvik.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+    }
+
+    @Og("listen med journalposter skal ikke inneholde id for journalposten")
+    fun `listen med journalposter skal ikke inneholde id for journalposten`() {
+        val journalpostMapSomListe = restTjenesteAvvik.hentResponseSomListe()
+        val listeMedAlleJournalpostId = journalpostMapSomListe.map { it["journalpostId"].toString() }
+        val listeMedGenerertJournalpostId = listeMedAlleJournalpostId.filter { avvikData.erForJournalpostId(it) }
+
+        assertThat(listeMedGenerertJournalpostId).`as`("filtrert liste fra " + listeMedAlleJournalpostId).isEmpty()
+    }
 }
