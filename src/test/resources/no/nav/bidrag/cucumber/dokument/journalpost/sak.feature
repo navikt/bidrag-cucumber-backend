@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument
+@bidrag-dokument-journalpost
 Egenskap: bidrag-dokument (/sakjournal REST API)
 
   Tester REST API til bidrag dokument ui.

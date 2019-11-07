@@ -13,19 +13,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
-class JournalposterEgenskap {
+class JournalpostEgenskaper {
 
     @Before
     fun `administrer bidrag cucumber backend`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 
-    @Gitt("jeg henter journalposter for sak {string} som har fagområde {string} ned bidragDokument")
-    fun `jeg henter journalposter for sak som har fagomrade`(saksnummer: String, fagomrade: String) {
-        restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
-    }
-
-    @Gitt("jeg henter journalpost for sak {string} som har id {string} med bidragDokument")
+    @Gitt("jeg henter journalpost for sak {string} som har id {string}")
     fun `jeg henter journalpost for sak som har id`(saksnummer: String, journalpostId: String) {
         restTjeneste.exchangeGet("/sak/$saksnummer/journal/$journalpostId")
     }
@@ -43,5 +38,10 @@ class JournalposterEgenskap {
     @Gitt("jeg endrer journalpost for sak {string} som har id {string} for bidragDokument:")
     fun `jeg endrer journalpost for sak som har id`(saksnummer: String, journalpostId: String, json: String) {
             restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", json)
+    }
+
+    @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
+    fun `jeg endrer journalpost med id til`(saksnummer: String, journalpostId: String, journalpostJson: String) {
+        restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
     }
 }
