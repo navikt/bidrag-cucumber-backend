@@ -24,9 +24,9 @@ class FellesEgenskaper {
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
-    @Så("skal resultatet være en liste")
-    fun `skal resultatet vaere en liste`() {
-        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
+    @Og("så skal responsen være et objekt")
+    fun `skal responsen vaere et objekt`() {
+        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("{").isNotEqualTo("{}")
     }
 
     @Og("responsen skal inneholde {string} = {string}")
