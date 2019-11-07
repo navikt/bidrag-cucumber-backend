@@ -42,4 +42,6 @@ data class AvvikData(
         journalpostIdForAvvikstype[avvikstype] = journalpostId
     }
 
+    fun harJournalpostId() = journalpostId != null
+
 }
