@@ -24,17 +24,6 @@ class SakEgenskap {
         restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
 
-    @Så("skal journalresponsen.status være {string}")
-    fun `skal journalresponsen status vaere`(kode: String) {
-        val status = HttpStatus.valueOf(kode.toInt())
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(status)
-    }
-
-    @Og("så skal journalresponsen være en liste")
-    fun `skal journalresponsen vaere en liste`() {
-        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
-    }
-
     @Så("hver journal i listen skal ha {string} = {string}")
     fun `hvert journal i listen skal ha`(key: String, value: String) {
         val verifyer = SoftAssertions()

@@ -24,11 +24,6 @@ class FellesEgenskaper {
         assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
-    @Og("resultatet er et objekt")
-    fun `resultatet_vaere et objekt`() {
-        assertThat(restTjeneste.hentResponse()).isNotNull()
-    }
-
     @Så("skal resultatet være en liste")
     fun `skal resultatet vaere en liste`() {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
@@ -88,6 +83,11 @@ class FellesEgenskaper {
 
         assertThat(manglendeProperties).`as`("$obj skal ikke mangle noen av $properties: ${restTjeneste.hentResponse()}")
                 .isEmpty()
+    }
+
+    @Og("så skal responsen være en liste")
+    fun `skal responsen vaere en liste`() {
+        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
     }
 
     @Og("hvert element i listen skal ha følgende properties satt:")
