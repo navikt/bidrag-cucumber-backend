@@ -28,7 +28,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
-    Og listen med avvikstyper skal inneholde 'ENDRE_FAGOMRADE'
+    Og listen med valg skal inneholde 'ENDRE_FAGOMRADE'
 
   Scenario: Sjekk at jeg kan endre fagområde til FAR
     Gitt beskrivelsen 'FAR'
