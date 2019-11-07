@@ -6,9 +6,9 @@ Egenskap: bidrag-dokument-journalpost
         Gitt resttjenesten 'bidragDokumentJournalpost'
 
     Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
-        Gitt jeg henter journalpost for sak "0000003" med id "BID-19650256"
+        Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
-        Og resultatet er et objekt
+        Og så skal responsen være et objekt
         Og objektet har følgende properties:
             | avsenderNavn  |
             | dokumentDato  |
@@ -18,9 +18,9 @@ Egenskap: bidrag-dokument-journalpost
             | innhold       |
 
     Scenario: Sjekk at vi får korrekt data i 'dokumenter' for en gitt journalpostId
-        Gitt jeg henter journalpost for sak "0000003" med id "BID-19650256"
+        Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
-        Og resultatet er et objekt
+        Og så skal responsen være et objekt
         Og objektet har følgende properties:
             | dokumenter |
         Og 'dokumenter' skal ha følgende properties:
@@ -29,26 +29,20 @@ Egenskap: bidrag-dokument-journalpost
             | tittel            |
 
     Scenario: Sjekk at vi får korrekt gjelderAktor for en gitt journalpostId
-        Gitt jeg henter journalpost for sak "0000003" med id "BID-32352090"
+        Gitt jeg henter journalpost for sak "0000003" som har id "BID-32352090"
         Så skal http status være '200'
-        Og resultatet er et objekt
+        Og så skal responsen være et objekt
         Og objektet har følgende properties:
             | gjelderAktor |
         Og 'gjelderAktor' skal ha følgende properties:
             | ident     |
 
-    Scenario: Sjekk at vi får en sakjournal for sak/fagområde
-        Gitt jeg henter journalposter for sak "0000003" med fagområde "BID"
-        Så skal http status være '200'
-        Og skal resultatet være en liste
-        Og hvert element i listen skal ha 'fagomrade' = 'BID'
-
     Scenario: Sjekk at ukjent id gir 204
-        Gitt jeg henter journalpost for sak "0000003" med id "BID-12345"
+        Gitt jeg henter journalpost for sak "0000003" som har id "BID-12345"
         Så skal http status være '204'
 
     Scenario: Sjekk at id uten prefix gir 400
-        Gitt jeg henter journalpost for sak "0000003" med id "12345"
+        Gitt jeg henter journalpost for sak "0000003" som har id "32352090"
         Så skal http status være '400'
 
     Scenario: Sjekk at journalpost kan oppdateres - Sylfest Strutle
@@ -69,7 +63,7 @@ Egenskap: bidrag-dokument-journalpost
             }
             """
         Så skal http status være '202'
-        Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
+        Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og objektet skal ha 'avsenderNavn' = 'Strutle, Sylfest'
 
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
@@ -90,7 +84,7 @@ Egenskap: bidrag-dokument-journalpost
             }
             """
         Så skal http status være '202'
-        Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
+        Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og objektet skal ha 'avsenderNavn' = 'Bær, Bjarne'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
@@ -112,7 +106,7 @@ Egenskap: bidrag-dokument-journalpost
             }
             """
         Så skal http status være '202'
-        Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
+        Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og objektet skal ha 'dokumentDato' = '2001-01-01'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
@@ -134,5 +128,5 @@ Egenskap: bidrag-dokument-journalpost
             }
             """
         Så skal http status være '202'
-        Og jeg henter journalpost for sak "0000004" med id 'BID-30040789'
+        Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og objektet skal ha 'dokumentDato' = '2001-02-01'

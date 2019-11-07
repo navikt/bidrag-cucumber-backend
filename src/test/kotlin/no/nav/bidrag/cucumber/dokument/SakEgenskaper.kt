@@ -12,14 +12,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
-class SakEgenskap {
+class SakEgenskaper {
 
     @Before
     fun `administrer bidrag cucumber backend`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 
-    @Når("jeg henter journalposter for sak {string} som har fagområde {string} med bidragDokument")
+    @Når("jeg henter journalposter for sak {string} som har fagområde {string}")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
         restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
