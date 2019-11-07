@@ -7,10 +7,14 @@ import org.springframework.http.MediaType
 class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
     fun opprettAvvik(avvikData: AvvikData) {
-        post(avvikData.lagEndepunktUrl(), initEntityMedHeaders(avvikData))
+        if (avvikData.harJournalpostId()) {
+            post(avvikData.lagEndepunktUrl(), initEntityMedHeaders(avvikData))
+        } else {
+            opprettAvvikForAvvikstype(avvikData)
+        }
     }
 
-    fun opprettAvvikForAvvikstype(avvikData: AvvikData) {
+    private fun opprettAvvikForAvvikstype(avvikData: AvvikData) {
         post(avvikData.lagEndepunktUrlForAvvikstype(), initEntityMedHeaders(avvikData))
     }
 
