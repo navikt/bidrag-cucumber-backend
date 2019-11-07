@@ -1,18 +1,14 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 
 class HelseEgenskap {
-    companion object {
-        private lateinit var restTjeneste: RestTjeneste
-    }
-
     @Gitt("resttjenesten {string} for sjekk av helsedata")
     fun `resttjenesten for sjekk av helsedata`(alias: String) {
         restTjeneste = RestTjeneste(alias)
@@ -23,24 +19,10 @@ class HelseEgenskap {
         restTjeneste.exchangeGet("/actuator/health")
     }
 
-    @Så("skal http status for helsesjekken være {string}")
-    fun `skal http status for helsesjekken vaere`(kode: String) {
-        val httpStatus = HttpStatus.valueOf(kode.toInt())
-
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
-    }
-
     @Og("header {string} skal være {string}")
     fun `header skal vaere`(headerName: String, headerValue: String) {
         val headere = restTjeneste.hentHttpHeaders()
 
         assertThat(headere[headerName]?.first()).isEqualTo(headerValue)
-    }
-
-    @Og("helseresponsen skal inneholde {string} = {string}")
-    fun `helseresponsen skal inneholde`(key: String, value: String) {
-        val responseObject = restTjeneste.hentResponseSomMap()
-
-        assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
     }
 }

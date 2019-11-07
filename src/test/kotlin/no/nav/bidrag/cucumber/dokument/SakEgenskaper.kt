@@ -7,40 +7,21 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
-class SakEgenskap {
-
-    companion object {
-        lateinit var restTjeneste: RestTjenesteDokument
-    }
+class SakEgenskaper {
 
     @Before
     fun `administrer bidrag cucumber backend`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 
-    @Gitt("resttjenesten bidragDokument til testing av sakjournal")
-    fun `resttjenesten bidragDokument`() {
-        restTjeneste = RestTjenesteDokument()
-    }
-
-    @Når("jeg henter journalposter for sak {string} som har fagområde {string} med bidragDokument")
+    @Når("jeg henter journalposter for sak {string} som har fagområde {string}")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
         restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
-    }
-
-    @Så("skal journalresponsen.status være {string}")
-    fun `skal journalresponsen status vaere`(kode: String) {
-        val status = HttpStatus.valueOf(kode.toInt())
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(status)
-    }
-
-    @Og("så skal journalresponsen være en liste")
-    fun `skal journalresponsen vaere en liste`() {
-        assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
     }
 
     @Så("hver journal i listen skal ha {string} = {string}")

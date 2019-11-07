@@ -26,16 +26,6 @@ class ApplikasjonEgenskap  {
         restTjeneste.exchangeGet(endpointUrl)
     }
 
-    @Så("skal responsen inneholde json med property {string} og verdi {string}")
-    fun `skal responsen inneholde json med property og verdi`(property: String, verdi: String) {
-        assertThat(restTjeneste.hentResponse()).contains(""""$property":"$verdi"""")
-    }
-
-    @Så("skal aktuell klasse være {string}")
-    fun `skal aktuell klasse vaere`(forventetEgenskap: String) {
-        assertThat(this.javaClass.simpleName).isEqualTo(forventetEgenskap)
-    }
-
     @Så("skal http status ikke være {string} eller {string}")
     fun `skal http status ikke vaere`(enHttpStatus: String, enAnnenHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
