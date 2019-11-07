@@ -25,11 +25,6 @@ class BindersEgenskap {
         BidragCucumberScenarioManager.use(scenario)
     }
 
-    @Gitt("resttjenesten bidragDokument for sjekking av tilgang")
-    fun `resttjenesten bidragDokument`() {
-        restTjeneste = RestTjenesteDokument()
-    }
-
     @Når("jeg ber om tilgang til dokument på journalpostId {string} og dokumentreferanse {string}")
     fun `jeg ber om tilgang til dokument for en journalpost og dokumentreferanse`(journalpostId: String, dokumentreferanse: String) {
         restTjeneste.exchangeGet("/tilgang/$journalpostId/$dokumentreferanse")
