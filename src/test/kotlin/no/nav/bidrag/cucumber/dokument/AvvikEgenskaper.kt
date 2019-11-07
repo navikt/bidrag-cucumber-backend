@@ -83,13 +83,6 @@ class AvvikEgenskaper {
         assertThat(restTjenesteAvvik.hentHttpStatus()).isEqualTo(httpStatus)
     }
 
-    @Og("listen med avvikstyper skal inneholde {string}")
-    fun `listen med avvikstyper skal inneholde`(avvikstype: String) {
-        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
-
-        assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
-    }
-
     @Og("listen med valg skal kun inneholde:")
     fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
         val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
@@ -98,6 +91,13 @@ class AvvikEgenskaper {
                 { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
                 { assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) }
         )
+    }
+
+    @Og("listen med valg skal inneholde {string}")
+    fun `listen med valg skal inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+
+        assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 
     @Og("listen med valg skal ikke inneholde {string}")
