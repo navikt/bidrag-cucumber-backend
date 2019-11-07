@@ -5,9 +5,9 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
   Tester REST API til journalpost endepunktet for avvik i bidrag-dokument.
 
   Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
-    Gitt resttjenesten bidragDokumentJournalpost for avviksbehandling
+    Gitt resttjenesten 'bidragDokumentJournalpost' for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'BESTILL_RESKANNING'
-    Og enhetsnummeret '4806' til avviksbehandlingen
+    Og enhetsnummer for avvik er '4806'
     Og opprett journalpost og ta vare på journalpostId:
         """
         {
@@ -28,12 +28,12 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
         """
 
   Scenario: Sjekk avviksvalg for gitt journalpost inneholder BESTILL_RESKANNING
-    Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
-    Og listen med avvikstyper skal inneholde 'BESTILL_RESKANNING'
+    Og listen med valg skal inneholde 'BESTILL_RESKANNING'
 
   Scenario: Sjekk at reskanning kan bestilles
-    Når jeg oppretter avvik med bidragDokumentJournalpost
+    Når jeg oppretter avvik
     Så skal http status for avviksbehandlingen være '201'
 
   Scenario: Sjekk at oppgave blir laget for reskanning
