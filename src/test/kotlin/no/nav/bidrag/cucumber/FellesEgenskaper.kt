@@ -34,6 +34,13 @@ class FellesEgenskaper {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
     }
 
+    @Og("responsen skal inneholde {string} = {string}")
+    fun `helseresponsen skal inneholde`(key: String, value: String) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+
+        assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     @Så("hvert element i listen skal ha {string} = {string}")
     fun `hvert element i listen skal ha`(key: String, value: String) {

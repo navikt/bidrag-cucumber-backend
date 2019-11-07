@@ -8,13 +8,12 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
-    Gitt resttjenesten bidragDokument til testing av journalposter
+    Gitt resttjenesten 'bidragDokumentJournalpost'
 
   Scenario: Sjekk operativt health endpoint
-    Gitt resttjenesten 'bidragDokumentJournalpost' for sjekk av helsedata
     Når jeg kaller helsetjenesten
-    Så skal http status for helsesjekken være '200'
-    Og helseresponsen skal inneholde 'status' = 'UP'
+    Så skal http status være '200'
+    Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får en sakjournal for en sak
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID" ned bidragDokument

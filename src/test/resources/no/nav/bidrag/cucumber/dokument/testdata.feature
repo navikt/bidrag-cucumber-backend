@@ -5,7 +5,7 @@ Egenskap: bidrag-dokument-testdata
   Tester REST API til endepunkt i bidrag-dokument-testdata.
 
   Scenario: Sjekk at health endpoint er operativt
-    Gitt resttjenesten 'bidragDokumentTestdata' for sjekk av helsedata
+    Gitt resttjenesten 'bidragDokumentTestdata'
     Når jeg kaller helsetjenesten
-    Så skal http status for helsesjekken være '200'
-    Og helseresponsen skal inneholde 'status' = 'UP'
+    Så skal http status være '200'
+    Og responsen skal inneholde 'status' = 'UP'
