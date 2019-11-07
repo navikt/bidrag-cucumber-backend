@@ -2,8 +2,6 @@
 @bidrag-dokument
 Egenskap: bidrag-dokument (/sakjournal REST API)
 
-  Tester REST API til bidrag dokument ui.
-
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
     Gitt resttjenesten 'bidragDokument'

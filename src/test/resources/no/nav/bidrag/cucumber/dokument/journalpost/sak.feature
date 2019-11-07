@@ -1,12 +1,10 @@
 # language: no
 @bidrag-dokument-journalpost
-Egenskap: bidrag-dokument (/sakjournal REST API)
-
-  Tester REST API til bidrag dokument ui.
+Egenskap: bidrag-dokument-journalpost (/sakjournal REST API)
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
-    Gitt resttjenesten 'bidragDokument'
+    Gitt resttjenesten 'bidragDokumentJournalpost'
 
   Scenario: Sjekk at vi får en liste med journalposter for en gitt sak
     Når jeg henter journalposter for sak "0000003" som har fagområde "BID"
@@ -25,7 +23,3 @@ Egenskap: bidrag-dokument (/sakjournal REST API)
     Og så skal responsen være en liste
     Og hver journal i listen skal ha objektet 'gjelderAktor' med følgende properties:
       | ident |
-
-  Scenario: Sjekk at saksnummer som ikke er heltall gir HttpStatus 400 (Bad Request)
-    Når jeg henter journalposter for sak "XYZ" som har fagområde "FAR"
-    Så skal http status være '400'
