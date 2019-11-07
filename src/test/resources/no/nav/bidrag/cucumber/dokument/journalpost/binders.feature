@@ -8,4 +8,4 @@ Egenskap:  bidrag-dokument-journalpost (/tilgang REST API)
     Gitt resttjenesten 'bidragDokumentJournalpost'
     Og jeg ber om tilgang til dokument 'dokref'
     Så skal http status være '200'
-    Og returnert dokument url skal være gyldig
+    Og dokument url skal være gyldig
