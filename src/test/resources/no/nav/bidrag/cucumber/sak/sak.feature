@@ -10,7 +10,7 @@ Egenskap: bidrag-sak
     Gitt resttjenesten 'bidragSak' for sjekk av helsedata
     Når jeg kaller helsetjenesten
     Så skal http status være '200'
-    Og header 'content-type' skal være 'application/json;charset=UTF-8'
+    Og header 'content-type' skal være 'application/json'
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får bidragssaker som involverer person angitt
