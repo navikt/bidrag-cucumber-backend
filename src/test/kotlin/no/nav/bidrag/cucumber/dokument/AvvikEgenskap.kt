@@ -7,6 +7,7 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper
 import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
@@ -15,20 +16,17 @@ import org.springframework.http.HttpStatus
 class AvvikEgenskap {
     companion object StepResources {
         lateinit var restTjenesteAvvik: RestTjenesteAvvik
-        lateinit var restTjenesteForManipuleringAvDatabase: RestTjeneste
         lateinit var avvikData: AvvikData
     }
 
     @Before
-    fun `sett cucumber scenario og initier resttjenester`(scenario: Scenario) {
+    fun `sett cucumber scenario`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
-        restTjenesteAvvik = RestTjenesteAvvik("bidragDokument")
-        restTjenesteForManipuleringAvDatabase = RestTjeneste("bidragDokumentTestdata")
     }
 
-    @Gitt("data på journalpost med id {string} inneholder:")
-    fun `data pa journalpost med id inneholder`(journalpostId: String, json: String) {
-        restTjenesteForManipuleringAvDatabase.put("/journalpost/$journalpostId", json)
+    @Gitt("resttjenesten {string} for avvik")
+    fun resttjenesten(alias: String) {
+        restTjenesteAvvik = RestTjenesteAvvik(alias)
     }
 
     @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
