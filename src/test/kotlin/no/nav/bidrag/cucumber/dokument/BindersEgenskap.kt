@@ -9,6 +9,7 @@ import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import no.nav.bidrag.cucumber.Environment
 import no.nav.bidrag.cucumber.Fasit
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus
 class BindersEgenskap {
 
     companion object {
-        lateinit var restTjeneste: RestTjenesteDokument
         lateinit var dokumentreferanse: DokumentReferanse
     }
 
@@ -34,12 +34,6 @@ class BindersEgenskap {
     fun `jeg ber om tilgang til dokument for en journalpost og dokumentreferanse`(journalpostId: String, dokumentreferanse: String) {
         restTjeneste.exchangeGet("/tilgang/$journalpostId/$dokumentreferanse")
         BindersEgenskap.dokumentreferanse = DokumentReferanse(dokumentreferanse)
-    }
-
-    @Så("skal statuskoden være {string}")
-    fun `skal statuskoden vaere`(kode: String) {
-        val status = HttpStatus.valueOf(kode.toInt())
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(status)
     }
 
     @Og("dokument url skal være gyldig")

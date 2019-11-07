@@ -7,24 +7,16 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
 class SakEgenskap {
 
-    companion object {
-        lateinit var restTjeneste: RestTjenesteDokument
-    }
-
     @Before
     fun `administrer bidrag cucumber backend`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
-    }
-
-    @Gitt("resttjenesten bidragDokument til testing av sakjournal")
-    fun `resttjenesten bidragDokument`() {
-        restTjeneste = RestTjenesteDokument()
     }
 
     @Når("jeg henter journalposter for sak {string} som har fagområde {string} med bidragDokument")

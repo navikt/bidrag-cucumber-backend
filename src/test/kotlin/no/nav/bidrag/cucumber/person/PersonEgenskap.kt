@@ -1,31 +1,20 @@
 package no.nav.bidrag.cucumber.person
 
-import io.cucumber.java.no.Gitt
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Når
-import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.RestTjeneste
-import org.assertj.core.api.Assertions.assertThat
-import org.springframework.http.HttpStatus
+import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 
 class PersonEgenskap {
-    companion object {
-        private lateinit var restTjeneste: RestTjeneste
-    }
 
-    @Gitt("resttjenesten bidragPerson")
-    fun `resttjenesten bidragPerson`() {
-        restTjeneste = RestTjeneste("bidragPerson")
+    @Before
+    fun `administrer bidrag cucumber backend`(scenario: Scenario) {
+        BidragCucumberScenarioManager.use(scenario)
     }
 
     @Når("jeg henter informasjon for ident {string}")
     fun `jeg henter informasjon for ident`(ident: String) {
         restTjeneste.exchangeGet("/informasjon/$ident")
-    }
-
-    @Så("skal http status fra bidragPerson være {string}")
-    fun `skal http status fra bidragPerson vaere`(kode: String) {
-        val httpStatus = HttpStatus.valueOf(kode.toInt())
-
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
     }
 }
