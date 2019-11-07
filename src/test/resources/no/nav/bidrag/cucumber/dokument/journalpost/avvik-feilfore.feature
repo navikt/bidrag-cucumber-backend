@@ -5,9 +5,9 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
   Tester REST API til journalpost endepunktet for avvik i bidrag-dokument.
 
   Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
-    Gitt resttjenesten bidragDokumentJournalpost for avviksbehandling
+    Gitt resttjenesten 'bidragDokumentJournalpost' for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'FEILFORE_SAK'
-    Og enhetsnummeret '4806' til avviksbehandlingen
+    Og enhetsnummer for avvik er '4806'
     Og opprett journalpost og ta vare på journalpostId:
         """
         {
@@ -27,16 +27,16 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
         """
 
   Scenario: Sjekk avviksvalg for gitt journalpost
-    Når jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
     Og listen med avvikstyper skal inneholde 'FEILFORE_SAK'
 
   Scenario: Sjekk at man kan feilfore sak
-    Når jeg oppretter avvik med bidragDokumentJournalpost
+    Når jeg oppretter avvik
     Så skal http status for avviksbehandlingen være '200'
 
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
-    Når jeg oppretter avvik med bidragDokumentJournalpost
-    Og jeg ber om gyldige avviksvalg med bidragDokumentJournalpost
+    Når jeg oppretter avvik
+    Og jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status for avviksbehandlingen være '200'
 #todo fix:    Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'
