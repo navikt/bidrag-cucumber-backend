@@ -7,13 +7,11 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
-import no.nav.bidrag.cucumber.FellesEgenskaper
-import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 
-class AvvikEgenskap {
+class AvvikEgenskaper {
     companion object StepResources {
         lateinit var restTjenesteAvvik: RestTjenesteAvvik
         lateinit var avvikData: AvvikData
@@ -24,9 +22,20 @@ class AvvikEgenskap {
         BidragCucumberScenarioManager.use(scenario)
     }
 
-    @Gitt("resttjenesten {string} for avvik")
+    @Gitt("resttjenesten {string} for avviksbehandling")
     fun resttjenesten(alias: String) {
         restTjenesteAvvik = RestTjenesteAvvik(alias)
+    }
+
+    @Gitt("beskrivelsen {string}")
+    fun beskrivelsen(beskrivelse: String) {
+        avvikData.beskrivelse = beskrivelse
+    }
+
+    @Og("saksnummer {string} for avviksbehandling av {string}")
+    fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
+        avvikData = AvvikData(saksnummer = saksnummer)
+        avvikData.avvikstype = avvikstype
     }
 
     @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
@@ -44,8 +53,8 @@ class AvvikEgenskap {
         avvikData.avvikstype = avvikstype
     }
 
-    @Når("jeg oppretter avvik med bidragDokument")
-    fun `jeg oppretter avvik med bidragDokument`() {
+    @Når("jeg oppretter avvik")
+    fun `jeg oppretter avvik`() {
         restTjenesteAvvik.opprettAvvik(avvikData)
     }
 
@@ -60,6 +69,25 @@ class AvvikEgenskap {
     @Når("jeg ber om gyldige avviksvalg for journalpost")
     fun `jeg ber om gyldige avviksvalg for journalpost`() {
         restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrl())
+    }
+
+    @Når("jeg ber om gyldige avviksvalg for opprettet journalpost")
+    fun `jeg ber om gyldige avviksvalg for opprettet journalpost`() {
+        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
+    }
+
+    @Så("skal http status for avviksbehandlingen være {string}")
+    fun `skal http status for avviksbehandlingen vaere`(kode: String) {
+        val httpStatus = HttpStatus.valueOf(kode.toInt())
+
+        assertThat(restTjenesteAvvik.hentHttpStatus()).isEqualTo(httpStatus)
+    }
+
+    @Og("listen med avvikstyper skal inneholde {string}")
+    fun `listen med avvikstyper skal inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+
+        assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 
     @Og("listen med valg skal kun inneholde:")
@@ -82,5 +110,18 @@ class AvvikEgenskap {
     @Og("avvikstypen har beskrivelse {string}")
     fun avvikstypen_har_beskrivelse(beskrivelse: String) {
         avvikData.beskrivelse = beskrivelse
+    }
+
+    @Og("opprett journalpost og ta vare på journalpostId:")
+    fun `opprett journalpost og ta vare pa journalpostId`(jpJson: String) {
+        if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
+            val restTjenesteTestdata = RestTjenesteTestdata()
+
+            restTjenesteTestdata.opprettJournalpost(jpJson)
+            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
+
+            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
+            avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
+        }
     }
 }
