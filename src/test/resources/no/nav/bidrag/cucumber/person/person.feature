@@ -13,12 +13,12 @@ Egenskap: bidrag-person
 
   Scenario: Sjekk at gyldig saksbehandler-id returnerer OK (200) respons
     Når jeg henter informasjon for ident '27067246654'
-    Og responsen skal inneholde 'status' = 'UP'
+    Så skal http status være '200'
 
   Scenario: Sjekk at gyldig aktør-id returnerer OK (200) respons
     Når jeg henter informasjon for ident '1000065629588'
-    Og responsen skal inneholde 'status' = 'UP'
+    Så skal http status være '200'
 
   Scenario: Sjekk at ugyldig person-id returnerer NO CONTENT (204) respons
     Når jeg henter informasjon for ident '27067299999'
-    Og responsen skal inneholde 'status' = 'UP'
+    Så skal http status være '204'

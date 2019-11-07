@@ -9,9 +9,9 @@ Egenskap: bidrag-sak
   Scenario: Sjekk at health endpoint er operativt
     Gitt resttjenesten 'bidragSak' for sjekk av helsedata
     Når jeg kaller helsetjenesten
-    Så skal http status for helsesjekken være '200'
+    Så skal http status være '200'
     Og header 'content-type' skal være 'application/json;charset=UTF-8'
-    Og helseresponsen skal inneholde 'status' = 'UP'
+    Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at vi får bidragssaker som involverer person angitt
     Gitt resttjenesten 'bidragSak'
