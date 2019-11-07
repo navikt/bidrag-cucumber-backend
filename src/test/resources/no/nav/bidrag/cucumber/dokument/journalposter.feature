@@ -17,7 +17,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Scenario: Sjekk at vi får en sakjournal for en sak
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID" ned bidragDokument
-    Så skal http status for testen være '200'
+    Så skal http status være '200'
     Og så skal responsen være en liste
     Og hvert element i listen skal ha følgende properties satt:
       | fagomrade    |
@@ -26,7 +26,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
     Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256" med bidragDokument
-    Så skal http status for testen være '200'
+    Så skal http status være '200'
     Og så skal responsen være et objekt
     Og følgende properties skal ligge i responsen:
       | avsenderNavn  |
@@ -38,7 +38,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Scenario: Sjekk at sak uten tall gir HttpStatus 400 - Bad Request
     Gitt jeg henter journalpost for sak "XYZ" som har id "BID" med bidragDokument
-    Så skal http status for testen være '400'
+    Så skal http status være '400'
 
   Scenario: Sjekk at journalpost kan oppdateres - James Bond
     Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
@@ -57,7 +57,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "journaldato": "2006-05-09"
             }
             """
-    Så skal http status for testen være '202'
+    Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
     Og responsen skal inneholde 'avsenderNavn' = 'Bond, James'
 
@@ -78,7 +78,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "journaldato": "2006-05-09"
             }
             """
-    Så skal http status for testen være '202'
+    Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
     Og responsen skal inneholde 'avsenderNavn' = 'Trygdekontoret'
 
@@ -100,7 +100,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "dokumentDato": "2001-01-01"
             }
             """
-    Så skal http status for testen være '202'
+    Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
     Og responsen skal inneholde 'dokumentDato' = '2001-01-01'
 
@@ -122,6 +122,6 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "dokumentDato": "2001-02-01"
             }
             """
-    Så skal http status for testen være '202'
+    Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789" med bidragDokument
     Og responsen skal inneholde 'dokumentDato' = '2001-02-01'
