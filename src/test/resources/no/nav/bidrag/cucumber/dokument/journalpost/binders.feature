@@ -6,6 +6,6 @@ Egenskap:  bidrag-dokument-journalpost (/tilgang REST API)
 
   Scenario: Sjekk at vi får en gyldig URL for dokument tilgang
     Gitt resttjenesten 'bidragDokumentJournalpost'
-    Og jeg ber om tilgang til dokument 'dokref'
+    Og jeg ber om tilgang til dokument på journalpostId 'BID-12345' og dokumentreferanse 'dokref'
     Så skal http status være '200'
     Og dokument url skal være gyldig
