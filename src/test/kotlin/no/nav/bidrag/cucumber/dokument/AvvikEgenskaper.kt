@@ -68,13 +68,6 @@ class AvvikEgenskaper {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
     }
 
-    @Så("skal http status for avviksbehandlingen være {string}")
-    fun `skal http status for avviksbehandlingen vaere`(kode: String) {
-        val httpStatus = HttpStatus.valueOf(kode.toInt())
-
-        assertThat(restTjenesteAvvik().hentHttpStatus()).isEqualTo(httpStatus)
-    }
-
     @Og("listen med valg skal kun inneholde:")
     fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
