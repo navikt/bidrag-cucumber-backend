@@ -29,12 +29,12 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
 
   Scenario: Sjekk avviksvalg for gitt journalpost inneholder BESTILL_RESKANNING
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
     Og listen med valg skal inneholde 'BESTILL_RESKANNING'
 
   Scenario: Sjekk at reskanning kan bestilles
     Når jeg oppretter avvik
-    Så skal http status for avviksbehandlingen være '201'
+    Så skal http status være '201'
 
   Scenario: Sjekk at oppgave blir laget for reskanning
     Gitt jeg søker etter oppgaver for journalpost

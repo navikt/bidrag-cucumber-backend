@@ -6,7 +6,7 @@ import java.net.URI
 
 internal class Environment {
 
-    companion object ManagedEnvironment {
+    companion object {
         private const val Q0 = "q0"
 
         private val onlineResourceUrl = Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")

@@ -2,7 +2,7 @@
 @bidrag-dokument-journalpost
 Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
 
-  Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
+ Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.
     Gitt resttjenesten 'bidragDokumentJournalpost' for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling av 'ENDRE_FAGOMRADE'
     Og enhetsnummer for avvik er '4806'
@@ -27,20 +27,20 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
 
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
     Og listen med valg skal inneholde 'ENDRE_FAGOMRADE'
 
   Scenario: Sjekk at jeg kan endre fagområde til FAR
     Gitt beskrivelsen 'FAR'
     Når jeg oppretter avvik
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
 
   Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt beskrivelsen 'FAR'
     Når jeg oppretter avvik
-    Så skal http status for avviksbehandlingen være '400'
+    Så skal http status være '400'
 
   Scenario: Sjekk at jeg kan endre fagområde tilbake til BID
     Gitt beskrivelsen 'BID'
     Når jeg oppretter avvik
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
