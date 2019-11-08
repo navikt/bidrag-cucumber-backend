@@ -28,12 +28,6 @@ class BindersEgenskaper {
         BindersEgenskaper.dokumentreferanse = DokumentReferanse(dokumentreferanse)
     }
 
-    @Og("jeg ber om tilgang til dokument {string}")
-    fun `jeg ber om tilgang til dokument`(dokumentreferanse: String) {
-        BindersEgenskaper.dokumentreferanse = DokumentReferanse(dokumentreferanse)
-        restTjeneste.exchangeGet("/tilgang/$dokumentreferanse")
-    }
-
     @Og("dokument url skal være gyldig")
     fun `dokument url skal vaere gyldig`() {
         val response = restTjeneste.hentResponseSomMap()
