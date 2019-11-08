@@ -7,13 +7,13 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 
 class AvvikEgenskaper {
-    companion object StepResources {
-        lateinit var restTjenesteAvvik: RestTjenesteAvvik
+    companion object {
         lateinit var avvikData: AvvikData
     }
 
@@ -24,7 +24,7 @@ class AvvikEgenskaper {
 
     @Gitt("resttjenesten {string} for avviksbehandling")
     fun resttjenesten(alias: String) {
-        restTjenesteAvvik = RestTjenesteAvvik(alias)
+        FellesEgenskaper.restTjeneste = RestTjenesteAvvik(alias)
     }
 
     @Gitt("beskrivelsen {string}")
@@ -55,37 +55,37 @@ class AvvikEgenskaper {
 
     @Når("jeg oppretter avvik")
     fun `jeg oppretter avvik`() {
-        restTjenesteAvvik.opprettAvvik(avvikData)
+        restTjenesteAvvik().opprettAvvik(avvikData)
     }
 
     @Så("skal http status for avvik være {string}")
     fun `skal http status for avvik vaere`(enHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
 
-        assertThat(restTjenesteAvvik.hentHttpStatus()).`as`("HttpStatus for ${restTjenesteAvvik.hentEndpointUrl()}")
+        assertThat(restTjenesteAvvik().hentHttpStatus()).`as`("HttpStatus for ${restTjenesteAvvik().hentEndpointUrl()}")
                 .isEqualTo(httpStatus)
     }
 
     @Når("jeg ber om gyldige avviksvalg for journalpost")
     fun `jeg ber om gyldige avviksvalg for journalpost`() {
-        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrl())
+        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrl())
     }
 
     @Når("jeg ber om gyldige avviksvalg for opprettet journalpost")
     fun `jeg ber om gyldige avviksvalg for opprettet journalpost`() {
-        restTjenesteAvvik.exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
+        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
     }
 
     @Så("skal http status for avviksbehandlingen være {string}")
     fun `skal http status for avviksbehandlingen vaere`(kode: String) {
         val httpStatus = HttpStatus.valueOf(kode.toInt())
 
-        assertThat(restTjenesteAvvik.hentHttpStatus()).isEqualTo(httpStatus)
+        assertThat(restTjenesteAvvik().hentHttpStatus()).isEqualTo(httpStatus)
     }
 
     @Og("listen med valg skal kun inneholde:")
     fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
-        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+        val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertAll(
                 { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
@@ -95,14 +95,14 @@ class AvvikEgenskaper {
 
     @Og("listen med valg skal inneholde {string}")
     fun `listen med valg skal inneholde`(avvikstype: String) {
-        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+        val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 
     @Og("listen med valg skal ikke inneholde {string}")
     fun `listen med valg skal ikke inneholde`(avvikstype: String) {
-        val funnetAvvikstyper = restTjenesteAvvik.hentResponseSomListeAvStrenger()
+        val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
@@ -127,15 +127,17 @@ class AvvikEgenskaper {
 
     @Når("jeg henter journalposter for sak {string} med fagområde {string} for å sjekke avviksbehandling")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
-        restTjenesteAvvik.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+        restTjenesteAvvik().exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
 
     @Og("listen med journalposter skal ikke inneholde id for journalposten")
     fun `listen med journalposter skal ikke inneholde id for journalposten`() {
-        val journalpostMapSomListe = restTjenesteAvvik.hentResponseSomListe()
+        val journalpostMapSomListe = restTjenesteAvvik().hentResponseSomListe()
         val listeMedAlleJournalpostId = journalpostMapSomListe.map { it["journalpostId"].toString() }
         val listeMedGenerertJournalpostId = listeMedAlleJournalpostId.filter { avvikData.erForJournalpostId(it) }
 
         assertThat(listeMedGenerertJournalpostId).`as`("filtrert liste fra " + listeMedAlleJournalpostId).isEmpty()
     }
+    
+    private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
 }
