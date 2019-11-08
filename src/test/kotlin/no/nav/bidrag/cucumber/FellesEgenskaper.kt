@@ -21,7 +21,8 @@ class FellesEgenskaper {
     fun `skal http status vaere`(enHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
 
-        assertThat(restTjeneste.hentHttpStatus()).isEqualTo(httpStatus)
+        assertThat(restTjeneste.hentHttpStatus()).`as`("HttpStatus for ${restTjeneste.hentEndpointUrl()}")
+                .isEqualTo(httpStatus)
     }
 
     @Og("så skal responsen være et objekt")
