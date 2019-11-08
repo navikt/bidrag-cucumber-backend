@@ -58,14 +58,6 @@ class AvvikEgenskaper {
         restTjenesteAvvik().opprettAvvik(avvikData)
     }
 
-    @Så("skal http status for avvik være {string}")
-    fun `skal http status for avvik vaere`(enHttpStatus: String) {
-        val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
-
-        assertThat(restTjenesteAvvik().hentHttpStatus()).`as`("HttpStatus for ${restTjenesteAvvik().hentEndpointUrl()}")
-                .isEqualTo(httpStatus)
-    }
-
     @Når("jeg ber om gyldige avviksvalg for journalpost")
     fun `jeg ber om gyldige avviksvalg for journalpost`() {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrl())
