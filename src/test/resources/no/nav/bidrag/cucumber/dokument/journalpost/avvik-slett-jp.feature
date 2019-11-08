@@ -26,19 +26,19 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
 
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
     Og listen med valg skal inneholde 'SLETT_JOURNALPOST'
 
   Scenario: Sjekk at jeg kan slette journalpost
     Når jeg oppretter avvik
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
 
   Scenario: Sjekk avviksvalg for gitt journalpost ikke inneholder slett journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
     Og listen med valg skal ikke inneholde 'SLETT_JOURNALPOST'
 
   Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
     Når jeg henter journalposter for sak '0000003' med fagområde 'BID' for å sjekke avviksbehandling
-    Så skal http status for avviksbehandlingen være '200'
+    Så skal http status være '200'
     Og listen med journalposter skal ikke inneholde id for journalposten
