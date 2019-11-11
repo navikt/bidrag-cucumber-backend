@@ -1,8 +1,11 @@
 package no.nav.bidrag.cucumber.dokument.journalpost
 
+import io.cucumber.core.api.Scenario
+import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.dokument.AvvikEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
@@ -10,6 +13,11 @@ import org.springframework.http.HttpStatus
 class OppgaveEgenskaper {
     companion object {
         private lateinit var restTjenesteOppgaver: OppgaverRestTjeneste
+    }
+
+    @Before
+    fun `manage scenario`(scenario: Scenario) {
+        ScenarioManager.use(scenario)
     }
 
     @Gitt("jeg søker etter oppgaver for journalpost")

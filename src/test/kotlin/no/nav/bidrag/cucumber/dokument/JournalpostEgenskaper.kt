@@ -3,21 +3,16 @@ package no.nav.bidrag.cucumber.dokument
 import io.cucumber.core.api.Scenario
 import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
-import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
-import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
-import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
-import org.springframework.http.HttpStatus
 
 class JournalpostEgenskaper {
 
     @Before
-    fun `administrer bidrag cucumber backend`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+    fun `manage scenario`(scenario: Scenario) {
+        ScenarioManager.use(scenario)
     }
 
     @Gitt("jeg henter journalpost for sak {string} som har id {string}")
@@ -37,7 +32,7 @@ class JournalpostEgenskaper {
 
     @Gitt("jeg endrer journalpost for sak {string} som har id {string} for bidragDokument:")
     fun `jeg endrer journalpost for sak som har id`(saksnummer: String, journalpostId: String, json: String) {
-            restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", json)
+        restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", json)
     }
 
     @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
