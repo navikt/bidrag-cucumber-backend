@@ -9,7 +9,7 @@ import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 class PersonEgenskap {
 
     @Before
-    fun `administrer bidrag cucumber backend`(scenario: Scenario) {
+    fun `manage scenario`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 

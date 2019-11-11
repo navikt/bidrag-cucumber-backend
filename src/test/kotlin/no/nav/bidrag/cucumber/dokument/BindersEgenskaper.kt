@@ -18,7 +18,7 @@ class BindersEgenskaper {
     }
 
     @Before
-    fun `adminstrer scenario`(scenario: Scenario) {
+    fun `manage scenario`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 

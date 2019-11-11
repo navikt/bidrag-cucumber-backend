@@ -5,7 +5,6 @@ import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +17,7 @@ class AvvikEgenskaper {
     }
 
     @Before
-    fun `sett cucumber scenario`(scenario: Scenario) {
+    fun `manage scenario`(scenario: Scenario) {
         BidragCucumberScenarioManager.use(scenario)
     }
 
