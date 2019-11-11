@@ -13,7 +13,7 @@
     <!-- dependencies -->
     <apache-httpcomponenents.version>4.5.10</apache-httpcomponenents.version>
     <assertj.version>3.13.2</assertj.version>
-    <bidrag-commons.version>0.1.14</bidrag-commons.version>
+    <bidrag-commons.version>0.1.15</bidrag-commons.version>
     <clucumber.version>2.2.0</clucumber.version>
     <cucumber.version>4.7.4</cucumber.version>
     <jackson.version>2.10.0.pr3</jackson.version>
