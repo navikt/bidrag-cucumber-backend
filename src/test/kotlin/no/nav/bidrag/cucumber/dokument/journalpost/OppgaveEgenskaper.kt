@@ -5,7 +5,7 @@ import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.dokument.AvvikEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
@@ -17,7 +17,7 @@ class OppgaveEgenskaper {
 
     @Before
     fun `manage scenario`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+        ScenarioManager.use(scenario)
     }
 
     @Gitt("jeg søker etter oppgaver for journalpost")

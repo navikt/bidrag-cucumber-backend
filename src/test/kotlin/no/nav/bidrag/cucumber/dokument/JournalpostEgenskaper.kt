@@ -4,7 +4,7 @@ import io.cucumber.core.api.Scenario
 import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
-import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.SoftAssertions
 
@@ -12,7 +12,7 @@ class JournalpostEgenskaper {
 
     @Before
     fun `manage scenario`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+        ScenarioManager.use(scenario)
     }
 
     @Gitt("jeg henter journalpost for sak {string} som har id {string}")
