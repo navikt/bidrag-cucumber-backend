@@ -38,6 +38,7 @@ class FellesEgenskaper {
     }
 
     @Og("responsen skal inneholde {string} = {string}")
+    @Så("skal responsen inneholde {string} = {string}")
     fun `helseresponsen skal inneholde`(key: String, value: String) {
         val responseObject = restTjeneste.hentResponseSomMap()
 

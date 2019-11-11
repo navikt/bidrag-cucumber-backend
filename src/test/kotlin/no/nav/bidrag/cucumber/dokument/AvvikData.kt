@@ -36,6 +36,7 @@ data class AvvikData(
     fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${journalpostIdForAvvikstype[avvikstype]}/avvik"
     fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
 
+    fun hentJournalpostId() = journalpostIdForAvvikstype[avvikstype]!!
     private fun hentJournalpostIdUtenPrefix() = journalpostIdForAvvikstype[avvikstype]!!.removePrefix("BID-")
 
     fun leggTilJournalpostIdForAvvikstype(journalpostId: String) {
@@ -43,5 +44,4 @@ data class AvvikData(
     }
 
     fun harJournalpostId() = journalpostId != null
-
 }
