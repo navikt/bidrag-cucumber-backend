@@ -57,13 +57,6 @@ class FellesEgenskaper {
         verifyer.assertAll()
     }
 
-    @Så("objektet skal ha {string} = {string}")
-    fun objektet_skal_ha(key: String, value: String) {
-        val responseObject = restTjeneste.hentResponseSomMap()
-
-        assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
-    }
-
     @Så("objektet har følgende properties:")
     fun `objektet har folgende properties`(properties: List<String>) {
         val responseObject = restTjeneste.hentResponseSomMap()
