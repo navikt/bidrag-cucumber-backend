@@ -16,7 +16,7 @@ import java.util.LinkedHashMap
 open class RestTjeneste(
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl
-) : ScenarioManager() {
+) {
 
     private lateinit var debugFullUrl: String
     private lateinit var responseEntity: ResponseEntity<String>
@@ -34,7 +34,7 @@ open class RestTjeneste(
         debugFullUrl = rest.baseUrl + endpointUrl
         val header = initHttpHeadersWithCorrelationId()
 
-        writeToCucumberScenario("GET ${this.debugFullUrl}")
+        ScenarioManager.writeToCucumberScenario("GET ${this.debugFullUrl}")
 
         responseEntity = try {
             rest.template.exchange(endpointUrl, HttpMethod.GET, HttpEntity(null, header), String::class.java)
@@ -42,19 +42,19 @@ open class RestTjeneste(
             ResponseEntity(headerWithAlias(), e.statusCode)
         }
 
-        writeToCucumberScenario("${responseEntity.statusCode}")
-        writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
+        ScenarioManager.writeToCucumberScenario("${responseEntity.statusCode}")
+        ScenarioManager.writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
 
         return responseEntity
     }
 
     protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {
         val headers = HttpHeaders()
-        headers.add(CorrelationId.CORRELATION_ID_HEADER, correlationIdForScenario)
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
 
-        writeToCucumberScenario(
-                "Link til kibana for correlation-id: $correlationIdForScenario",
-                "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"$correlationIdForScenario\"),sort:!('@timestamp',desc))"
+        ScenarioManager.writeToCucumberScenario(
+                "Link til kibana for correlation-id: ${ScenarioManager.correlationIdForScenario}",
+                "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"${ScenarioManager.correlationIdForScenario}\"),sort:!('@timestamp',desc))"
         )
 
         return headers
@@ -89,7 +89,7 @@ open class RestTjeneste(
         responseEntity = try {
             rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            System.err.println("OPPRETTING FEILET: ${this.debugFullUrl}: $e")
+            System.err.println("POST FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
         }
     }
