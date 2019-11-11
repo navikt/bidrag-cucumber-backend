@@ -16,7 +16,7 @@ import java.util.LinkedHashMap
 open class RestTjeneste(
         private val alias: String,
         private val rest: RestTemplateMedBaseUrl
-) : BidragCucumberScenarioManager() {
+) : ScenarioManager() {
 
     private lateinit var debugFullUrl: String
     private lateinit var responseEntity: ResponseEntity<String>

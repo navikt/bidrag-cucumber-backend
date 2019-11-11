@@ -3,14 +3,14 @@ package no.nav.bidrag.cucumber.person
 import io.cucumber.core.api.Scenario
 import io.cucumber.java.Before
 import io.cucumber.java.no.Når
-import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 
 class PersonEgenskap {
 
     @Before
-    fun `administrer bidrag cucumber backend`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+    fun `manage scenario`(scenario: Scenario) {
+        ScenarioManager.use(scenario)
     }
 
     @Når("jeg henter informasjon for ident {string}")
