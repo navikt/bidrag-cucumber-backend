@@ -2,7 +2,7 @@ package no.nav.bidrag.cucumber
 
 import io.cucumber.core.api.Scenario
 
-open class BidragCucumberScenarioManager {
+open class ScenarioManager {
     companion object {
         private var scenario: Scenario? = null
 

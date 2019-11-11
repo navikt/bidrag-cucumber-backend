@@ -12,7 +12,7 @@ class HelseEgenskap {
 
     @Before
     fun `manage scenario`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+        ScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten {string} for sjekk av helsedata")

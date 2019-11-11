@@ -4,7 +4,7 @@ import io.cucumber.core.api.Scenario
 import io.cucumber.java.Before
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.BidragCucumberScenarioManager
+import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.RestTjeneste
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
@@ -17,7 +17,7 @@ class ApplikasjonEgenskap  {
 
     @Before
     fun `sett cucumber scenario og initier RestTjeneste`(scenario: Scenario) {
-        BidragCucumberScenarioManager.use(scenario)
+        ScenarioManager.use(scenario)
         restTjeneste = RestTjeneste("bidragDokument")
     }
 
