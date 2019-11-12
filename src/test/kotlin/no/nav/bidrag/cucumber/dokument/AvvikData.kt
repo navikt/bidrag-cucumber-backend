@@ -6,8 +6,7 @@ import org.springframework.http.HttpHeaders
 data class AvvikData(
         var beskrivelse: String? = null,
         private var journalpostId: String? = null,
-        val saksnummer: String,
-        val clearJournalpostIdForAvvikstype: Boolean = false
+        val saksnummer: String
 ) {
     companion object {
         private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()

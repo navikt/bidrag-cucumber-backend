@@ -6,6 +6,7 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
@@ -39,10 +40,11 @@ class FellesEgenskaper {
 
     @Og("responsen skal inneholde {string} = {string}")
     @Så("skal responsen inneholde {string} = {string}")
-    fun `helseresponsen skal inneholde`(key: String, value: String) {
+    fun `responsen skal inneholde`(key: String, value: String) {
         val responseObject = restTjeneste.hentResponseSomMap()
+        val verdiFraResponse = responseObject[key]?.toString()
 
-        assertThat(responseObject[key]).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
+        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
     }
 
     @Suppress("UNCHECKED_CAST")
