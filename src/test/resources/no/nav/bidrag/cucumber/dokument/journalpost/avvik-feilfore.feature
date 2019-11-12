@@ -37,9 +37,9 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
 
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder FEILFORE_SAK
     Når jeg oppretter avvik
-    Og jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal http status være '200'
-    Så skal responsen inneholde 'feilfort' = 'true'
+    Og responsen skal inneholde 'feilfort' = 'true'
+    Og jeg ber om gyldige avviksvalg for opprettet journalpost
+    Så skal http status være '200'
     Og listen med valg skal ikke inneholde 'FEILFORE_SAK'
