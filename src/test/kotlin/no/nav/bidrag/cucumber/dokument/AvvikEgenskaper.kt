@@ -122,6 +122,11 @@ class AvvikEgenskaper {
 
         assertThat(listeMedGenerertJournalpostId).`as`("filtrert liste fra " + listeMedAlleJournalpostId).isEmpty()
     }
+
+    @Og("når jeg jeg henter journalpost etter avviksbehandling")
+    fun `nar jeg henter journalpost etter avvik`() {
+        restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal/${avvikData.hentJournalpostId()}")
+    }
     
     private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
 }

@@ -39,4 +39,7 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Når jeg oppretter avvik
     Og jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-#todo fix:    Og listen med valg skal ikke inneholde 'FEILFORE_SAK'
+    Og når jeg jeg henter journalpost etter avviksbehandling
+    Så skal http status være '200'
+    Så skal responsen inneholde 'feilfort' = 'true'
+    Og listen med valg skal ikke inneholde 'FEILFORE_SAK'
