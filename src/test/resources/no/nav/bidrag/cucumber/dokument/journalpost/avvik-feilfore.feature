@@ -41,5 +41,5 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal http status være '200'
-    Så skal responsen inneholde 'feilført' = 'true'
+    Så skal responsen inneholde 'feilfort' = 'true'
     Og listen med valg skal ikke inneholde 'FEILFORE_SAK'
