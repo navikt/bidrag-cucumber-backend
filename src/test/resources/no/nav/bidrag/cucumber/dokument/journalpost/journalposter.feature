@@ -37,7 +37,7 @@ Egenskap: bidrag-dokument-journalpost
         Og 'gjelderAktor' skal ha følgende properties:
             | ident     |
 
-    Scenario: Sjekk at ukjent id gir 204
+    Scenario: Sjekk at ukjent id gir 404
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-12345"
         Så skal http status være '404'
 
