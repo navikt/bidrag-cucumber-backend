@@ -39,7 +39,7 @@ Egenskap: bidrag-dokument-journalpost
 
     Scenario: Sjekk at ukjent id gir 204
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-12345"
-        Så skal http status være '204'
+        Så skal http status være '404'
 
     Scenario: Sjekk at id uten prefix gir 400
         Gitt jeg henter journalpost for sak "0000003" som har id "32352090"
