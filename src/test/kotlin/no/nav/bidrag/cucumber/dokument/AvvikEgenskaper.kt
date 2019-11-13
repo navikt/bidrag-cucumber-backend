@@ -67,8 +67,8 @@ class AvvikEgenskaper {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
     }
 
-    @Og("listen med valg skal kun inneholde:")
-    fun `listen med valg skal kun inneholde`(forventedeAvvik: List<String>) {
+    @Og("listen med avvikstyper skal kun inneholde:")
+    fun `listen med avvikstyper skal kun inneholde`(forventedeAvvik: List<String>) {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertAll(
@@ -77,15 +77,15 @@ class AvvikEgenskaper {
         )
     }
 
-    @Og("listen med valg skal inneholde {string}")
-    fun `listen med valg skal inneholde`(avvikstype: String) {
+    @Og("listen med avvikstyper skal inneholde {string}")
+    fun `listen med avvikstyper skal inneholde`(avvikstype: String) {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 
-    @Og("listen med valg skal ikke inneholde {string}")
-    fun `listen med valg skal ikke inneholde`(avvikstype: String) {
+    @Og("listen med avvikstyper skal ikke inneholde {string}")
+    fun `listen med avvikstyper skal ikke inneholde`(avvikstype: String) {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
