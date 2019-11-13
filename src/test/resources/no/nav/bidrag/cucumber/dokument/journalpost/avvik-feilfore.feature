@@ -29,7 +29,7 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal inneholde 'FEILFORE_SAK'
+    Og listen med avvikstyper skal inneholde 'FEILFORE_SAK'
 
   Scenario: Sjekk at man kan feilfore sak
     Når jeg oppretter avvik
@@ -42,4 +42,4 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Og responsen skal inneholde 'feilfort' = 'true'
     Og jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal ikke inneholde 'FEILFORE_SAK'
+    Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'

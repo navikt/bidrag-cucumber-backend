@@ -31,7 +31,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
   Scenario: Sjekk avviksvalg for gitt journalpost inneholder BESTILL_ORIGINAL
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal inneholde 'BESTILL_ORIGINAL'
+    Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at man kan bestille original
     Når jeg oppretter avvik
@@ -40,7 +40,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal ikke inneholde 'BESTILL_ORIGINAL'
+    Og listen med avvikstyper skal ikke inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at oppgave blir laget for bestill original
     Gitt jeg søker etter oppgaver for journalpost

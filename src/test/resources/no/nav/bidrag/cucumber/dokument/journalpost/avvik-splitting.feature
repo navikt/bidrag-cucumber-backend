@@ -31,7 +31,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal inneholde 'BESTILL_SPLITTING'
+    Og listen med avvikstyper skal inneholde 'BESTILL_SPLITTING'
 
   Scenario: Sjekk at jeg kan bestille splitting
     Gitt beskrivelsen 'splitt midt på'

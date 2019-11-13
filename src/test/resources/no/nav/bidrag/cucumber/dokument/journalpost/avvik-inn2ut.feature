@@ -31,7 +31,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
-    Og listen med valg skal inneholde 'INNG_TIL_UTG_DOKUMENT'
+    Og listen med avvikstyper skal inneholde 'INNG_TIL_UTG_DOKUMENT'
 
   Scenario: Sjekk at jeg kan opprette avvik inngående til utgående
     Når jeg oppretter avvik
