@@ -5,6 +5,7 @@ import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
+import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
@@ -63,6 +64,7 @@ class AvvikEgenskaper {
     }
 
     @Når("jeg ber om gyldige avviksvalg for opprettet journalpost")
+    @Og("når jeg ber om gyldige avviksvalg for opprettet journalpost")
     fun `jeg ber om gyldige avviksvalg for opprettet journalpost`() {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
     }
