@@ -40,3 +40,9 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
     Og søkeresultatet skal inneholde en oppgave
+
+  Scenario: Sjekk at når man bestiller reskanning, så skal journalposten bli feilført
+    Når jeg oppretter avvik
+    Så skal http status være '201'
+    Og når jeg jeg henter journalpost etter avviksbehandling
+    Så skal responsen inneholde 'feilfort' = 'true'
