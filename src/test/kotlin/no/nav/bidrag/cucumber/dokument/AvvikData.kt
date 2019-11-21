@@ -6,7 +6,8 @@ import org.springframework.http.HttpHeaders
 data class AvvikData(
         var beskrivelse: String? = null,
         private var journalpostId: String? = null,
-        val saksnummer: String
+        val saksnummer: String,
+        private val detaljer: MutableMap<String, String> = HashMap()
 ) {
     companion object {
         private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()
@@ -20,8 +21,16 @@ data class AvvikData(
     }
 
     fun hentAvvikshendelse(): String {
-        return if (beskrivelse == null) "{\"avvikType\":\"$avvikstype\",\"enhetsnummer\":\"$enhetsnummer\"}"
-        else "{\"avvikType\":\"$avvikstype\",\"enhetsnummer\":\"$enhetsnummer\", \"beskrivelse\":\"$beskrivelse\"}"
+        return if (beskrivelse == null) """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer"}"""
+        else if (detaljer.isEmpty()) """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer", "beskrivelse":"$beskrivelse"}"""
+        else """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer","beskrivelse":"$beskrivelse","detaljer":{"${hentKey()}":"${hentValue()}"}}"""
+    }
+
+    private fun hentKey() = detaljer.keys.iterator().next()
+    private fun hentValue() = detaljer.values.iterator().next()
+
+    private fun hentDetaljerSomJson(): String {
+        return "{" + detaljer.map { """"${it.key}":"${it.value}"""" } + "}"
     }
 
     fun leggTilEnhetsnummer(httpHeaders: HttpHeaders): HttpHeaders {
@@ -43,4 +52,8 @@ data class AvvikData(
     }
 
     fun harJournalpostId() = journalpostId != null
+
+    fun leggTil(key: String, value: String) {
+        detaljer[key] = value
+    }
 }

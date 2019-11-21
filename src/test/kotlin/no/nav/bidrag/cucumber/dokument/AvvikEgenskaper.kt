@@ -116,6 +116,12 @@ class AvvikEgenskaper {
         restTjenesteAvvik().exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
     }
 
+    @Når("jeg oppretter avvik med bekreftelse at den er sendt scanning")
+    fun `jeg oppretter avvik med bekreftelse at den er sendt scanning`() {
+        avvikData.leggTil("bekreftetSendtScanning", "true")
+        restTjenesteAvvik().opprettAvvik(avvikData)
+    }
+
     @Og("listen med journalposter skal ikke inneholde id for journalposten")
     fun `listen med journalposter skal ikke inneholde id for journalposten`() {
         val journalpostMapSomListe = restTjenesteAvvik().hentResponseSomListe()
@@ -129,6 +135,6 @@ class AvvikEgenskaper {
     fun `nar jeg henter journalpost etter avvik`() {
         restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal/${avvikData.hentJournalpostId()}")
     }
-    
+
     private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
 }
