@@ -47,6 +47,14 @@ class FellesEgenskaper {
         assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
     }
 
+    @Og("responsen skal ikke inneholde {string} = {string}")
+    fun `responsen skal ikke inneholde`(key: String, value: String) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+        val verdiFraResponse = responseObject[key]?.toString()
+
+        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isNotEqualTo(value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     @Så("hvert element i listen skal ha {string} = {string}")
     fun `hvert element i listen skal ha`(key: String, value: String) {
