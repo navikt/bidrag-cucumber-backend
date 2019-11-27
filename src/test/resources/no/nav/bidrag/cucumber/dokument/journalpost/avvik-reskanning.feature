@@ -46,4 +46,4 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Så skal http status være '201'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal responsen inneholde 'feilfort' = 'true'
-    Og responsen skal inneholde 'journalstatus' = 'U'
+    Og responsen skal inneholde 'journalstatus' = 'S'

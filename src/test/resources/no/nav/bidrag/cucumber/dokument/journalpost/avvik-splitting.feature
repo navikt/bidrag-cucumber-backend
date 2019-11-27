@@ -39,7 +39,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
     Så skal http status være '201'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal responsen inneholde 'feilfort' = 'true'
-    Og responsen skal inneholde 'journalstatus' = 'U'
+    Og responsen skal inneholde 'journalstatus' = 'S'
 
   Scenario: Sjekk at oppgave blir laget for splitting
     Gitt jeg søker etter oppgaver for journalpost
