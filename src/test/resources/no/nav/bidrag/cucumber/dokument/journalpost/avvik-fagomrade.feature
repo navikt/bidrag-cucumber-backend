@@ -51,4 +51,4 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
     Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal responsen inneholde 'feilfort' = 'true'
-    Og responsen skal inneholde 'journalstatus' = 'U'
+    Og responsen skal inneholde 'journalstatus' = 'S'
