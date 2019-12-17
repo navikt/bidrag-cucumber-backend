@@ -1,19 +1,11 @@
 package no.nav.bidrag.cucumber.organisasjon
 
-import io.cucumber.core.api.Scenario
-import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
-import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import no.nav.bidrag.cucumber.RestTjeneste
 
 class OrganisasjonEgenskap {
-
-    @Before
-    fun `manage scenario`(scenario: Scenario) {
-        ScenarioManager.use(scenario)
-    }
 
     @Gitt("resttjenesten bidragOrganisasjon")
     fun `resttjenesten bidragOrganisasjon`() {

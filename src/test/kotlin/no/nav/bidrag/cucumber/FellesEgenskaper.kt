@@ -6,7 +6,6 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.fail
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
