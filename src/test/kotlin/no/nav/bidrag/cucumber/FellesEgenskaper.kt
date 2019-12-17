@@ -1,23 +1,15 @@
 package no.nav.bidrag.cucumber
 
-import io.cucumber.core.api.Scenario
-import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.fail
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
 class FellesEgenskaper {
     companion object {
         lateinit var restTjeneste: RestTjeneste
-    }
-
-    @Before
-    fun `manage scenario`(scenario: Scenario) {
-        ScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten {string}")
