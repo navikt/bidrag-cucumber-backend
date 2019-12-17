@@ -10,7 +10,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import java.util.LinkedHashMap
+
 
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
@@ -31,8 +34,17 @@ open class RestTjeneste(
     fun hentResponseSomMap() = ObjectMapper().readValue(responseEntity.body, Map::class.java) as Map<String, Any>
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
+        return exchangeGet(endpointUrl, null, "na")
+    }
+
+    fun exchangeGet(endpointUrl: String, username: String?, password: String): ResponseEntity<String> {
         debugFullUrl = rest.baseUrl + endpointUrl
+
         val header = initHttpHeadersWithCorrelationId()
+
+        if (username != null) {
+            header.add(HttpHeaders.AUTHORIZATION, "Basic " + base64EncodeCredentials(username, password))
+        }
 
         ScenarioManager.writeToCucumberScenario("GET ${this.debugFullUrl}")
 
@@ -46,6 +58,14 @@ open class RestTjeneste(
         ScenarioManager.writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
 
         return responseEntity
+    }
+
+    private fun base64EncodeCredentials(username: String, password: String): String {
+        val credentials = "$username:$password"
+
+        val encodedCredentials: ByteArray = Base64.getEncoder().encode(credentials.toByteArray())
+
+        return String(encodedCredentials, StandardCharsets.UTF_8)
     }
 
     protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {

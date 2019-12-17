@@ -1,6 +1,8 @@
 package no.nav.bidrag.cucumber
 
 // constants for input via System.getProperty
+internal const val CREDENTIALS_PIP_USER = "PIP_USER"
+internal const val CREDENTIALS_PIP_AUTH = "PIP_AUTH"
 internal const val CREDENTIALS_TEST_USER = "TEST_USER"
 internal const val CREDENTIALS_TEST_USER_AUTH = "TEST_AUTH"
 internal const val CREDENTIALS_USERNAME = "USERNAME"
