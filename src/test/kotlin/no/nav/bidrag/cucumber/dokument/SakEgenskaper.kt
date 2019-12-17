@@ -1,19 +1,11 @@
 package no.nav.bidrag.cucumber.dokument
 
-import io.cucumber.core.api.Scenario
-import io.cucumber.java.Before
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.SoftAssertions
 
 class SakEgenskaper {
-
-    @Before
-    fun `manage scenario`(scenario: Scenario) {
-        ScenarioManager.use(scenario)
-    }
 
     @Når("jeg henter journalposter for sak {string} som har fagområde {string}")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
