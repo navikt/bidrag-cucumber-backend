@@ -1,12 +1,8 @@
 package no.nav.bidrag.cucumber.dokument
 
-import io.cucumber.core.api.Scenario
-import io.cucumber.java.Before
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
@@ -15,11 +11,6 @@ import org.springframework.http.HttpStatus
 class AvvikEgenskaper {
     companion object {
         lateinit var avvikData: AvvikData
-    }
-
-    @Before
-    fun `manage scenario`(scenario: Scenario) {
-        ScenarioManager.use(scenario)
     }
 
     @Gitt("resttjenesten {string} for avviksbehandling")
