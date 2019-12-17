@@ -24,7 +24,6 @@ node {
                 usernamePassword(credentialsId: PipUserID, usernameVariable: 'PIP_USER', passwordVariable: 'PIP_AUTH')
             ]) {
             try {
-                sh(script: "echo $PIP_USER")
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
                           "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
                           "mvn clean test ${CucumberTag}" +
