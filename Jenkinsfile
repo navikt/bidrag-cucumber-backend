@@ -21,7 +21,7 @@ node {
         withCredentials([
                 usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
                 usernamePassword(credentialsId: TestUserID, usernameVariable: 'TEST_USER', passwordVariable: 'TEST_PASS'),
-                usernamePassword(credentialsId: srvbisys, usernameVariable: 'PIP_USER', passwordVariable: 'PIP_AUTH')
+                usernamePassword(credentialsId: PipUserID, usernameVariable: 'PIP_USER', passwordVariable: 'PIP_AUTH')
             ]) {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
