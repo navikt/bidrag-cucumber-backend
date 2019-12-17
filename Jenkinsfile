@@ -20,7 +20,8 @@ node {
 
         withCredentials([
                 usernamePassword(credentialsId: 'j104364', usernameVariable: 'USERNAME', passwordVariable: 'USER_AUTH'),
-                usernamePassword(credentialsId: TestUserID, usernameVariable: 'TEST_USER', passwordVariable: 'TEST_PASS')
+                usernamePassword(credentialsId: TestUserID, usernameVariable: 'TEST_USER', passwordVariable: 'TEST_PASS'),
+                usernamePassword(credentialsId: srvbisys, usernameVariable: 'PIP_USER', passwordVariable: 'PIP_AUTH')
             ]) {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
@@ -28,7 +29,8 @@ node {
                           "mvn clean test ${CucumberTag}" +
                           "  -DENVIRONMENT=${NaisEnvironment}" +
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
-                          "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}"
+                          "  -DTEST_USER=${TEST_USER} -DTEST_AUTH=${TEST_PASS}" +
+                          "  -DPIP_USER=${PIP_USER} -DPIP_AUTH=${PIP_AUTH}"
                 )
             } catch (err) { println("SOMETHING FISHY HAPPENED: " + err) } // Failures should not terminate the pipeline
         }
