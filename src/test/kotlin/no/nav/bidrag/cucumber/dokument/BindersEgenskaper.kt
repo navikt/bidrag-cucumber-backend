@@ -1,10 +1,7 @@
 package no.nav.bidrag.cucumber.dokument
 
-import io.cucumber.core.api.Scenario
-import io.cucumber.java.Before
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import no.nav.bidrag.cucumber.ScenarioManager
 import no.nav.bidrag.cucumber.Environment
 import no.nav.bidrag.cucumber.Fasit
 import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
@@ -15,11 +12,6 @@ class BindersEgenskaper {
 
     companion object {
         lateinit var dokumentreferanse: DokumentReferanse
-    }
-
-    @Before
-    fun `manage scenario`(scenario: Scenario) {
-        ScenarioManager.use(scenario)
     }
 
     @Når("jeg ber om tilgang til dokument på journalpostId {string} og dokumentreferanse {string}")
