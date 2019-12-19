@@ -24,6 +24,7 @@ Egenskap: bidrag-sak
       | kategori     |
       | erParagraf19 |
 
+    @bidrag-sak-pip
     Scenario: Skal hente pip for sak 0000003
       Gitt resttjenesten 'bidragSak'
       Og bruk av en produksjonsbruker med tilgang til bidrag-sak pip
