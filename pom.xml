@@ -14,7 +14,7 @@
     <apache-httpcomponenents.version>4.5.10</apache-httpcomponenents.version>
     <assertj.version>3.14.0</assertj.version>
     <bidrag-commons.version>0.1.15</bidrag-commons.version>
-    <clucumber.version>2.2.0</clucumber.version>
+    <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>4.7.4</cucumber.version>
     <jackson.version>2.10.1</jackson.version>
     <junit-jupiter.version>5.5.2</junit-jupiter.version>
