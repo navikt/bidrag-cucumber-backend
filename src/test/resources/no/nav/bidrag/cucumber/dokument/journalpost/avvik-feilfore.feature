@@ -44,3 +44,9 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Og når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
     Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'
+
+  Scenario: Sjekk at feilregistrert journalpost blir returnert i journalen og er feilført
+    Når jeg oppretter avvik
+    Og når jeg jeg henter sakjournalen etter avviksbehandling
+    Så skal http status være '200'
+    Og sakjournalen skal inneholde journalposten med felt 'feilfort' = 'true'
