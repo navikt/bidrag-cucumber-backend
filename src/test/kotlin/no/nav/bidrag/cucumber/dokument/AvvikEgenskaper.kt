@@ -127,5 +127,24 @@ class AvvikEgenskaper {
         restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal/${avvikData.hentJournalpostId()}")
     }
 
+    @Og("når jeg jeg henter sakjournalen etter avviksbehandling")
+    fun `nar jeg jeg henter sakjournalen etter avviksbehandling`() {
+        restTjenesteAvvik().exchangeGet("/sakjournal/${avvikData.saksnummer}?fagomrade=BID")
+    }
+
+    @Og("sakjournalen skal inneholde journalposten med felt {string} = {string}")
+    fun `sakjournalen skal inneholde journalposten med felt`(feltnavn: String, feltverdi: String) {
+        val journalposter = restTjenesteAvvik().hentResponseSomListe()
+        val journalpost = journalposter.find {
+            val jpid = it["journalpostId"]
+            val avvikJpid = avvikData.hentJournalpostId()
+
+            avvikJpid == jpid
+        }
+
+        assertThat(journalpost).`as`("journalpst med id ${avvikData.hentJournalpostId()}").isNotNull
+        if (journalpost != null) assertThat(journalpost["feilfort"]).`as`("journalpost er feilfort").isEqualTo(true)
+    }
+
     private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
 }
