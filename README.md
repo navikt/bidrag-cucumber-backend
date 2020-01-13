@@ -66,6 +66,14 @@ Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgen
 mvn test -Dcucumber.options='--tags "@<valgt-applikasjon>"' 
 ``` 
 
+Alle parametre som må angies for en fullstendig kjøring er:
+```
+mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<ditt passord>
+ -DTEST_USER=<testbruker, ie: Zxxxxxx> -DTEST_AUTH=<testbrukerens passord>
+ -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> PIP_AUTH=<pip brukers passord>
+```
+_**PS!**_ PIP bruker blir bare brukt i en test i bidrag-sak
+
 ### Test rapportering
 
 Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:
