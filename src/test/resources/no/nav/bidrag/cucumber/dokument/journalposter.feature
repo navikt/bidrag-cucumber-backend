@@ -36,9 +36,9 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
       | journalfortAv |
       | innhold       |
 
-  Scenario: Sjekk at sak uten tall gir HttpStatus 400 - Bad Request
+  Scenario: Sjekk at sak som ikke finnes git HttpStatus 404 - Bad Request
     Gitt jeg henter journalpost for sak "XYZ" som har id "BID"
-    Så skal http status være '400'
+    Så skal http status være '404'
 
   Scenario: Sjekk at journalpost kan oppdateres - James Bond
     Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
