@@ -131,6 +131,6 @@ Egenskap: bidrag-dokument-journalpost
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og responsen skal inneholde 'dokumentDato' = '2001-02-01'
 
-    Scenario: Sjekk at sak som ikke finnes git HttpStatus 404: Bad Request
+    Scenario: Sjekk at sak som ikke finnes git HttpStatus 404: Not Found
         Gitt jeg henter journalpost for sak "XYZ" som har id "BID"
         Så skal http status være '404'
