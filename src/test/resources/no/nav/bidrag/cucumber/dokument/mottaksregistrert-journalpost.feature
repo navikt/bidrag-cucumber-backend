@@ -17,7 +17,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "dokumentdato": "2020-02-02",
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
-        "gjelder": "06127445719",
+        "gjelder": "06127412345",
         "journaldato": "2020-02-02",
         "journalforendeEnhet": "1289",
         "journalfortAv": "Behandler, Zakarias",
