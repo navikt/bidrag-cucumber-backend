@@ -29,10 +29,6 @@ data class AvvikData(
     private fun hentKey() = detaljer.keys.iterator().next()
     private fun hentValue() = detaljer.values.iterator().next()
 
-    private fun hentDetaljerSomJson(): String {
-        return "{" + detaljer.map { """"${it.key}":"${it.value}"""" } + "}"
-    }
-
     fun leggTilEnhetsnummer(httpHeaders: HttpHeaders): HttpHeaders {
         httpHeaders[X_ENHETSNUMMER_HEADER] = enhetsnummer
         return httpHeaders
