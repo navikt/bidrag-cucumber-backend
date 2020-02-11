@@ -39,7 +39,7 @@ class FellesTestdataEgenskaper {
         }
     }
 
-    @Og("opprett journalpost når den ikke finnes for {string}:")
+    @Gitt("at jeg oppretter journalpost for {string}:")
     fun `opprett journalpost`(key: String, jpJson: String) {
         if (!journalpostIdPerKey.containsKey(key)) {
             restTjenesteTestdata.opprettJournalpost(jpJson)
