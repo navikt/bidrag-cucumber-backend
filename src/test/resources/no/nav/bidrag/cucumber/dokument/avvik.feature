@@ -6,7 +6,8 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
 
   Bakgrunn: Tester rest for bidragDokument og bruker resttjeneste bidragDokumentTestdata for å manipulere databasen før test
     Gitt resttjenesten 'bidragDokument' for avviksbehandling
-    Og data på journalpost med id '34111047' inneholder:
+    Og resttjenesten 'bidragDokumentTestdata' for manipulering av testdata
+    Og endre journalpost med id '34111047' til:
             """
             {
                 "fagomrade": "BID",
