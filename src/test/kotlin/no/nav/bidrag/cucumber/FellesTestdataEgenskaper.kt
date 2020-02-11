@@ -38,4 +38,15 @@ class FellesTestdataEgenskaper {
             journalpostIdPerKey[key] = opprettetJpMap["journalpostId"] as String
         }
     }
+
+    @Og("opprett journalpost når den ikke finnes for {string}:")
+    fun `opprett journalpost`(key: String, jpJson: String) {
+        if (!journalpostIdPerKey.containsKey(key)) {
+            restTjenesteTestdata.opprettJournalpost(jpJson)
+            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
+
+            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
+            journalpostIdPerKey[key] = opprettetJpMap["journalpostId"] as String
+        }
+    }
 }
