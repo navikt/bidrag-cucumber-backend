@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber.dokument
 
+import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import no.nav.bidrag.cucumber.X_ENHETSNUMMER_HEADER
 import org.springframework.http.HttpHeaders
 
@@ -9,10 +10,6 @@ data class AvvikData(
         val saksnummer: String,
         private val detaljer: MutableMap<String, String> = HashMap()
 ) {
-    companion object {
-        private val journalpostIdForAvvikstype: MutableMap<String, String> = HashMap()
-    }
-
     lateinit var avvikstype: String
     lateinit var enhetsnummer: String
 
@@ -29,27 +26,18 @@ data class AvvikData(
     private fun hentKey() = detaljer.keys.iterator().next()
     private fun hentValue() = detaljer.values.iterator().next()
 
-    private fun hentDetaljerSomJson(): String {
-        return "{" + detaljer.map { """"${it.key}":"${it.value}"""" } + "}"
-    }
-
     fun leggTilEnhetsnummer(httpHeaders: HttpHeaders): HttpHeaders {
         httpHeaders[X_ENHETSNUMMER_HEADER] = enhetsnummer
         return httpHeaders
     }
 
-    fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(journalpostIdForAvvikstype[avvikstype]!!))
-    fun harIkkeJournalpostIdForAvvikstype() = !journalpostIdForAvvikstype.containsKey(avvikstype)
+    fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!))
     fun lagEndepunktUrl() = "/sak/$saksnummer/journal/$journalpostId/avvik"
-    fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${journalpostIdForAvvikstype[avvikstype]}/avvik"
+    fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik"
     fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
 
-    fun hentJournalpostId() = journalpostIdForAvvikstype[avvikstype]!!
-    private fun hentJournalpostIdUtenPrefix() = journalpostIdForAvvikstype[avvikstype]!!.removePrefix("BID-")
-
-    fun leggTilJournalpostIdForAvvikstype(journalpostId: String) {
-        journalpostIdForAvvikstype[avvikstype] = journalpostId
-    }
+    fun hentJournalpostId() = FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!
+    private fun hentJournalpostIdUtenPrefix() = FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!.removePrefix("BID-")
 
     fun harJournalpostId() = journalpostId != null
 

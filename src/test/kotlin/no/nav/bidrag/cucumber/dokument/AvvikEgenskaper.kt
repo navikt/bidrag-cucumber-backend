@@ -4,6 +4,7 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
@@ -27,6 +28,7 @@ class AvvikEgenskaper {
     fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
         avvikData = AvvikData(saksnummer = saksnummer)
         avvikData.avvikstype = avvikstype
+        FellesTestdataEgenskaper.useAsKey(avvikstype)
     }
 
     @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
@@ -87,19 +89,6 @@ class AvvikEgenskaper {
     @Og("avvikstypen har beskrivelse {string}")
     fun avvikstypen_har_beskrivelse(beskrivelse: String) {
         avvikData.beskrivelse = beskrivelse
-    }
-
-    @Og("opprett journalpost og ta vare på journalpostId:")
-    fun `opprett journalpost og ta vare pa journalpostId`(jpJson: String) {
-        if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
-            val restTjenesteTestdata = RestTjenesteTestdata()
-
-            restTjenesteTestdata.opprettJournalpost(jpJson)
-            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
-
-            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
-            avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
-        }
     }
 
     @Når("jeg henter journalposter for sak {string} med fagområde {string} for å sjekke avviksbehandling")
