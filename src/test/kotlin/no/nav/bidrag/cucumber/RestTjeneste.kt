@@ -87,7 +87,7 @@ open class RestTjeneste(
         return httpHeaders
     }
 
-    fun put(endpointUrl: String, journalpostJson: String) {
+    fun exchangePut(endpointUrl: String, journalpostJson: String) {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON

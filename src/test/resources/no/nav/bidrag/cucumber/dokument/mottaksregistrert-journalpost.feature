@@ -22,7 +22,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         """
         {
         "avsenderNavn": "Cucumber Test",
-        "beskrivelse": "Test journalpost med journalstatus 'M'",
+        "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
         "dokumentType": "I",
         "dokumentdato": "2020-02-02",
         "dokumentreferanse": "1234567890",
@@ -36,7 +36,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med http-api '/journal/{}'
+    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde 'journalstatus' = 'M'
 
@@ -45,7 +45,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         """
         {
         "avsenderNavn": "Cucumber Test",
-        "beskrivelse": "Test journalpost med journalstatus 'M'",
+        "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
         "dokumentType": "I",
         "dokumentdato": "2020-02-02",
         "dokumentreferanse": "1234567890",
@@ -59,5 +59,42 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "J"
         }
         """
-    Og at jeg henter opprettet journalpost for 'JOURNALFØRT' med http-api '/journal/{}'
+    Og at jeg henter opprettet journalpost for 'JOURNALFØRT' med path '/journal/{}'
+    Så skal http status være '204'
+
+  Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
+    Gitt at jeg oppretter journalpost for 'REGISTRERING':
+        """
+        {
+        "avsenderNavn": "Cucumber Test",
+        "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
+        "dokumentType": "I",
+        "dokumentdato": "2020-02-02",
+        "dokumentreferanse": "1234567890",
+        "fagomrade": "BID",
+        "gjelder": "06127412345",
+        "journaldato": "2020-02-02",
+        "journalforendeEnhet": "1289",
+        "journalfortAv": "Behandler, Zakarias",
+        "mottattDato": "2020-02-02",
+        "skannetDato": "2020-02-02",
+        "journalstatus": "M"
+        }
+        """
+    Og jeg registrerer endring av opprettet journalpost, 'REGISTRERING', med path '/journal/{}':
+      """
+      {
+        "gjelder": "01117712345",
+        "tittel":"journalfør",
+        "endreDokumenter": [
+          {
+            "brevkode": "SVADA",
+            "dokId": 0,
+            "tittel": "journalfør"
+          }
+        ]
+      }
+      """
+    Så skal http status være '202'
+    Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
     Så skal http status være '204'
