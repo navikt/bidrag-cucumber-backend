@@ -24,11 +24,11 @@ class JournalpostEgenskaper {
 
     @Gitt("jeg endrer journalpost for sak {string} som har id {string} for bidragDokument:")
     fun `jeg endrer journalpost for sak som har id`(saksnummer: String, journalpostId: String, json: String) {
-        restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", json)
+        restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", json)
     }
 
     @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
     fun `jeg endrer journalpost med id til`(saksnummer: String, journalpostId: String, journalpostJson: String) {
-        restTjeneste.put("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
+        restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
     }
 }
