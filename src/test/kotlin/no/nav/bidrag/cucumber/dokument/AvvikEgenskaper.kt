@@ -93,7 +93,7 @@ class AvvikEgenskaper {
 
     @Når("jeg henter journalposter for sak {string} med fagområde {string} for å sjekke avviksbehandling")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
-        restTjenesteAvvik().exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+        restTjenesteAvvik().exchangeGet("/sak/$saksnummer/journal?fagomrade=$fagomrade")
     }
 
     @Når("jeg oppretter avvik med bekreftelse at den er sendt scanning")
@@ -118,7 +118,7 @@ class AvvikEgenskaper {
 
     @Og("når jeg jeg henter sakjournalen etter avviksbehandling")
     fun `nar jeg jeg henter sakjournalen etter avviksbehandling`() {
-        restTjenesteAvvik().exchangeGet("/sakjournal/${avvikData.saksnummer}?fagomrade=BID")
+        restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal?fagomrade=BID")
     }
 
     @Og("sakjournalen skal inneholde journalposten med felt {string} = {string}")

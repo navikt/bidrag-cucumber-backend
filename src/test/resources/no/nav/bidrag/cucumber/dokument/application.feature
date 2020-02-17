@@ -1,5 +1,6 @@
 # language: no
 @bidrag-dokument
+@@sakjournal
 Egenskap: bidrag-dokument: applikasjon
   Applikasjonen bidrag-dokument er klar for bruk
 
@@ -12,5 +13,5 @@ Egenskap: bidrag-dokument: applikasjon
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: skal kunne bruke en operasjon med sikkerhet satt opp
-    Når det gjøres et kall til '/sakjournal/0000003?fagomrade=BID'
+    Når det gjøres et kall til '/sak/0000003/journal?fagomrade=BID'
     Så skal http status ikke være '401' eller '403'
