@@ -14,7 +14,7 @@
     <apache-httpcomponenents.version>4.5.10</apache-httpcomponenents.version>
     <bidrag-commons.version>0.3.2</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
-    <cucumber.version>4.7.4</cucumber.version>
+    <cucumber.version>5.3.0</cucumber.version>
     <mimepull.version>1.9.12</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
