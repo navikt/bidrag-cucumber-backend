@@ -16,7 +16,6 @@
     <bidrag-commons.version>0.1.15</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>4.7.4</cucumber.version>
-    <jackson.version>2.10.1</jackson.version>
     <mimepull.version>1.9.12</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
@@ -77,7 +76,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
