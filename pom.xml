@@ -17,7 +17,6 @@
     <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>4.7.4</cucumber.version>
     <jackson.version>2.10.1</jackson.version>
-    <junit-jupiter.version>5.5.2</junit-jupiter.version>
     <mimepull.version>1.9.12</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
@@ -102,13 +101,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
