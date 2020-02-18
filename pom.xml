@@ -61,7 +61,35 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- third party dependencies -->
+    <!-- one logging framework to rule them all -->
+    <dependency>
+      <!-- API -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Rute commons-logging gjennom slf4j -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Disable common-logging -->
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>99.0-does-not-exist</version>
+    </dependency>
+    <dependency>
+      <!-- Rute log4j gjennom slf4j -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Implementasjon: Logback -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+
+    <!-- other third party dependencies -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
