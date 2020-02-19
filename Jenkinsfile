@@ -25,7 +25,7 @@ node {
             ]) {
             try {
                 sh(script:"docker run --rm -v '${env.WORKSPACE}':/usr/src/mymaven -w /usr/src/mymaven " +
-                          "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.1-jdk-12 " +
+                          "-v $JENKINS_HOME/.m2:/root/.m2 maven:3.6.3-jdk-13 " +
                           "mvn clean test ${CucumberTag}" +
                           "  -DENVIRONMENT=${NaisEnvironment}" +
                           "  -DUSERNAME=${USERNAME} -DUSER_AUTH=${USER_AUTH}" +
