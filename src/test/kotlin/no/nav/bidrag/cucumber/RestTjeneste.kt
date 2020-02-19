@@ -54,8 +54,10 @@ open class RestTjeneste(
             ResponseEntity(headerWithAlias(), e.statusCode)
         }
 
-        ScenarioManager.writeToCucumberScenario("${responseEntity.statusCode}")
-        ScenarioManager.writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
+        ScenarioManager.writeToCucumberScenario(
+                if (responseEntity.body != null) "response with json and status ${responseEntity.statusCode}"
+                else "no response body with status ${responseEntity.statusCode}"
+        )
 
         return responseEntity
     }
