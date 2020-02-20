@@ -132,7 +132,7 @@ class AvvikEgenskaper {
         }
 
         assertThat(journalpost).`as`("journalpst med id ${avvikData.hentJournalpostId()}").isNotNull
-        if (journalpost != null) assertThat(journalpost["feilfort"]).`as`("journalpost er feilfort").isEqualTo(true)
+        if (journalpost != null) assertThat(journalpost[feltnavn]).`as`("journalpost er feilfort").isEqualTo(feltverdi.toBoolean())
     }
 
     private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
