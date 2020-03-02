@@ -75,7 +75,7 @@ open class RestTjeneste(
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
 
         ScenarioManager.writeToCucumberScenario(
-                "Link til kibana for correlation-id: ${ScenarioManager.correlationIdForScenario}",
+                "Link til kibana for correlation-id - ${ScenarioManager.correlationIdForScenario}:",
                 "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"${ScenarioManager.correlationIdForScenario}\"),sort:!('@timestamp',desc))"
         )
 
