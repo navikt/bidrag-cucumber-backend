@@ -63,7 +63,7 @@ class Sikkerhet {
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
 
-        log("Finding open AM password for $user")
+        log("Finding open AM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
 
         return Environment().initRestTemplate(openIdConnectFasitRessurs.passordUrl())
                 .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
