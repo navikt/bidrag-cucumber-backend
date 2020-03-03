@@ -64,10 +64,11 @@ class Sikkerhet {
     }
 
     private fun hentTokenIdForTestbruker(): String {
+        val testUser = Environment.testUser()
         val httpEntityWithHeaders = initHttpEntity(
                 header(HttpHeaders.CACHE_CONTROL, "no-cache"),
                 header(HttpHeaders.CONTENT_TYPE, "application/json"),
-                header(X_OPENAM_USER_HEADER, Environment.testUser()),
+                header(X_OPENAM_USER_HEADER, testUser),
                 header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
 
@@ -76,7 +77,9 @@ class Sikkerhet {
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        return authMap.get("tokenId") as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
+        println("Setting up security for $testUser running in ${Environment.fetch()}")
+
+        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
