@@ -38,7 +38,7 @@ class Sikkerhet {
         val miljo = Environment.fetch()
         val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
 
-        log("Hentet openIdCommectFasitRessurs: $openIdConnectFasitRessurs")
+        log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
 
         val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)
         val tokenIdForAuthenticatedTestUser = hentTokenIdForTestbruker()
