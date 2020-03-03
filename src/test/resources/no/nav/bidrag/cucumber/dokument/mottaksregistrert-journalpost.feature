@@ -97,4 +97,4 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
       """
     Så skal http status være '202'
     Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
-    Så skal http status være '204'
+    Så skal http status være '200'
