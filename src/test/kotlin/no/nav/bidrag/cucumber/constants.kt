@@ -23,3 +23,7 @@ internal const val URL_ISSO_REDIRECT = "https://$ALIAS_BIDRAG_UI.nais.preprod.lo
 internal const val X_ENHETSNUMMER_HEADER = "X-Enhetsnummer"
 internal const val X_OPENAM_PASSW_HEADER = "X-OpenAM-Password"
 internal const val X_OPENAM_USER_HEADER = "X-OpenAM-Username"
+
+internal enum class LogLevel {
+    INFO, ERROR
+}
