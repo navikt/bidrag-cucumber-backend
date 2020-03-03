@@ -12,8 +12,13 @@ import java.time.LocalTime
 
 class Sikkerhet {
 
+    private val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
+    private val OPEN_ID_FASIT = "OPEN ID FASIT"
+    private val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+
     companion object {
         private lateinit var onlineToken: String
+        private val finalValueCache: MutableMap<String, Any> = HashMap()
     }
 
     private val fasit = Fasit()
@@ -36,15 +41,14 @@ class Sikkerhet {
 
     fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
-        val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
+        finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(miljo)
+        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD]?: hentOpenAmPassord(finalValueCache[OPEN_ID_FASIT] as FasitRessurs)
+        finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
+        val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
-        log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
+        log("Fetched id token for ${Environment.testUser()}")
 
-        val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)
-        val tokenIdForAuthenticatedTestUser = hentTokenIdForTestbruker()
-        val codeFraLocationHeader = hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser)
-
-        return "Bearer " + hentIdToken(codeFraLocationHeader, passordOpenAm)
+        return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
 
     private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitRessurs {
@@ -53,7 +57,11 @@ class Sikkerhet {
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        return fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+        val openIdConnectFasitRessurs =fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+
+        log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
+
+        return openIdConnectFasitRessurs
     }
 
     private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitRessurs): String {
@@ -78,6 +86,8 @@ class Sikkerhet {
                 header(X_OPENAM_USER_HEADER, testUser),
                 header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
+
+        log("Hent token id for $testUser in ${Environment.fetch()} from $URL_ISSO")
 
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
                 .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.fetch()}")
