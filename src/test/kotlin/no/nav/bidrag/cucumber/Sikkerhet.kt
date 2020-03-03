@@ -8,11 +8,12 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
+import java.time.LocalTime
 
 class Sikkerhet {
 
     companion object {
-        private lateinit var onlineToken:String
+        private lateinit var onlineToken: String
     }
 
     private val fasit = Fasit()
@@ -53,10 +54,13 @@ class Sikkerhet {
     }
 
     private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitRessurs): String {
-        val auth = "${Environment.user()}:${Environment.userAuthentication()}"
+        val user = Environment.user()
+        val auth = "$user:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
+
+        log("Finding open AM password for $user")
 
         return Environment().initRestTemplate(openIdConnectFasitRessurs.passordUrl())
                 .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
@@ -73,13 +77,17 @@ class Sikkerhet {
         )
 
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke json for testbruker")
+                .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.fetch()}")
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        println("Setting up security for $testUser running in ${Environment.fetch()}")
+        log("Setting up security for $testUser running in ${Environment.fetch()}")
 
-        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
+        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for $testUser in ${Environment.fetch()}")
+    }
+
+    private fun log(string: String) {
+        println("${LocalTime.now()} - INFO Sikkerhet.kt: $string")
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
