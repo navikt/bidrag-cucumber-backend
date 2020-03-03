@@ -37,6 +37,9 @@ class Sikkerhet {
     fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
         val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
+
+        log("Hentet openIdCommectFasitRessurs: $openIdConnectFasitRessurs")
+
         val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)
         val tokenIdForAuthenticatedTestUser = hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser)
