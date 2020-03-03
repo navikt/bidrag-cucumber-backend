@@ -29,7 +29,7 @@ class Sikkerhet {
             return onlineToken
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
-            System.err.println("Feil ved henting av online id token, ${exception}")
+            log("Feil ved henting av online id token, ${exception}", LogLevel.ERROR)
             throw e
         }
     }
@@ -90,7 +90,17 @@ class Sikkerhet {
     }
 
     private fun log(string: String) {
-        println("${LocalTime.now()} - INFO Sikkerhet.kt: $string")
+        log(string, LogLevel.INFO)
+    }
+
+    private fun log(string: String, level: LogLevel) {
+        val logMessage = "${LocalTime.now()} - ${level} Sikkerhet.kt: $string"
+
+        if (level == LogLevel.ERROR) {
+            System.err.println(logMessage)
+        } else {
+            println(logMessage)
+        }
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
