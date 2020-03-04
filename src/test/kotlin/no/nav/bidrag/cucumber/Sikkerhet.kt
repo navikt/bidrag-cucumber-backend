@@ -10,11 +10,11 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import java.time.LocalTime
 
-class Sikkerhet {
+internal const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
+internal const val OPEN_ID_FASIT = "OPEN ID FASIT"
+internal const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
 
-    private val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
-    private val OPEN_ID_FASIT = "OPEN ID FASIT"
-    private val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+class Sikkerhet {
 
     companion object {
         private lateinit var onlineToken: String
@@ -42,7 +42,7 @@ class Sikkerhet {
     fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
         finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(miljo)
-        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD]?: hentOpenAmPassord(finalValueCache[OPEN_ID_FASIT] as FasitRessurs)
+        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPassord(finalValueCache[OPEN_ID_FASIT] as FasitRessurs)
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
@@ -57,7 +57,7 @@ class Sikkerhet {
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        val openIdConnectFasitRessurs =fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+        val openIdConnectFasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
 
         log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
 
