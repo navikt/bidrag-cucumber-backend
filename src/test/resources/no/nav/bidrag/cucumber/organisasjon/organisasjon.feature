@@ -1,5 +1,5 @@
 # language: no
-@bidrag-organisasjon
+@organisasjon
 Egenskap: bidrag-organisasjon
 
   Bakgrunn: Felles for hvert scenario

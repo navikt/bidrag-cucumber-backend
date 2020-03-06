@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument
+@dokument
 @@sakjournal
 Egenskap: bidrag-dokument (/sak/(saksnummer)/journal REST API)
 
