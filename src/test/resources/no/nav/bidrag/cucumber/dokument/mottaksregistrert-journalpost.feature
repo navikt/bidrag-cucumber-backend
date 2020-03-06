@@ -84,6 +84,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og jeg registrerer endring av opprettet journalpost, 'REGISTRERING', med path '/journal/{}':
       """
       {
+        "skalJournalfores":false,
         "gjelder": "01117712345",
         "tittel":"journalfør",
         "endreDokumenter": [
@@ -98,3 +99,4 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Så skal http status være '202'
     Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
+    Og responsen skal inneholde 'journalstatus' = 'M'
