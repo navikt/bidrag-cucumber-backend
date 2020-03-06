@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument-journalpost
+@journalpost
 Egenskap: bidrag-dokument-journalpost
 
     Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.

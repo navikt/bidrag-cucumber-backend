@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument-journalpost
+@journalpost
 Egenskap: avvik bidrag-dokument-journalpost: bestill original
 
   Tester REST API til journalpost endepunktet for avvik i bidrag-dokument.
