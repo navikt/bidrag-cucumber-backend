@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument-journalpost
+@journalpost
 Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
 
   Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.

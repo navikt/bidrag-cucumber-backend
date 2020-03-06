@@ -1,5 +1,5 @@
 # language: no
-@bidrag-dokument
+@dokument
 Egenskap: bidrag-dokument (/tilgang REST API)
 
     Tester tilgang URL
