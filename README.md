@@ -55,7 +55,7 @@ Det er ikke noen begrensninger på hvor mange "tagger" en `Egenskap` eller `Feat
 Kjøring av "taggede" tester:
 
 ```
-mvn test -Dcucumber.filter.tags="@bidrag-cucumber"
+mvn test -Dcucumber.filter.tags="@cucumber"
 ``` 
 
 For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cucumber.io/docs/cucumber/api/>  
@@ -63,7 +63,7 @@ For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cu
 Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgende maven kommando blir da utført:
 
 ``` 
-mvn test -Dcucumber.filter.tags="@<valgt-applikasjon>" 
+mvn test -Dcucumber.filter.tags="@<valgt-applikasjon>- # tag er ikke prefikset med bidrag el bidrag-dokument" 
 ``` 
 
 Alle parametre som må angies for en fullstendig kjøring er:
