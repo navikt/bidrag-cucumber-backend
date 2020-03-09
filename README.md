@@ -41,6 +41,17 @@ Alle norske nøkkelord som kan brukes i `gherkin`-filer er `Egenskap`, `Bakgrunn
 Cucumber støtter flere språk og for mer detaljert oversikt over funksjonaliteten som `gherkin` gir, se detaljert beskrivelse på nett: 
 <https://cucumber.io/docs/gherkin/reference/>
 
+### GitHub Workflow
+
+Cucumber testene brukes i github workflow når en push blir gjort til en branch eller master på en nais applikasjon under bidrag. Hvis en endring av en
+nais applikasjon krever endringer av cucumber testene, så kod disse endringene i en feature branch tiljørende bidrag-cucumber-backend (kall feature-
+branchen `feature`) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken som helst feature-
+branch tilhørende nais-applikasjonen.
+
+- action: bidrag-actions/maven-cucumber-backend/@v1-maven-cucumber-backend
+- les https://github.com/navikt/bidrag-actions/blob/master/maven-cucumber-backend/README.md
+ 
+
 ### Kjøring
 
 Alle kotlin-cucumber-tester kjører på en jvm og bruker JUnit som plattform. Derfor kan testene bli utført i hvilken som helt editor som støtter JUnit,
