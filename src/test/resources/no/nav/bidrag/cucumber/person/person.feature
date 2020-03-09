@@ -1,5 +1,5 @@
 # language: no
-@person
+@bidrag-person
 Egenskap: bidrag-person
 
   Bakgrunn: Felles egenskaper for alle scenario

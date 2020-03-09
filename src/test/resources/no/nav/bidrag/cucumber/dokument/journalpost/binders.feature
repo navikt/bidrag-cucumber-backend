@@ -1,5 +1,5 @@
 # language: no
-@journalpost
+@bidrag-dokument-journalpost
 Egenskap:  bidrag-dokument-journalpost (/tilgang REST API)
 
   Tester tilgang URL

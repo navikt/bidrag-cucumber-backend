@@ -1,5 +1,5 @@
 # language: no
-@dokument
+@bidrag-dokument
 Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
 
   Tester REST API for avvik i bidrag-dokument.

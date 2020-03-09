@@ -1,5 +1,5 @@
 # language: no
-@journalpost
+@bidrag-dokument-journalpost
 Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
 
   Bakgrunn: Opprett og cache journapostId og sett felles params så vi slipper å gjenta for hvert scenario.

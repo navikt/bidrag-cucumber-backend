@@ -63,7 +63,7 @@ For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cu
 Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgende maven kommando blir da utført:
 
 ``` 
-mvn test -Dcucumber.filter.tags="@<valgt-applikasjon>- # tag er ikke prefikset med bidrag el bidrag-dokument" 
+mvn test -Dcucumber.filter.tags=@<valgt-applikasjon> 
 ``` 
 
 Alle parametre som må angies for en fullstendig kjøring er:

@@ -1,5 +1,5 @@
 # language: no
-@dokument
+@bidrag-dokument
 @@sakjournal
 Egenskap: bidrag-dokument: applikasjon
   Applikasjonen bidrag-dokument er klar for bruk
