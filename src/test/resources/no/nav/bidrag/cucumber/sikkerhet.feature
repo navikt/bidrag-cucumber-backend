@@ -1,5 +1,5 @@
 # language: no
-@cucumber
+@bidrag-cucumber
 Egenskap: bidrag-cucumber: sikkerhet
   Sjekker at oidc token fungerer for bidrag-ui
 

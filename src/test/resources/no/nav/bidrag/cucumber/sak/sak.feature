@@ -1,5 +1,5 @@
 # language: no
-@sak
+@bidrag-sak
 Egenskap: bidrag-sak
 
   Tester REST API til endepunktet BidragSakController i bidrag-sak.

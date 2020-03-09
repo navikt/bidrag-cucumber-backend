@@ -1,5 +1,5 @@
 # language: no
-@sjablon
+@bidrag-sjablon
 Egenskap: bidrag-sjablon
 
   Tester REST API til endepunkt i bidrag-sjablon.

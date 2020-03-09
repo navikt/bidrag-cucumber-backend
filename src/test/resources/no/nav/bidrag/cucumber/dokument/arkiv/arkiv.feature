@@ -1,5 +1,5 @@
 # language: no
-@arkiv
+@bidrag-dokument-arkiv
 Egenskap: bidrag-dokument-arkiv
 
   Tester REST API til endepunkt i bidrag-dokument-arkiv.

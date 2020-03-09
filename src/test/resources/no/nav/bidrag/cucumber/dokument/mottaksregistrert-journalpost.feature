@@ -1,5 +1,5 @@
 # language: no
-@dokument
+@bidrag-dokument
 @mottaksregistrert
 Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokument (/journal/* REST API)
 
