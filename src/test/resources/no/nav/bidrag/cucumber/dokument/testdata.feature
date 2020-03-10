@@ -1,5 +1,5 @@
 # language: no
-@testdata
+@bidrag-dokument-testdata
 Egenskap: bidrag-dokument-testdata
 
   Tester REST API til endepunkt i bidrag-dokument-testdata.
