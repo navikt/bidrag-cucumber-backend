@@ -49,4 +49,10 @@ class FellesTestdataEgenskaper {
             journalpostIdPerKey[key] = opprettetJpMap["journalpostId"] as String
         }
     }
+
+    @Og("resttjeneste til å opprette journalpost når den ikke finnes for avvik:")
+    fun `bruk resttjeneste opprett journalpost`(resttjenesteTestdata: String, key: String, jpJson: String) {
+        resttjenesten(resttjenesteTestdata)
+        `opprett journalpost`(key, jpJson)
+    }
 }
