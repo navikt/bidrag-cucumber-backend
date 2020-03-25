@@ -54,8 +54,10 @@ open class RestTjeneste(
             ResponseEntity(headerWithAlias(), e.statusCode)
         }
 
-        ScenarioManager.writeToCucumberScenario("${responseEntity.statusCode}")
-        ScenarioManager.writeToCucumberScenario(if (responseEntity.body != null) responseEntity.body else "null response")
+        ScenarioManager.writeToCucumberScenario(
+                if (responseEntity.body != null) "response with json and status ${responseEntity.statusCode}"
+                else "no response body with status ${responseEntity.statusCode}"
+        )
 
         return responseEntity
     }
@@ -73,7 +75,7 @@ open class RestTjeneste(
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
 
         ScenarioManager.writeToCucumberScenario(
-                "Link til kibana for correlation-id: ${ScenarioManager.correlationIdForScenario}",
+                "Link til kibana for correlation-id - ${ScenarioManager.correlationIdForScenario}:",
                 "https://logs.adeo.no/app/kibana#/discover?_g=()&_a=(columns:!(message,envclass,environment,level,application,host),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:lucene,query:\"${ScenarioManager.correlationIdForScenario}\"),sort:!('@timestamp',desc))"
         )
 
@@ -87,7 +89,7 @@ open class RestTjeneste(
         return httpHeaders
     }
 
-    fun put(endpointUrl: String, journalpostJson: String) {
+    fun exchangePut(endpointUrl: String, journalpostJson: String) {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationId()
         headers.contentType = MediaType.APPLICATION_JSON

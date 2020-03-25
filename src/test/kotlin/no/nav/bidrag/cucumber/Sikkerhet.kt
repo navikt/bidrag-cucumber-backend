@@ -8,11 +8,17 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
+import java.time.LocalTime
+
+internal const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
+internal const val OPEN_ID_FASIT = "OPEN ID FASIT"
+internal const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
 
 class Sikkerhet {
 
     companion object {
-        private lateinit var onlineToken:String
+        private lateinit var onlineToken: String
+        private val finalValueCache: MutableMap<String, Any> = HashMap()
     }
 
     private val fasit = Fasit()
@@ -28,19 +34,21 @@ class Sikkerhet {
             return onlineToken
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
-            System.err.println("Feil ved henting av online id token, ${exception}")
+            log("Feil ved henting av online id token, ${exception}", LogLevel.ERROR)
             throw e
         }
     }
 
     fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
-        val openIdConnectFasitRessurs = hentOpenIdConnectFasitRessurs(miljo)
-        val passordOpenAm = hentOpenAmPassord(openIdConnectFasitRessurs)
-        val tokenIdForAuthenticatedTestUser = hentTokenIdForTestbruker()
-        val codeFraLocationHeader = hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser)
+        finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(miljo)
+        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPassord(finalValueCache[OPEN_ID_FASIT] as FasitRessurs)
+        finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
+        val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
-        return "Bearer " + hentIdToken(codeFraLocationHeader, passordOpenAm)
+        log("Fetched id token for ${Environment.testUser()}")
+
+        return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
 
     private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitRessurs {
@@ -49,14 +57,21 @@ class Sikkerhet {
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        return fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+        val openIdConnectFasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+
+        log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
+
+        return openIdConnectFasitRessurs
     }
 
     private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitRessurs): String {
-        val auth = "${Environment.user()}:${Environment.userAuthentication()}"
+        val user = Environment.user()
+        val auth = "$user:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
+
+        log("Finding open AM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
 
         return Environment().initRestTemplate(openIdConnectFasitRessurs.passordUrl())
                 .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
@@ -64,19 +79,38 @@ class Sikkerhet {
     }
 
     private fun hentTokenIdForTestbruker(): String {
+        val testUser = Environment.testUser()
         val httpEntityWithHeaders = initHttpEntity(
                 header(HttpHeaders.CACHE_CONTROL, "no-cache"),
                 header(HttpHeaders.CONTENT_TYPE, "application/json"),
-                header(X_OPENAM_USER_HEADER, Environment.testUser()),
+                header(X_OPENAM_USER_HEADER, testUser),
                 header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
 
+        log("Hent token id for $testUser in ${Environment.fetch()} from $URL_ISSO")
+
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke json for testbruker")
+                .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.fetch()}")
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        return authMap.get("tokenId") as String? ?: throw IllegalStateException("Fant ikke id token i json for testbruker")
+        log("Setting up security for $testUser running in ${Environment.fetch()}")
+
+        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for $testUser in ${Environment.fetch()}")
+    }
+
+    private fun log(string: String) {
+        log(string, LogLevel.INFO)
+    }
+
+    private fun log(string: String, level: LogLevel) {
+        val logMessage = "${LocalTime.now()} - ${level} Sikkerhet.kt: $string"
+
+        if (level == LogLevel.ERROR) {
+            System.err.println(logMessage)
+        } else {
+            println(logMessage)
+        }
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {

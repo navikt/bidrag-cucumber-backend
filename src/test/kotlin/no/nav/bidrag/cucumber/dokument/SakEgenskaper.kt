@@ -9,7 +9,7 @@ class SakEgenskaper {
 
     @Når("jeg henter journalposter for sak {string} som har fagområde {string}")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
-        restTjeneste.exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+        restTjeneste.exchangeGet("/sak/$saksnummer/journal?fagomrade=$fagomrade")
     }
 
     @Så("hver journal i listen skal ha {string} = {string}")

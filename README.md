@@ -41,6 +41,17 @@ Alle norske nøkkelord som kan brukes i `gherkin`-filer er `Egenskap`, `Bakgrunn
 Cucumber støtter flere språk og for mer detaljert oversikt over funksjonaliteten som `gherkin` gir, se detaljert beskrivelse på nett: 
 <https://cucumber.io/docs/gherkin/reference/>
 
+### GitHub Workflow
+
+Cucumber testene brukes i github workflow når en push blir gjort til en branch eller master på en nais applikasjon under bidrag. Hvis en endring av en
+nais applikasjon krever endringer av cucumber testene, så kod disse endringene i en feature branch tiljørende bidrag-cucumber-backend (kall feature-
+branchen `feature`) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken som helst feature-
+branch tilhørende nais-applikasjonen.
+
+- action: bidrag-actions/maven-cucumber-backend/@v1-maven-cucumber-backend
+- les https://github.com/navikt/bidrag-actions/blob/master/maven-cucumber-backend/README.md
+ 
+
 ### Kjøring
 
 Alle kotlin-cucumber-tester kjører på en jvm og bruker JUnit som plattform. Derfor kan testene bli utført i hvilken som helt editor som støtter JUnit,
@@ -55,7 +66,7 @@ Det er ikke noen begrensninger på hvor mange "tagger" en `Egenskap` eller `Feat
 Kjøring av "taggede" tester:
 
 ```
-mvn test -Dcucumber.options='--tags "@bidrag-cucumber"'
+mvn test -Dcucumber.filter.tags="@cucumber"
 ``` 
 
 For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cucumber.io/docs/cucumber/api/>  
@@ -63,7 +74,7 @@ For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cu
 Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgende maven kommando blir da utført:
 
 ``` 
-mvn test -Dcucumber.options='--tags "@<valgt-applikasjon>"' 
+mvn test -Dcucumber.filter.tags=@<valgt-applikasjon> 
 ``` 
 
 Alle parametre som må angies for en fullstendig kjøring er:
@@ -84,4 +95,4 @@ mvn cluecumber-report:reporting
 
 Man kan også gjøre både testing og rapportgenerering i et steg med `mvn install`
 
-Siden testing blir gjennomført av jenkins, blir cucumber sin egen jenkins-plugin brukt.
+Når cucumber kjøres på jenkins, vil jenkins in egen plugin for å generere cucumber rapporter bli brukt.

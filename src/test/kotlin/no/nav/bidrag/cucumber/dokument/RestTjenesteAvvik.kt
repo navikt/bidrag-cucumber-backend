@@ -20,7 +20,7 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
     private fun initEntityMedHeaders(avvikData: AvvikData): HttpEntity<String> {
         val headers = avvikData.leggTilEnhetsnummer(initHttpHeadersWithCorrelationId())
-        headers.contentType = MediaType.APPLICATION_JSON_UTF8
+        headers.contentType = MediaType.APPLICATION_JSON
 
         return HttpEntity(avvikData.hentAvvikshendelse(), headers)
     }

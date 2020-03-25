@@ -1,6 +1,7 @@
 # language: no
 @bidrag-dokument
-Egenskap: bidrag-dokument (/sakjournal REST API)
+@@sakjournal
+Egenskap: bidrag-dokument (/sak/(saksnummer)/journal REST API)
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.

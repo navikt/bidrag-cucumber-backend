@@ -1,6 +1,6 @@
 package no.nav.bidrag.cucumber
 
-import io.cucumber.core.api.Scenario
+import io.cucumber.java.Scenario
 
 open class ScenarioManager {
     companion object {

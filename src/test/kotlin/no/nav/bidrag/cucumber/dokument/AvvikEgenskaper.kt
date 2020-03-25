@@ -4,6 +4,7 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
@@ -27,6 +28,7 @@ class AvvikEgenskaper {
     fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
         avvikData = AvvikData(saksnummer = saksnummer)
         avvikData.avvikstype = avvikstype
+        FellesTestdataEgenskaper.useAsKey(avvikstype)
     }
 
     @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
@@ -89,22 +91,9 @@ class AvvikEgenskaper {
         avvikData.beskrivelse = beskrivelse
     }
 
-    @Og("opprett journalpost og ta vare på journalpostId:")
-    fun `opprett journalpost og ta vare pa journalpostId`(jpJson: String) {
-        if (avvikData.harIkkeJournalpostIdForAvvikstype()) {
-            val restTjenesteTestdata = RestTjenesteTestdata()
-
-            restTjenesteTestdata.opprettJournalpost(jpJson)
-            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
-
-            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
-            avvikData.leggTilJournalpostIdForAvvikstype(opprettetJpMap["journalpostId"] as String)
-        }
-    }
-
     @Når("jeg henter journalposter for sak {string} med fagområde {string} for å sjekke avviksbehandling")
     fun `jeg henter journalposter for sak med fagomrade`(saksnummer: String, fagomrade: String) {
-        restTjenesteAvvik().exchangeGet("/sakjournal/$saksnummer?fagomrade=$fagomrade")
+        restTjenesteAvvik().exchangeGet("/sak/$saksnummer/journal?fagomrade=$fagomrade")
     }
 
     @Når("jeg oppretter avvik med bekreftelse at den er sendt scanning")
@@ -129,7 +118,7 @@ class AvvikEgenskaper {
 
     @Og("når jeg jeg henter sakjournalen etter avviksbehandling")
     fun `nar jeg jeg henter sakjournalen etter avviksbehandling`() {
-        restTjenesteAvvik().exchangeGet("/sakjournal/${avvikData.saksnummer}?fagomrade=BID")
+        restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal?fagomrade=BID")
     }
 
     @Og("sakjournalen skal inneholde journalposten med felt {string} = {string}")
@@ -143,7 +132,7 @@ class AvvikEgenskaper {
         }
 
         assertThat(journalpost).`as`("journalpst med id ${avvikData.hentJournalpostId()}").isNotNull
-        if (journalpost != null) assertThat(journalpost["feilfort"]).`as`("journalpost er feilfort").isEqualTo(true)
+        if (journalpost != null) assertThat(journalpost[feltnavn]).`as`("journalpost er feilfort").isEqualTo(feltverdi.toBoolean())
     }
 
     private fun restTjenesteAvvik() = FellesEgenskaper.restTjeneste as RestTjenesteAvvik
