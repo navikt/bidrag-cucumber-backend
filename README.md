@@ -70,7 +70,7 @@ Alle parametre som må angies for en fullstendig kjøring er:
 ```
 mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<ditt passord>
  -DTEST_USER=<testbruker, ie: Zxxxxxx> -DTEST_AUTH=<testbrukerens passord>
- -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> PIP_AUTH=<pip brukers passord>
+ -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> -DPIP_AUTH=<pip brukers passord>
 ```
 _**PS!**_ PIP bruker blir bare brukt i en test i bidrag-sak
 
