@@ -6,7 +6,7 @@ import org.springframework.http.MediaType
 
 class RestTjenesteTestdata(alias: String): RestTjeneste(alias) {
     fun opprettJournalpost(journalpostJson: String) {
-        val correlationIdWithContentType = initHttpHeadersWithCorrelationId()
+        val correlationIdWithContentType = initHttpHeadersWithCorrelationIdAndEnhet()
         correlationIdWithContentType.contentType = MediaType.APPLICATION_JSON
 
         post("/journalpost", HttpEntity(journalpostJson, correlationIdWithContentType))
