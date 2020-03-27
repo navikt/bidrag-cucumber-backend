@@ -37,7 +37,7 @@ class AvvikEgenskaper {
 
     @Og("enhetsnummer for avvik er {string}")
     fun `enhetsnummer for avvik er`(enhetsnummer: String) {
-        avvikData.enhetsnummer = enhetsnummer
+        avvikData.enhet = enhetsnummer
     }
 
     @Gitt("avvikstype {string}")

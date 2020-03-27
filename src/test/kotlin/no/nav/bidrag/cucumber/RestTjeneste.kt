@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpStatusCodeException
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 import java.util.LinkedHashMap
+import no.nav.bidrag.cucumber.X_ENHET_HEADER
 
 
 @Suppress("UNCHECKED_CAST")
@@ -40,7 +41,7 @@ open class RestTjeneste(
     fun exchangeGet(endpointUrl: String, username: String?, password: String): ResponseEntity<String> {
         debugFullUrl = rest.baseUrl + endpointUrl
 
-        val header = initHttpHeadersWithCorrelationId()
+        val header = initHttpHeadersWithCorrelationIdAndEnhet()
 
         if (username != null) {
             header.add(HttpHeaders.AUTHORIZATION, "Basic " + base64EncodeCredentials(username, password))
@@ -70,9 +71,10 @@ open class RestTjeneste(
         return String(encodedCredentials, StandardCharsets.UTF_8)
     }
 
-    protected fun initHttpHeadersWithCorrelationId(): HttpHeaders {
+    protected fun initHttpHeadersWithCorrelationIdAndEnhet(): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
+        headers.add(X_ENHET_HEADER, "4802")
 
         ScenarioManager.writeToCucumberScenario(
                 "Link til kibana for correlation-id - ${ScenarioManager.correlationIdForScenario}:",
@@ -91,7 +93,7 @@ open class RestTjeneste(
 
     fun exchangePut(endpointUrl: String, journalpostJson: String) {
         this.debugFullUrl = rest.baseUrl + endpointUrl
-        val headers = initHttpHeadersWithCorrelationId()
+        val headers = initHttpHeadersWithCorrelationIdAndEnhet()
         headers.contentType = MediaType.APPLICATION_JSON
 
         val jsonEntity = HttpEntity(journalpostJson, headers)
