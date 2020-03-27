@@ -1,11 +1,11 @@
 # language: no
 @bidrag-dokument
 @mottaksregistrert
-Egenskap: avvik på journalposter som er mottaksregistrert i bidrag-dokument (/journal/*/avvik REST API)
+Egenskap: avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument (/journal/*/avvik REST API)
 
-  Bakgrunn: Gitt resttjeneste, avviksdata og testdata
-    Gitt resttjenesten 'bidragDokument'
-    Og resttjenesten 'bidragDokumdentTestdata' til å opprette journalpost når den ikke finnes for avvik 'ENDRE_FAGOMRADE':
+  Bakgrunn: Gitt resttjeneste og testdata
+    Gitt resttjenesten 'bidragDokument' for avviksbehandling av mottaksredigert journalpost for avvikstype 'ENDRE_FAGOMRADE'
+    Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstype
         """
         {
         "avsenderNavn": "Cucumber Test",
@@ -16,6 +16,7 @@ Egenskap: avvik på journalposter som er mottaksregistrert i bidrag-dokument (/j
         "fagomrade": "BID",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
+        "journalstatus":"M"
         "journalforendeEnhet": "1289",
         "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2019-01-01",
@@ -24,3 +25,6 @@ Egenskap: avvik på journalposter som er mottaksregistrert i bidrag-dokument (/j
         }
         """
 
+  Scenario: Skal finne finne avvikstype på mottaksregistrert journalpost
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Så skal listen med avvikstyper inneholde 'ENDRE_FAGOMRADE'

@@ -26,12 +26,12 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
     }
 
     fun hentResponseSomListeAvStrenger(): List<String> {
-        if (hentResponse() == null) {
+        if (responseEntity.body == null) {
             return emptyList()
         }
 
         return ArrayList(
-                (hentResponse() as String)
+                (responseEntity.body as String)
                         .removePrefix("[")
                         .removeSuffix("]")
                         .split(",")
