@@ -1,7 +1,7 @@
 package no.nav.bidrag.cucumber.dokument
 
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
-import no.nav.bidrag.cucumber.X_ENHETSNUMMER_HEADER
+import no.nav.bidrag.cucumber.X_ENHET_HEADER
 import org.springframework.http.HttpHeaders
 
 data class AvvikData(
@@ -11,23 +11,23 @@ data class AvvikData(
         private val detaljer: MutableMap<String, String> = HashMap()
 ) {
     lateinit var avvikstype: String
-    lateinit var enhetsnummer: String
+    lateinit var enhet: String
 
     constructor(saksnummer: String, journalpostId: String) : this(saksnummer = saksnummer) {
         this.journalpostId = journalpostId
     }
 
     fun hentAvvikshendelse(): String {
-        return if (beskrivelse == null) """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer"}"""
-        else if (detaljer.isEmpty()) """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer", "beskrivelse":"$beskrivelse"}"""
-        else """{"avvikType":"$avvikstype","enhetsnummer":"$enhetsnummer","beskrivelse":"$beskrivelse","detaljer":{"${hentKey()}":"${hentValue()}"}}"""
+        return if (beskrivelse == null) """{"avvikType":"$avvikstype","enhetsnummer":"$enhet"}"""
+        else if (detaljer.isEmpty()) """{"avvikType":"$avvikstype","enhetsnummer":"$enhet", "beskrivelse":"$beskrivelse"}"""
+        else """{"avvikType":"$avvikstype","enhetsnummer":"$enhet","beskrivelse":"$beskrivelse","detaljer":{"${hentKey()}":"${hentValue()}"}}"""
     }
 
     private fun hentKey() = detaljer.keys.iterator().next()
     private fun hentValue() = detaljer.values.iterator().next()
 
     fun leggTilEnhetsnummer(httpHeaders: HttpHeaders): HttpHeaders {
-        httpHeaders[X_ENHETSNUMMER_HEADER] = enhetsnummer
+        httpHeaders[X_ENHET_HEADER] = enhet
         return httpHeaders
     }
 

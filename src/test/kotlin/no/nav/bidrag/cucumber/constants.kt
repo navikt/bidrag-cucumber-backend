@@ -20,7 +20,7 @@ internal const val URL_ISSO_AUTHORIZE = "https://isso-q.adeo.no/isso/oauth2/auth
 internal const val URL_ISSO_ACCESS_TOKEN = "https://isso-q.adeo.no:443/isso/oauth2/access_token"
 internal const val URL_ISSO_REDIRECT = "https://$ALIAS_BIDRAG_UI.nais.preprod.local/isso"
 
-internal const val X_ENHETSNUMMER_HEADER = "X-Enhetsnummer"
+internal const val X_ENHET_HEADER = "X-Enhet"
 internal const val X_OPENAM_PASSW_HEADER = "X-OpenAM-Password"
 internal const val X_OPENAM_USER_HEADER = "X-OpenAM-Username"
 
