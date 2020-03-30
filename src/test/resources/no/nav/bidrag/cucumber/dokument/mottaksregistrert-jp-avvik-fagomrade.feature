@@ -16,7 +16,7 @@ Egenskap: avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i b
         "fagomrade": "BID",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
-        "journalstatus":"M"
+        "journalstatus":"M",
         "journalforendeEnhet": "1289",
         "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2019-01-01",
