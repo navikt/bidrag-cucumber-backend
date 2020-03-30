@@ -23,7 +23,7 @@ open class RestTjeneste(
 ) {
 
     private lateinit var debugFullUrl: String
-    private lateinit var responseEntity: ResponseEntity<String>
+    protected lateinit var responseEntity: ResponseEntity<String>
 
     constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
 

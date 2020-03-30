@@ -7,7 +7,6 @@ import no.nav.bidrag.cucumber.FellesEgenskaper
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
-import org.springframework.http.HttpStatus
 
 class AvvikEgenskaper {
     companion object {
