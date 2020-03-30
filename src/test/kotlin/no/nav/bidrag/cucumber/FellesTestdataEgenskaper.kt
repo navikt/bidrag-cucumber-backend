@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
+import no.nav.bidrag.cucumber.dokument.AvvikDataMottaksregistrertJp
 import no.nav.bidrag.cucumber.dokument.RestTjenesteTestdata
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
@@ -47,6 +48,15 @@ class FellesTestdataEgenskaper {
 
             val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
             journalpostIdPerKey[key] = opprettetJpMap["journalpostId"] as String
+        }
+    }
+
+    fun `opprett journalpost`(avvikData: AvvikDataMottaksregistrertJp, jpJson: String) {
+        if (!journalpostIdPerKey.containsKey(avvikData.testdataNokkel)) {
+            restTjenesteTestdata.opprettJournalpost(jpJson)
+
+            val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
+            journalpostIdPerKey[avvikData.testdataNokkel] = opprettetJpMap["journalpostId"] as String
         }
     }
 }
