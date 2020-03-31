@@ -1,7 +1,7 @@
 # language: no
 @bidrag-dokument-journalpost
 @mottaksregistrert
-Egenskap: registrere avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument-journalpost (/journal/*/avvik REST API)
+Egenskap: registrere avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert med bidrag-dokument-journalpost (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
     Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'ENDRE_FAGOMRADE'
