@@ -1,7 +1,7 @@
 # language: no
 @bidrag-dokument
 @mottaksregistrert
-Egenskap: finne avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument (/journal/*/avvik REST API)
+Egenskap: finne avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert med bidrag-dokument (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
     Gitt resttjenesten 'bidragDokument' for å finne avvik på mottaksredigert journalpost, avvikstype 'ENDRE_FAGOMRADE'
@@ -25,6 +25,16 @@ Egenskap: finne avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistre
         }
         """
 
-  Scenario: Skal finne finne avvikstype på mottaksregistrert journalpost
-    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
-    Så skal listen med avvikstyper inneholde 'ENDRE_FAGOMRADE'
+  Scenario: Registrere avviket og sjekke endringen av journalpost
+    Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
+    Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
+        """
+        {
+        "avvikType":"ENDRE_FAGOMRADE",
+        "enhetsnummer":"4806",
+        "beskrivelse":"FAR"
+        }
+        """
+    Så skal http status være '200'
+    Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
+    Så skal responsen inneholde 'fagomrade' = 'FAR'
