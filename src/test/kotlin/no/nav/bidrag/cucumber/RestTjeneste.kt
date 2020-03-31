@@ -72,9 +72,13 @@ open class RestTjeneste(
     }
 
     protected fun initHttpHeadersWithCorrelationIdAndEnhet(): HttpHeaders {
+        return initHttpHeadersWithCorrelationIdAndEnhet(null)
+    }
+
+    protected fun initHttpHeadersWithCorrelationIdAndEnhet(enhet: String?): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
-        headers.add(X_ENHET_HEADER, "4802")
+        headers.add(X_ENHET_HEADER, enhet ?: "4802")
 
         ScenarioManager.writeToCucumberScenario(
                 "Link til kibana for correlation-id - ${ScenarioManager.correlationIdForScenario}:",
@@ -92,17 +96,33 @@ open class RestTjeneste(
     }
 
     fun exchangePut(endpointUrl: String, journalpostJson: String) {
+        exchangePut(endpointUrl, journalpostJson, null)
+    }
+
+    fun  exchangePut(endpointUrl: String, journalpostJson: String, enhet: String?) {
+        val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
+        exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
+    }
+
+    fun exchangePost(endpointUrl: String, journalpostJson: String, enhet: String?) {
+        val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
+        exchange(jsonEntity, endpointUrl, HttpMethod.POST)
+    }
+
+    private fun httpEntity(endpointUrl: String, enhet: String?, journalpostJson: String): HttpEntity<String> {
         this.debugFullUrl = rest.baseUrl + endpointUrl
-        val headers = initHttpHeadersWithCorrelationIdAndEnhet()
+        val headers = initHttpHeadersWithCorrelationIdAndEnhet(enhet)
         headers.contentType = MediaType.APPLICATION_JSON
 
-        val jsonEntity = HttpEntity(journalpostJson, headers)
+        return HttpEntity(journalpostJson, headers)
+    }
 
+    private fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
         try {
             println(jsonEntity)
-            responseEntity = rest.template.exchange(endpointUrl, HttpMethod.PUT, jsonEntity, String::class.java)
+            responseEntity = rest.template.exchange(endpointUrl, httpMethod, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            System.err.println("OPPDATERING FEILET: ${this.debugFullUrl}: $e")
+            System.err.println("$httpMethod FEILET: ${this.debugFullUrl}: $e")
             throw e
         }
     }
