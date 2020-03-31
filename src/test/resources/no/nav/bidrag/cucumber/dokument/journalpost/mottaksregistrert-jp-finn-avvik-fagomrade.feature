@@ -1,11 +1,11 @@
 # language: no
 @bidrag-dokument-journalpost
 @mottaksregistrert
-Egenskap: avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument-journalpost (/journal/*/avvik REST API)
+Egenskap: finne avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument-journalpost (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
-    Gitt resttjenesten 'bidragDokumentJournalpost' for avviksbehandling av mottaksredigert journalpost for avvikstype 'ENDRE_FAGOMRADE'
-    Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstype
+    Gitt resttjenesten 'bidragDokumentJournalpost' for å finne avvik på mottaksredigert journalpost, avvikstype 'ENDRE_FAGOMRADE'
+    Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstypen:
         """
         {
         "avsenderNavn": "Cucumber Test",
