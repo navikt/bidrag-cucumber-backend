@@ -1,29 +1,24 @@
 # language: no
-@bidrag-dokument
+@bidrag-dokument-journalpost
 @mottaksregistrert
-Egenskap: registrere avviket ENDRE_FAGOMRADE på journalposter som er mottaksregistrert i bidrag-dokument (/journal/*/avvik REST API)
+Egenskap: Avvikshendelse ENDRE_FAGOMRADE på journalposter som er mottaksregistrert (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
-    Gitt resttjenesten 'bidragDokument' for å registrere avvik på mottaksredigert journalpost, avvikstype 'ENDRE_FAGOMRADE'
+    Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'ENDRE_FAGOMRADE'
     Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstypen:
         """
         {
         "avsenderNavn": "Cucumber Test",
         "beskrivelse": "Test endre fagområde på mottaksregistrert journalpost",
         "dokumentType": "I",
-        "dokumentdato": "2019-01-01",
-        "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
-        "gjelder": "29118044353",
-        "journaldato": "2019-01-01",
-        "journalstatus":"M",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
-        "mottattDato": "2019-01-01",
-        "skannetDato": "2019-01-01",
-        "saksnummer": "0000003"
+        "journalstatus":"M"
         }
         """
+
+  Scenario: Skal finne finne avvikstype på mottaksregistrert journalpost
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Så skal listen med avvikstyper inneholde 'ENDRE_FAGOMRADE'
 
   Scenario: Registrere avviket og sjekke endringen av journalpost
     Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
@@ -31,7 +26,6 @@ Egenskap: registrere avviket ENDRE_FAGOMRADE på journalposter som er mottaksreg
         """
         {
         "avvikType":"ENDRE_FAGOMRADE",
-        "enhetsnummer":"4806",
         "beskrivelse":"FAR"
         }
         """
