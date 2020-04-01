@@ -54,6 +54,7 @@ class FellesTestdataEgenskaper {
     fun `opprett journalpost`(avvikData: AvvikDataMottaksregistrertJp, jpJson: String) {
         if (!journalpostIdPerKey.containsKey(avvikData.testdataNokkel)) {
             restTjenesteTestdata.opprettJournalpost(jpJson)
+            assertThat(restTjenesteTestdata.hentHttpStatus()).isEqualTo(HttpStatus.CREATED)
 
             val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
             journalpostIdPerKey[avvikData.testdataNokkel] = opprettetJpMap["journalpostId"] as String
