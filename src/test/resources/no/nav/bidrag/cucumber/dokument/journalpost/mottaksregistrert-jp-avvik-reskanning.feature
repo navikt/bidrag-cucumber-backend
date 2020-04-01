@@ -1,0 +1,35 @@
+# language: no
+@bidrag-dokument-journalpost
+@mottaksregistrert
+Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregistrert (/journal/*/avvik REST API)
+
+  Bakgrunn: Gitt resttjeneste og testdata
+    Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'BESTILL_RESKANNING'
+    Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstypen:
+        """
+        {
+        "avsenderNavn" : "Cucumber Test",
+        "batchNavn"    : "En batch",
+        "beskrivelse"  : "Test bestill reskanning på mottaksregistrert journalpost",
+        "dokumentType" : "I",
+        "journalstatus": "M",
+        "skannetDato"  : "2019-01-01"
+        }
+        """
+
+  Scenario: Skal finne finne avvikstype på mottaksregistrert journalpost
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Så skal listen med avvikstyper inneholde 'BESTILL_RESKANNING'
+
+  Scenario: Registrere avviket som fører til at journalposten som nå er slettet (og derfor ikke kan hentes som mottaksregistrert journalpost)
+    Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
+    Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
+        """
+        {
+        "avvikType":"BESTILL_RESKANNING",
+        "beskrivelse":"etter avsnitt 2"
+        }
+        """
+    Så skal http status være '201'
+    Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
+    Så skal http status være '204'
