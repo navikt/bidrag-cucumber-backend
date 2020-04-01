@@ -3,7 +3,9 @@ package no.nav.bidrag.cucumber.dokument.journalpost
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.dokument.AvvikDataMottaksregistrertJp
 import no.nav.bidrag.cucumber.dokument.AvvikEgenskaper
+import no.nav.bidrag.cucumber.dokument.AvvikEgenskaperForMottaksregistrertJp
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 
@@ -16,6 +18,12 @@ class OppgaveEgenskaper {
     fun `jeg soker etter oppgaver for journalpost`() {
         restTjenesteOppgaver = OppgaverRestTjeneste()
         restTjenesteOppgaver.finnOppgaverFor(AvvikEgenskaper.avvikData)
+    }
+
+    @Gitt("jeg søker etter oppgaver for mottaksregistrert journalpost")
+    fun `jeg soker etter oppgaver for mottaksregistrert journalpost`() {
+        restTjenesteOppgaver = OppgaverRestTjeneste()
+        restTjenesteOppgaver.finnOppgaverFor(AvvikEgenskaperForMottaksregistrertJp.avvikData)
     }
 
     @Så("skal http status for oppgavesøket være {string}")

@@ -9,4 +9,6 @@ data class AvvikDataMottaksregistrertJp(
 ) {
     fun lagEndepunktUrl(path: String) = path.replace(Regex("journalpostId"), hentJournalpostId())
     private fun hentJournalpostId() = FellesTestdataEgenskaper.journalpostIdPerKey[testdataNokkel]!!
+    fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
+    private fun hentJournalpostIdUtenPrefix() = FellesTestdataEgenskaper.journalpostIdPerKey[testdataNokkel]!!.removePrefix("BID-")
 }
