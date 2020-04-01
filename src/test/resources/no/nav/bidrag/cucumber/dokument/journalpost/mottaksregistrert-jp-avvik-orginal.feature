@@ -27,7 +27,7 @@ Egenskap: Avvikshendelse BESTILL_ORGINAL på journalposter som er mottaksregistr
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
         """
         {
-        "avvikType":"BESTILL_ORGINAL
+        "avvikType":"BESTILL_ORGINAL"
         }
         """
     Så skal http status være '201'
