@@ -26,8 +26,7 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
         """
         {
-        "avvikType":"BESTILL_RESKANNING",
-        "beskrivelse":"etter avsnitt 2"
+        "avvikType":"BESTILL_RESKANNING"
         }
         """
     Så skal http status være '201'
