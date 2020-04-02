@@ -1,10 +1,10 @@
 # language: no
-@bidrag-dokument-journalpost
+@bidrag-dokument
 @mottaksregistrert
 Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregistrert (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
-    Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'BESTILL_ORIGINAL'
+    Gitt resttjenesten 'bidragDokument' for å registrere avvik på mottaksredigert journalpost, avvikstype 'BESTILL_ORIGINAL'
     Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstypen:
         """
         {
