@@ -41,6 +41,13 @@ class AvvikEgenskaperForMottaksregistrertJp {
         assertThat(funnetAvvikstyper).contains("\"$avvikstype\"")
     }
 
+    @Og("så skal listen med avvikstyper ikke inneholde {string}")
+    fun `listen med avvikstyper skal ikke inneholde`(avvikstype: String) {
+        val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
+
+        assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
+    }
+
     @Og("resttjenesten {string} til å opprette journalpost når den ikke finnes for avvikstypen:")
     fun `bruk resttjeneste opprett journalpost`(resttjenesteTestdata: String, jpJson: String) {
         val testdataEgenskaper = FellesTestdataEgenskaper()

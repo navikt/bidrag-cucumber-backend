@@ -22,7 +22,7 @@ Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregist
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal listen med avvikstyper inneholde 'BESTILL_ORIGINAL'
 
-  Scenario: Registrere avviket som fører til at journalposten som nå er slettet (og derfor ikke kan hentes som mottaksregistrert journalpost)
+  Scenario: Registrere avviket på journalposten og sjekk at vi kan hente journalposten.
     Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
         """
@@ -33,6 +33,11 @@ Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregist
     Så skal http status være '201'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
     Så skal http status være '200'
+
+  Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Så skal http status være '200'
+    Og så skal listen med avvikstyper ikke inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at oppgave blir laget for bestill original
     Gitt jeg søker etter oppgaver for mottaksregistrert journalpost
