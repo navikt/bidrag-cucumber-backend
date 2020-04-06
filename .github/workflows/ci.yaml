@@ -7,6 +7,7 @@ on:
 jobs:
 
   verify-dependencies:
+    name: verify maven dependencies
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +21,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - uses: navikt/bidrag-maven/setup@v1.0.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: navikt/bidrag-maven/verify-dependencies@v1.0.4
 
   bump_snapshot:
