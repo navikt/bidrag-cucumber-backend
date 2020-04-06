@@ -6,31 +6,10 @@ on:
 
 jobs:
 
-  verify-dependencies:
-    name: verify maven dependencies
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1.3.0
-        with:
-          java-version: 13
-      - uses: actions/cache@v1.1.2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - uses: navikt/bidrag-maven/setup@v1.0.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: navikt/bidrag-maven/verify-dependencies@v1.0.4
-
   bump_snapshot:
     runs-on: ubuntu-latest
     name: bump SNAPSHOT version
     if: github.ref == 'refs/heads/master'
-    needs: verify-dependencies
 
     steps:
       - uses: actions/checkout@v2
