@@ -53,8 +53,8 @@ nais applikasjon krever endringer av cucumber testene, så kod disse endringene 
 branchen `feature`) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken som helst feature-
 branch tilhørende nais-applikasjonen.
 
-- action: bidrag-actions/maven-cucumber-backend/@v1-maven-cucumber-backend
-- les https://github.com/navikt/bidrag-actions/blob/master/maven-cucumber-backend/README.md
+- action: bidrag-maven/cucumber-backend/@v1.0.4
+- les https://github.com/navikt/bidrag-maven/blob/master/cucumber-backend/README.md
  
 
 ### Kjøring
