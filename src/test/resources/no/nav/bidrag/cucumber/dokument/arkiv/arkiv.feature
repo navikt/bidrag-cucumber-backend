@@ -20,3 +20,6 @@ Egenskap: bidrag-dokument-arkiv
     Når jeg kaller endpoint '/sak/1234567/journal' med parameter 'fagomrade' = 'BID'
     Så skal http status være '204'
 
+#  Scenario: Opprett en journalpost og finn den via SAF query
+#    Gitt at det opprettes en journalpost i joark med tema BID og saksnummer '1001001'
+#    Når jeg kaller endpoint '/sak/1001001/journal' med parameter 'fagomrade' = 'BID'
