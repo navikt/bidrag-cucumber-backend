@@ -15,3 +15,11 @@ Egenskap: bidrag-dokument-arkiv
     Så skal http status være '200'
     Og header 'content-type' skal være 'application/json'
     Og responsen skal inneholde 'status' = 'UP'
+
+  Scenario: Sjekk at kall mot SAF er OK (ikke forventet å finne noe resultat)
+    Når jeg kaller endpoint '/sak/1234567/journal' med parameter 'fagomrade' = 'BID'
+    Så skal http status være '204'
+
+#  Scenario: Opprett en journalpost og finn den via SAF query
+#    Gitt at det opprettes en journalpost i joark med tema BID og saksnummer '1001001'
+#    Når jeg kaller endpoint '/sak/1001001/journal' med parameter 'fagomrade' = 'BID'

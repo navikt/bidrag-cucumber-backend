@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber
 import io.cucumber.java.Before
 import io.cucumber.java.Scenario
 import io.cucumber.java.no.Gitt
+import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
@@ -111,5 +112,10 @@ class FellesEgenskaper {
         }
 
         verifyer.assertAll()
+    }
+
+    @Når("jeg kaller endpoint {string} med parameter {string} = {string}")
+    fun `jeg kaller endpoint med parameter`(endpoint: String, parameterNavn: String, parameterVerdi: String) {
+        restTjeneste.exchangeGet("$endpoint?$parameterNavn=$parameterVerdi")
     }
 }
