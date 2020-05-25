@@ -36,7 +36,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med path '/journal/{}'
+    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med path '/journal/{}/journalstatus/M'
     Så skal http status være '200'
     Og responsen skal inneholde 'journalstatus' = 'M'
 

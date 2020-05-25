@@ -5,7 +5,7 @@ import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 
-class MottaksregistrertJournalpost {
+class JournalpostEgenskaperPathUtenSak {
     @Gitt("at jeg henter journalpost med path {string}")
     fun `at jeg_henter_journalpost_med_path`(path: String) {
         FellesEgenskaper.restTjeneste.exchangeGet(path)
@@ -15,8 +15,8 @@ class MottaksregistrertJournalpost {
     @Og("at jeg henter endret journalpost for {string} med path {string}")
     fun `at jeg henter opprettet journalpost for`(key: String, requestSti: String) {
         val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[key]
-        val path = requestSti.removeSuffix("{}")
-        FellesEgenskaper.restTjeneste.exchangeGet(path + journalpostId)
+        val path = requestSti.replace("{}", journalpostId as String)
+        FellesEgenskaper.restTjeneste.exchangeGet(path)
     }
 
     @Og("jeg registrerer endring av opprettet journalpost, {string}, med path {string}:")
