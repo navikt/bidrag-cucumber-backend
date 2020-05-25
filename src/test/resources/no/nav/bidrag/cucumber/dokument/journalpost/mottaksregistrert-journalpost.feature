@@ -38,7 +38,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         """
     Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING_BDJ' med path '/journal/{}'
     Så skal http status være '200'
-    Og responsen skal inneholde 'journalstatus' = 'M'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
 
   Scenario: Hent en journalpost som ikke har journalstatus mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFØRT_BDJ':
