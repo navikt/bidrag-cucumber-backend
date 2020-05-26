@@ -44,7 +44,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Gitt at jeg oppretter journalpost for 'JOURNALFØRT':
         """
         {
-        "avsenderNavn": "Cucumber Test",0000
+        "avsenderNavn": "Cucumber Test",
         "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
         "dokumentType": "I",
         "dokumentdato": "2020-02-02",
