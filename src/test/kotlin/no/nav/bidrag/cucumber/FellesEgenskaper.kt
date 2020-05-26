@@ -51,10 +51,10 @@ class FellesEgenskaper {
     @Så("skal responsen inneholde et objekt med navn {string} som har feltet {string} = {string}")
     fun `responsen skal inneholde et objekt med feltet`(objekt: String, key: String, value: String) {
         val responseObject = restTjeneste.hentResponseSomMap()
-        @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>
-        val verdiFraResponse = objektFraResponse[key]?.toString()
+        @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>?
+        val verdiFraResponse = objektFraResponse?.get(key)?.toString()
 
-        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
+        assertThat(verdiFraResponse).`as`("$objekt i json response (${restTjeneste.hentResponse()}) skal inneholde $key").isEqualTo(value)
     }
 
     @Og("responsen skal ikke inneholde {string} = {string}")
@@ -62,7 +62,7 @@ class FellesEgenskaper {
         val responseObject = restTjeneste.hentResponseSomMap()
         val verdiFraResponse = responseObject[key]?.toString()
 
-        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isNotEqualTo(value)
+        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()}) skal inneholde $key").isNotEqualTo(value)
     }
 
     @Suppress("UNCHECKED_CAST")
