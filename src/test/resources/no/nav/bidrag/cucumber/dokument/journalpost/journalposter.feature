@@ -64,7 +64,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Strutle, Sylfest'
+        Og responsen skal inneholde 'avsenderNavn' = 'Strutle, Sylfest'
 
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
@@ -85,7 +85,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bær, Bjarne'
+        Og responsen skal inneholde 'avsenderNavn' = 'Bær, Bjarne'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
@@ -129,7 +129,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-02-01'
+        Og responsen skal inneholde 'dokumentDato' = '2001-02-01'
 
     Scenario: Sjekk at sak som ikke finnes git HttpStatus 404: Not Found
         Gitt jeg henter journalpost for sak "XYZ" som har id "BID"

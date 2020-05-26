@@ -36,15 +36,15 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med path '/journal/{}/journalstatus/M'
+    Og at jeg henter opprettet journalpost for 'MOTTAKSREGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
-    Og responsen skal inneholde 'journalstatus' = 'M'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
 
   Scenario: Hent en journalpost som ikke har journalstatus mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFØRT':
         """
         {
-        "avsenderNavn": "Cucumber Test",
+        "avsenderNavn": "Cucumber Test",0000
         "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
         "dokumentType": "I",
         "dokumentdato": "2020-02-02",
@@ -60,7 +60,8 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         }
         """
     Og at jeg henter opprettet journalpost for 'JOURNALFØRT' med path '/journal/{}'
-    Så skal http status være '204'
+    Så skal http status være '200'
+    Og responsen skal ikke inneholde 'journalstatus' = 'J'
 
   Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
     Gitt at jeg oppretter journalpost for 'REGISTRERING':
@@ -99,4 +100,4 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Så skal http status være '202'
     Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
-    Og responsen skal inneholde 'journalstatus' = 'M'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
