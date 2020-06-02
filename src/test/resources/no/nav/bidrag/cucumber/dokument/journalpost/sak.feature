@@ -1,6 +1,6 @@
 # language: no
 @bidrag-dokument-journalpost
-@@sakjournal
+@sakjournal
 Egenskap: bidrag-dokument-journalpost (/sak/(saksnummer)/journal REST API)
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
