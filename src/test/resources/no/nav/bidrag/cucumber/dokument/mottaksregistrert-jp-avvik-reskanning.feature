@@ -21,7 +21,7 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal listen med avvikstyper inneholde 'BESTILL_RESKANNING'
 
-  Scenario: Registrere avviket som fører til at journalposten som nå er slettet (og derfor ikke kan hentes som mottaksregistrert journalpost)
+  Scenario: Registrere avviket som fører til at journalposten som nå er slettet
     Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
         """
@@ -31,4 +31,5 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
         """
     Så skal http status være '201'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
-    Så skal http status være '204'
+    Så skal http status være '200'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'S'
