@@ -20,10 +20,10 @@ open class ScenarioManager {
         fun writeToCucumberScenario(messageTitle: String?, message: String) {
             if (scenario != null) {
                 if (messageTitle != null) {
-                    scenario!!.write("<h5>\n$messageTitle\n</h5>")
+                    scenario!!.log("<h5>\n$messageTitle\n</h5>")
                 }
 
-                scenario!!.write("<p>\n$message\n</p>")
+                scenario!!.log("<p>\n$message\n</p>")
             } else {
                 System.err.println("cannot write '$message' to scenario")
             }
