@@ -81,17 +81,35 @@ Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgen
 ``` 
 mvn test -Dcucumber.filter.tags=@<valgt-applikasjon> 
 ``` 
-
-Alle parametre som må angies for en fullstendig kjøring er:
+Alle parametre for en fullstendig kjøring av alle prosjekter er:
 ```
 mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<ditt passord>
  -DTEST_USER=<testbruker, ie: Zxxxxxx> -DTEST_AUTH=<testbrukerens passord>
  -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> -DPIP_AUTH=<pip brukers passord>
+ -DPROJECT_NAIS_FOLDER=<mappe for github-prosjekt som har en nais folder for ingress-konfigurasjon>
 ```
-_**PS!**_ PIP bruker blir bare brukt i en test i bidrag-sak
+_**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak <br>
+_**PS!**_ *PROJECT_NAIS_FOLDER* blir bare brukt av prosjekter som bruker "simple configuration" og ikke et Fasit- oppsett
+
+#### Kjøring lokalt
+`bidrag-cucumber-backend` kan også kjøres lokalt, men mange av gherkin-feature-filene er ikke desikgnet med tanke
+på kjøring med localhost.
+
+Det kan dog være aktuelt å kjøre enkelte tester for å utføre lokal testing. Følgende må gjøres:
+* *applikasjonen er opprinnelig konfigurert i Fasit*
+  * aliaset som sjekkes via fasit må være tilgjengelig "offline" i `src/test/resources/fasit.offline.rest.json`
+  * fila må være konfigurert opp til å kunne hente ut en `RestTemplate` med base url (context path)
+  * nais applikasjon som testes må være startet lokalt (samt dens avhengigheter)
+* *applikasjonen er laget for å hente ut konfigurasjon fra `vault.adeo.no`*
+  * nais applikasjon som testes må være startet lokalt (samt dens avhengigheter)
+  * den må ha satt opp konfigurasjon for å hente rest-tjeneste basert på applikasjonsnavn i `constants.kt`
+
+```
+mvn clean test 
+  -Dcucumber.filter.tags="<cucumber tag som vil kjøres>"
+```
 
 ### Test rapportering
-
 Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:
 
 ```
