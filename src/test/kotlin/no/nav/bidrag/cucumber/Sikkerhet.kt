@@ -8,15 +8,16 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
+import java.nio.charset.StandardCharsets
 import java.time.LocalTime
-
-internal const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
-internal const val OPEN_ID_FASIT = "OPEN ID FASIT"
-internal const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
 
 class Sikkerhet {
 
     companion object {
+        private const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
+        private const val OPEN_ID_FASIT = "OPEN ID FASIT"
+        private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+
         private lateinit var onlineToken: String
         private val finalValueCache: MutableMap<String, Any> = HashMap()
     }
@@ -33,8 +34,8 @@ class Sikkerhet {
             onlineToken = fetchOnlineIdToken()
             return onlineToken
         } catch (e: RuntimeException) {
-            val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.filter { it.fileName != null && it.fileName!!.endsWith("kt") }.first()}"
-            log("Feil ved henting av online id token, ${exception}", LogLevel.ERROR)
+            val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.first { it.fileName != null && it.fileName!!.endsWith("kt") }}"
+            log("Feil ved henting av online id token, $exception", LogLevel.ERROR)
             throw e
         }
     }
@@ -42,7 +43,7 @@ class Sikkerhet {
     fun fetchOnlineIdToken(): String {
         val miljo = Environment.fetch()
         finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(miljo)
-        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPassord(finalValueCache[OPEN_ID_FASIT] as FasitRessurs)
+        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(finalValueCache[OPEN_ID_FASIT] as Fasit.FasitRessurs)
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
@@ -51,7 +52,7 @@ class Sikkerhet {
         return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
 
-    private fun hentOpenIdConnectFasitRessurs(miljo: String): FasitRessurs {
+    private fun hentOpenIdConnectFasitRessurs(miljo: String): Fasit.FasitRessurs {
         val openIdConnect = "OpenIdConnect"
         val fasitRessursUrl = Fasit.buildUriString(
                 URL_FASIT, "type=$openIdConnect", "environment=$miljo", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
@@ -64,7 +65,7 @@ class Sikkerhet {
         return openIdConnectFasitRessurs
     }
 
-    private fun hentOpenAmPassord(openIdConnectFasitRessurs: FasitRessurs): String {
+    private fun hentOpenAmPwd(openIdConnectFasitRessurs: Fasit.FasitRessurs): String {
         val user = Environment.user()
         val auth = "$user:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
@@ -104,7 +105,7 @@ class Sikkerhet {
     }
 
     private fun log(string: String, level: LogLevel) {
-        val logMessage = "${LocalTime.now()} - ${level} Sikkerhet.kt: $string"
+        val logMessage = "${LocalTime.now()} - $level Sikkerhet.kt: $string"
 
         if (level == LogLevel.ERROR) {
             System.err.println(logMessage)
@@ -161,5 +162,13 @@ class Sikkerhet {
 
     private fun header(headerName: String, headerValue: String): Map.Entry<String, String> {
         return java.util.Map.of(headerName, headerValue).entries.first()
+    }
+
+    internal fun base64EncodeCredentials(username: String, password: String): String {
+        val credentials = "$username:$password"
+
+        val encodedCredentials: ByteArray = java.util.Base64.getEncoder().encode(credentials.toByteArray())
+
+        return String(encodedCredentials, StandardCharsets.UTF_8)
     }
 }
