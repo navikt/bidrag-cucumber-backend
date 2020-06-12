@@ -9,10 +9,13 @@ internal class Environment {
     companion object {
         private const val Q0 = "q0"
 
-        private val onlineResourceUrl = Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
         private var environment: String? = null
 
-        internal val offline by lazy { Fasit.hentFasitRessursSomJson(onlineResourceUrl).offline }
+        internal val offline by lazy {
+            Fasit.hentFasitRessursSomJson(
+                    Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
+            ).offline
+        }
 
         fun createCorrelationIdValue(): String {
             return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
@@ -33,7 +36,8 @@ internal class Environment {
         }
 
         fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
-        fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
+        fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH)
+                ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
 
         fun use(miljo: String) {
             environment = miljo
@@ -52,34 +56,34 @@ internal class Environment {
 
         return restTemplate
     }
-}
 
-internal class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
-    override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-        if (uriVariables.isNotEmpty()) {
-            val queryString = StringBuilder()
-            uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
+    private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
+        override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
+            if (uriVariables.isNotEmpty()) {
+                val queryString = StringBuilder()
+                uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
 
-            return URI.create(baseUrl + uriTemplate + queryString)
-        }
-
-        return URI.create(baseUrl + uriTemplate)
-    }
-
-    override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
-        if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
-            val queryString = StringBuilder("&")
-            uriVariables.forEach {
-                if (it != null && queryString.length == 1) {
-                    queryString.append("$it")
-                } else if (it != null) {
-                    queryString.append("?$it")
-                }
+                return URI.create(baseUrl + uriTemplate + queryString)
             }
 
-            return URI.create(baseUrl + uriTemplate + queryString)
+            return URI.create(baseUrl + uriTemplate)
         }
 
-        return URI.create(baseUrl + uriTemplate)
+        override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
+            if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
+                val queryString = StringBuilder("&")
+                uriVariables.forEach {
+                    if (it != null && queryString.length == 1) {
+                        queryString.append("$it")
+                    } else if (it != null) {
+                        queryString.append("?$it")
+                    }
+                }
+
+                return URI.create(baseUrl + uriTemplate + queryString)
+            }
+
+            return URI.create(baseUrl + uriTemplate)
+        }
     }
 }

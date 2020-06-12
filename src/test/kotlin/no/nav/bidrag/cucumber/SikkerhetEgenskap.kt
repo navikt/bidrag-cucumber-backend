@@ -19,6 +19,8 @@ class SikkerhetEgenskap {
 
     @After
     fun `bruk dynamisk miljo`() {
-        Environment.use(System.getProperty("ENVIRONMENT"))
+        if (!Environment.offline) {
+            Environment.use(System.getProperty("ENVIRONMENT"))
+        }
     }
 }
