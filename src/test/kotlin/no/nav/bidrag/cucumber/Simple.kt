@@ -3,7 +3,7 @@ package no.nav.bidrag.cucumber
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 
-class Simple {
+internal class Simple {
     companion object {
         private val objectMapper = ObjectMapper()
         private val supportedApplications = HashSet<String>(listOf(
@@ -11,18 +11,34 @@ class Simple {
         ))
     }
 
-    fun supports(applicationName: String) = supportedApplications.contains(applicationName)
+    internal fun supports(applicationName: String) = supportedApplications.contains(applicationName)
 
     internal fun hentFullContextPath(applicationName: String): String {
         if (Environment.offline) {
-            return "http://localhost:8080" + CONTEXT_PATH_PER_APPLICATION[applicationName]
+            return "http://localhost:8080${CONTEXT_PATH_PER_APPLICATION[applicationName]}"
         }
 
         val miljo = Environment.fetch()
-        val jsonPath = "${System.getProperty(PROJECT_NAIS_FOLDER)}/$applicationName/nais/$miljo.json"
+        val projFolder = System.getProperty(PROJECT_NAIS_FOLDER)
+
+        logFilepaths(projFolder, applicationName, miljo)
+
+        val jsonPath = "$projFolder/$applicationName/nais/$miljo.json"
         val jsonFileAsMap = objectMapper.readValue(File(jsonPath), Map::class.java)
         val ingressPreprod = jsonFileAsMap["ingress_preprod"]
 
-        return ingressPreprod as String + CONTEXT_PATH_PER_APPLICATION[applicationName]
+        return "${ingressPreprod}${CONTEXT_PATH_PER_APPLICATION[applicationName]}".replace("//", "/")
+    }
+
+    private fun logFilepaths(projPath: String, applicationName: String, miljo: String) {
+        val projFolder = File(projPath)
+        val applfolder = File("$projFolder/$applicationName")
+        val naisFolder = File("$projFolder/$applicationName/nais")
+        val jsonFile = File("$projFolder/$applicationName/nais/$miljo.json")
+
+        println("> projFolder exists: ${projFolder.exists()}, path: $projFolder")
+        println("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
+        println("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
+        println("> jsonFile   exists: ${jsonFile.exists()}, path: $jsonFile")
     }
 }
