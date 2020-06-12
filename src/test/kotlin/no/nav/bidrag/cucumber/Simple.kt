@@ -27,7 +27,8 @@ internal class Simple {
         val jsonFileAsMap = objectMapper.readValue(File(jsonPath), Map::class.java)
         val ingressPreprod = jsonFileAsMap["ingress_preprod"]
 
-        return "${ingressPreprod}${CONTEXT_PATH_PER_APPLICATION[applicationName]}".replace("//", "/")
+        return "${ingressPreprod}${CONTEXT_PATH_PER_APPLICATION[applicationName]}"
+                .replace("//", "/").replace("https:/", "https://")
     }
 
     private fun logFilepaths(projPath: String, applicationName: String, miljo: String) {
