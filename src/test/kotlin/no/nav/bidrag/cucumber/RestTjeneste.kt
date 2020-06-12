@@ -10,22 +10,21 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
-import java.nio.charset.StandardCharsets
-import java.util.Base64
+import org.springframework.web.client.RestTemplate
 import java.util.LinkedHashMap
-import no.nav.bidrag.cucumber.X_ENHET_HEADER
 
 
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
         private val alias: String,
-        private val rest: RestTemplateMedBaseUrl
+        private val rest: RestTemplateMedBaseUrl,
+        private val sikkerhet: Sikkerhet = Sikkerhet()
 ) {
 
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
 
-    constructor(alias: String) : this(alias, Fasit().hentRestTemplateFor(alias))
+    constructor(alias: String) : this(alias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(alias))
 
     fun hentEndpointUrl() = debugFullUrl
     fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
@@ -44,7 +43,7 @@ open class RestTjeneste(
         val header = initHttpHeadersWithCorrelationIdAndEnhet()
 
         if (username != null) {
-            header.add(HttpHeaders.AUTHORIZATION, "Basic " + base64EncodeCredentials(username, password))
+            header.add(HttpHeaders.AUTHORIZATION, "Basic " + sikkerhet.base64EncodeCredentials(username, password))
         }
 
         ScenarioManager.writeToCucumberScenario("GET ${this.debugFullUrl}")
@@ -61,14 +60,6 @@ open class RestTjeneste(
         )
 
         return responseEntity
-    }
-
-    private fun base64EncodeCredentials(username: String, password: String): String {
-        val credentials = "$username:$password"
-
-        val encodedCredentials: ByteArray = Base64.getEncoder().encode(credentials.toByteArray())
-
-        return String(encodedCredentials, StandardCharsets.UTF_8)
     }
 
     protected fun initHttpHeadersWithCorrelationIdAndEnhet(): HttpHeaders {
@@ -99,7 +90,7 @@ open class RestTjeneste(
         exchangePut(endpointUrl, journalpostJson, null)
     }
 
-    fun  exchangePut(endpointUrl: String, journalpostJson: String, enhet: String?) {
+    fun exchangePut(endpointUrl: String, journalpostJson: String, enhet: String?) {
         val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
         exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
     }
@@ -154,4 +145,6 @@ open class RestTjeneste(
 
         return manglendeProps
     }
+
+    class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
 }
