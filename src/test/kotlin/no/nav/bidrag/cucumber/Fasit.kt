@@ -5,7 +5,7 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
-open class Fasit {
+internal class Fasit {
 
     companion object {
         private var fasitTemplate = RestTemplate()
