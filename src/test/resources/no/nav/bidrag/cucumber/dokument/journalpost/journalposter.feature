@@ -8,8 +8,7 @@ Egenskap: bidrag-dokument-journalpost
     Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
-        Og så skal responsen være et objekt
-        Og objektet har følgende properties:
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltene:
             | avsenderNavn  |
             | dokumentDato  |
             | dokumentType  |
@@ -20,10 +19,7 @@ Egenskap: bidrag-dokument-journalpost
     Scenario: Sjekk at vi får korrekt data i 'dokumenter' for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
-        Og så skal responsen være et objekt
-        Og objektet har følgende properties:
-            | dokumenter |
-        Og 'dokumenter' skal ha følgende properties:
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har et felt 'dokumenter' med feltene:
             | dokumentreferanse |
             | dokumentType      |
             | tittel            |
@@ -31,11 +27,7 @@ Egenskap: bidrag-dokument-journalpost
     Scenario: Sjekk at vi får korrekt gjelderAktor for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-32352090"
         Så skal http status være '200'
-        Og så skal responsen være et objekt
-        Og objektet har følgende properties:
-            | gjelderAktor |
-        Og 'gjelderAktor' skal ha følgende properties:
-            | ident     |
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har et felt 'gjelderAktor' med feltet 'ident'
 
     Scenario: Sjekk at ukjent id gir 404
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-12345"
@@ -64,7 +56,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde 'avsenderNavn' = 'Strutle, Sylfest'
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Strutle, Sylfest'
 
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
@@ -85,7 +77,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde 'avsenderNavn' = 'Bær, Bjarne'
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bær, Bjarne'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
@@ -107,7 +99,7 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde 'dokumentDato' = '2001-01-01'
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
         Gitt jeg endrer journalpost for sak "0000004" med id 'BID-30040789' til:
@@ -129,8 +121,8 @@ Egenskap: bidrag-dokument-journalpost
             """
         Så skal http status være '202'
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-        Og responsen skal inneholde 'dokumentDato' = '2001-02-01'
+        Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-02-01'
 
     Scenario: Sjekk at sak som ikke finnes git HttpStatus 404: Not Found
-        Gitt jeg henter journalpost for sak "XYZ" som har id "BID"
+        Gitt jeg henter journalpost for sak "XYZ" som har id "BID-1234"
         Så skal http status være '404'

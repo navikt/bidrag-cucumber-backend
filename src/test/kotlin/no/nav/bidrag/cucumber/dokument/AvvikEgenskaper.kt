@@ -112,7 +112,7 @@ class AvvikEgenskaper {
 
     @Og("når jeg jeg henter journalpost etter avviksbehandling")
     fun `nar jeg henter journalpost etter avvik`() {
-        restTjenesteAvvik().exchangeGet("/sak/${avvikData.saksnummer}/journal/${avvikData.hentJournalpostId()}")
+        restTjenesteAvvik().exchangeGet("/journal/${avvikData.hentJournalpostId()}?saksnummer=${avvikData.saksnummer}")
     }
 
     @Og("når jeg jeg henter sakjournalen etter avviksbehandling")
