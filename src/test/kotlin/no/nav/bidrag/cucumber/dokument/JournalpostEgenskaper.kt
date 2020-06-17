@@ -9,7 +9,7 @@ class JournalpostEgenskaper {
 
     @Gitt("jeg henter journalpost for sak {string} som har id {string}")
     fun `jeg henter journalpost for sak som har id`(saksnummer: String, journalpostId: String) {
-        restTjeneste.exchangeGet("/sak/$saksnummer/journal/$journalpostId")
+        restTjeneste.exchangeGet("/journal/$journalpostId?saksnummer=$saksnummer")
     }
 
     @Og("følgende properties skal ligge i responsen:")

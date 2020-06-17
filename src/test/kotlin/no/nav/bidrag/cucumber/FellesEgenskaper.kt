@@ -10,6 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
+@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class FellesEgenskaper {
     companion object {
         lateinit var restTjeneste: RestTjeneste
@@ -55,6 +56,39 @@ class FellesEgenskaper {
         val verdiFraResponse = objektFraResponse?.get(key)?.toString()
 
         assertThat(verdiFraResponse).`as`("$objekt i json response (${restTjeneste.hentResponse()}) skal inneholde $key").isEqualTo(value)
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har feltene:")
+    fun `responsen skal inneholde et objekt som har feltene`(objekt: String, felter: List<String>) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+        val journalpostMap = responseObject[objekt] as Map<*, *>?
+        val manglerFelt = ArrayList<String>()
+
+        felter.forEach { if (!journalpostMap?.containsKey(it)!!) manglerFelt.add(it) }
+
+        assertThat(manglerFelt).`as`("${restTjeneste.hentResponse()} skal ikke mangle noen av $felter").isEmpty()
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har et felt {string} med feltet {string}")
+    fun `responsen skal inneholde et objekt med felt som har felt`(objekt: String, objektFelt: String, felt: String) {
+        val journalpostResponse = restTjeneste.hentResponseSomMap()
+        val journalpostMap = journalpostResponse[objekt] as Map<*, *>?
+        @Suppress("UNCHECKED_CAST") val feltMap = journalpostMap?.get(objektFelt) as Map<String, *>?
+
+        assertThat(feltMap).`as`("${restTjeneste.hentResponse()} skal inneholde feltet $felt").containsKey(felt)
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har et felt {string} med feltene:")
+    fun `responsen skal inneholde et objekt med felt med feltene`(objekt: String, objektFelt: String, forventedeFelter: List<String>) {
+        val journalpostResponse = restTjeneste.hentResponseSomMap()
+        val journalpostMap = journalpostResponse[objekt] as Map<*, *>?
+        @Suppress("UNCHECKED_CAST") val reelleFelter = (journalpostMap?.get(objektFelt) as List<Map<*, *>>?)?.first()
+
+        assertThat(reelleFelter).isNotNull
+        val manglerFelt = ArrayList<String>()
+        forventedeFelter.forEach { if (!reelleFelter!!.containsKey(it)) manglerFelt.add(it) }
+
+        assertThat(manglerFelt).`as`("${restTjeneste.hentResponse()} med $objektFelt skal ikke mangle noen av $forventedeFelter").isEmpty()
     }
 
     @Og("responsen skal ikke inneholde {string} = {string}")
