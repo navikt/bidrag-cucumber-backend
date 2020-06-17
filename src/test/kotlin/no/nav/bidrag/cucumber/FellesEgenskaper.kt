@@ -10,7 +10,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
 
-@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class FellesEgenskaper {
     companion object {
         lateinit var restTjeneste: RestTjeneste
@@ -106,7 +105,7 @@ class FellesEgenskaper {
         val responseObject = restTjeneste.hentResponseSomListe()
 
         responseObject.forEach {
-            verifyer.assertThat(it.get(key)).`as`("id: ${it.get("journalpostId")}").isEqualTo(value)
+            verifyer.assertThat(it[key]).`as`("id: ${it["journalpostId"]}").isEqualTo(value)
         }
 
         verifyer.assertAll()
@@ -126,15 +125,10 @@ class FellesEgenskaper {
     @Så("{string} skal ha følgende properties:")
     fun `gitt object skal ha folgende properties`(obj: String, properties: List<String>) {
         val responseObject = restTjeneste.hentResponseSomMap()
-        val objects = responseObject[obj]
-        val manglendeProperties: List<String>
-
-        if (objects is List<*>) {
-            manglendeProperties = restTjeneste.hentManglendeProperties(objects, properties)
-        } else if (objects is LinkedHashMap<*, *>) {
-            manglendeProperties = restTjeneste.hentManglendeProperties(objects, properties)
-        } else {
-            throw IllegalStateException("ukjennt type av $objects")
+        val manglendeProperties: List<String> = when (val objects = responseObject[obj]) {
+            is List<*> -> restTjeneste.hentManglendeProperties(objects, properties)
+            is LinkedHashMap<*, *> -> restTjeneste.hentManglendeProperties(objects, properties)
+            else -> throw IllegalStateException("ukjennt type av $objects")
         }
 
         assertThat(manglendeProperties).`as`("$obj skal ikke mangle noen av $properties: ${restTjeneste.hentResponse()}")
