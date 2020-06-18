@@ -54,7 +54,18 @@ class FellesEgenskaper {
         @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>?
         val verdiFraResponse = objektFraResponse?.get(key)?.toString()
 
-        assertThat(verdiFraResponse).`as`("$objekt i json response (${restTjeneste.hentResponse()}) skal inneholde $key").isEqualTo(value)
+        assertThat(verdiFraResponse).`as`("$objekt skal inneholde $key").isEqualTo(value)
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har feltet {string} uten verdi {string}")
+    fun `responsen skal inneholde et objekt med feltet uten gitt verdi`(objekt: String, key: String, value: String) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+        @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>?
+        val verdiFraResponse = objektFraResponse?.get(key)?.toString()
+
+        assertThat(objektFraResponse).`as`("$objekt skal inneholde $key").containsKey(key)
+        assertThat(verdiFraResponse).`as`("$key skal ikke være $value").isNotEqualTo(value)
+
     }
 
     @Og("responsen skal inneholde et objekt med navn {string} som har feltene:")
