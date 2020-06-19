@@ -32,8 +32,8 @@ class JournalpostEgenskaper {
         restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", json)
     }
 
-    @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
-    fun `jeg endrer journalpost med id til`(saksnummer: String, journalpostId: String, journalpostJson: String) {
-        restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
+    @Gitt("jeg endrer journalpost med id {string} til:")
+    fun `jeg endrer journalpost med id til`(journalpostId: String, journalpostJson: String) {
+        restTjeneste.exchangePut("/journal/$journalpostId", journalpostJson)
     }
 }
