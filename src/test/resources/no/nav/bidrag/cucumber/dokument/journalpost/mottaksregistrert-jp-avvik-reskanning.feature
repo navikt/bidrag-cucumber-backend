@@ -18,7 +18,7 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
         """
 
   Scenario: Skal finne avvikstype på mottaksregistrert journalpost
-    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
     Så skal listen med avvikstyper inneholde 'BESTILL_RESKANNING'
 
   Scenario: Registrere avviket som fører til at journalposten som nå er slettet

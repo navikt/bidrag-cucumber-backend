@@ -19,7 +19,7 @@ Egenskap: Avvikshendelse BESTILL_SPLITTING på journalposter som er mottaksregis
         """
 
   Scenario: Skal finne avvikstype på mottaksregistrert journalpost
-    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
     Så skal listen med avvikstyper inneholde 'BESTILL_SPLITTING'
 
   Scenario: Registrere avviket som fører til at journalposten som nå er slettet

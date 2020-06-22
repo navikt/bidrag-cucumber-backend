@@ -34,6 +34,7 @@ data class AvvikData(
     fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!))
     fun lagEndepunktUrl() = "/sak/$saksnummer/journal/$journalpostId/avvik"
     fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik"
+    fun lagEndepunktUrlForHentAvvik() = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik?saksnummer=$saksnummer"
     fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
 
     fun hentJournalpostId() = FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!
