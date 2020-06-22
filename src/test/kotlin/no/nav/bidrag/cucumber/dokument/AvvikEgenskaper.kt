@@ -58,7 +58,7 @@ class AvvikEgenskaper {
     @Når("jeg ber om gyldige avviksvalg for opprettet journalpost")
     @Og("når jeg ber om gyldige avviksvalg for opprettet journalpost")
     fun `jeg ber om gyldige avviksvalg for opprettet journalpost`() {
-        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForAvvikstype())
+        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForHentAvvik())
     }
 
     @Og("listen med avvikstyper skal kun inneholde:")
