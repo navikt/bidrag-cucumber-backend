@@ -62,11 +62,11 @@ open class RestTjeneste(
         return responseEntity
     }
 
-    protected fun initHttpHeadersWithCorrelationIdAndEnhet(): HttpHeaders {
+    internal fun initHttpHeadersWithCorrelationIdAndEnhet(): HttpHeaders {
         return initHttpHeadersWithCorrelationIdAndEnhet(null)
     }
 
-    protected fun initHttpHeadersWithCorrelationIdAndEnhet(enhet: String?): HttpHeaders {
+    private fun initHttpHeadersWithCorrelationIdAndEnhet(enhet: String?): HttpHeaders {
         val headers = HttpHeaders()
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
         headers.add(X_ENHET_HEADER, enhet ?: "4802")
