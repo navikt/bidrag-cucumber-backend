@@ -10,9 +10,12 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og endre journalpost med id '34111047' til:
             """
             {
+                "batchNavn": "batchen",
                 "fagomrade": "BID",
                 "feilfort": "false",
+                "filnavn": "fila",
                 "dokumentType": "I",
+                "journalstatus": "J",
                 "originalBestilt": "false",
                 "skannetDato": "2019-08-21"
             }
