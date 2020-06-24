@@ -17,7 +17,7 @@ internal class Environment {
             ).offline
         }
 
-        fun createCorrelationIdValue(): String {
+        internal fun createCorrelationIdValue(): String {
             return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
