@@ -20,7 +20,7 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
                 "skannetDato": "2019-08-21"
             }
             """
-    Og endepunkt url lages av saksnummer '0000003' og journalpostId 'BID-34111047'
+    Og avviksdato som brukes er saksnummer '0000003' og journalpostId 'BID-34111047'
     Og enhetsnummer for avvik er '4806'
 
   Scenario: Sjekk avviksvalg for gitt journalpost
