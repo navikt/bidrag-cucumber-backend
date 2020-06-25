@@ -1,6 +1,7 @@
 package no.nav.bidrag.cucumber.dokument
 
 import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.ScenarioManager
 import org.springframework.http.HttpEntity
 import org.springframework.http.MediaType
 
@@ -22,7 +23,10 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
         val headers = avvikData.leggTilEnhetsnummer(initHttpHeadersWithCorrelationIdAndEnhet())
         headers.contentType = MediaType.APPLICATION_JSON
 
-        return HttpEntity(avvikData.hentAvvikshendelse(), headers)
+        val avvikshendelse = avvikData.hentAvvikshendelse()
+        ScenarioManager.log("avvikshendelse", avvikshendelse)
+
+        return HttpEntity(avvikshendelse, headers)
     }
 
     fun hentResponseSomListeAvStrenger(): List<String> {

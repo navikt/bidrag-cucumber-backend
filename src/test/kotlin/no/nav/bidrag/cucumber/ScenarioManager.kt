@@ -19,7 +19,7 @@ open class ScenarioManager {
 
         fun log(messageTitle: String?, message: String) {
             if (scenario != null) {
-                val title = if (messageTitle != null) "<h5>\n$messageTitle\n</h5>" else ""
+                val title = if (messageTitle != null) "<h5>$messageTitle</h5>" else ""
                 scenario!!.log("$title<p>\n$message\n</p>")
             } else {
                 System.err.println("cannot log '$message' to scenario")

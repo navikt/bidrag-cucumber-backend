@@ -30,8 +30,8 @@ class AvvikEgenskaper {
         FellesTestdataEgenskaper.useAsKey(avvikstype)
     }
 
-    @Og("endepunkt url lages av saksnummer {string} og journalpostId {string}")
-    fun `endepunkt url er`(saksnummer: String, journalpostId: String) {
+    @Og("avviksdato som brukes er saksnummer {string} og journalpostId {string}")
+    fun `avviksdato som brukes er`(saksnummer: String, journalpostId: String) {
         avvikData = AvvikData(saksnummer = saksnummer, journalpostId = journalpostId)
     }
 
