@@ -9,7 +9,7 @@ class JournalpostEgenskaper {
 
     @Gitt("jeg henter journalpost for sak {string} som har id {string}")
     fun `jeg henter journalpost for sak som har id`(saksnummer: String, journalpostId: String) {
-        restTjeneste.exchangeGet("/sak/$saksnummer/journal/$journalpostId")
+        restTjeneste.exchangeGet("/journal/$journalpostId?saksnummer=$saksnummer")
     }
 
     @Og("følgende properties skal ligge i responsen:")
@@ -24,11 +24,11 @@ class JournalpostEgenskaper {
 
     @Gitt("jeg endrer journalpost for sak {string} som har id {string} for bidragDokument:")
     fun `jeg endrer journalpost for sak som har id`(saksnummer: String, journalpostId: String, json: String) {
-        restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", json)
+        restTjeneste.exchangePut("/journal/$journalpostId", json)
     }
 
-    @Gitt("jeg endrer journalpost for sak {string} med id {string} til:")
-    fun `jeg endrer journalpost med id til`(saksnummer: String, journalpostId: String, journalpostJson: String) {
-        restTjeneste.exchangePut("/sak/$saksnummer/journal/$journalpostId", journalpostJson)
+    @Gitt("jeg endrer journalpost med id {string} til:")
+    fun `jeg endrer journalpost med id til`(journalpostId: String, journalpostJson: String) {
+        restTjeneste.exchangePut("/journal/$journalpostId", journalpostJson)
     }
 }
