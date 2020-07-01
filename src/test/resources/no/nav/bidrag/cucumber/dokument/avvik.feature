@@ -10,14 +10,17 @@ Egenskap: avvik for bidrag-dokument (/sak/*/journal/*/avvik REST API)
     Og endre journalpost med id '34111047' til:
             """
             {
+                "batchNavn": "batchen",
                 "fagomrade": "BID",
                 "feilfort": "false",
+                "filnavn": "fila",
                 "dokumentType": "I",
+                "journalstatus": "J",
                 "originalBestilt": "false",
                 "skannetDato": "2019-08-21"
             }
             """
-    Og endepunkt url lages av saksnummer '0000003' og journalpostId 'BID-34111047'
+    Og avviksdato som brukes er saksnummer '0000003' og journalpostId 'BID-34111047'
     Og enhetsnummer for avvik er '4806'
 
   Scenario: Sjekk avviksvalg for gitt journalpost

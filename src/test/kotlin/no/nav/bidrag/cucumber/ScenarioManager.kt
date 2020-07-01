@@ -13,19 +13,16 @@ open class ScenarioManager {
             correlationIdForScenario = Environment.createCorrelationIdValue()
         }
 
-        fun writeToCucumberScenario(message: String) {
-            writeToCucumberScenario(null, message)
+        fun log(message: String) {
+            log(null, message)
         }
 
-        fun writeToCucumberScenario(messageTitle: String?, message: String) {
+        fun log(messageTitle: String?, message: String) {
             if (scenario != null) {
-                if (messageTitle != null) {
-                    scenario!!.log("<h5>\n$messageTitle\n</h5>")
-                }
-
-                scenario!!.log("<p>\n$message\n</p>")
+                val title = if (messageTitle != null) "<h5>$messageTitle</h5>" else ""
+                scenario!!.log("$title<p>\n$message\n</p>")
             } else {
-                System.err.println("cannot write '$message' to scenario")
+                System.err.println("cannot log '$message' to scenario")
             }
         }
     }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders
 data class AvvikData(
         var beskrivelse: String? = null,
         private var journalpostId: String? = null,
-        val saksnummer: String,
+        val saksnummer: String?,
         private val detaljer: MutableMap<String, String> = HashMap()
 ) {
     lateinit var avvikstype: String
@@ -18,9 +18,24 @@ data class AvvikData(
     }
 
     fun hentAvvikshendelse(): String {
-        return if (beskrivelse == null) """{"avvikType":"$avvikstype","enhetsnummer":"$enhet"}"""
-        else if (detaljer.isEmpty()) """{"avvikType":"$avvikstype","enhetsnummer":"$enhet", "beskrivelse":"$beskrivelse"}"""
-        else """{"avvikType":"$avvikstype","enhetsnummer":"$enhet","beskrivelse":"$beskrivelse","detaljer":{"${hentKey()}":"${hentValue()}"}}"""
+        var jsonBeskrivelse = ""
+        var jsonDetaljer = ""
+        var jsonSak = ""
+
+        if (beskrivelse != null) {
+            jsonBeskrivelse = ""","beskrivelse":"$beskrivelse""""
+        }
+
+        if (detaljer.isNotEmpty()) {
+            jsonDetaljer = ""","detaljer":{"${hentKey()}":"${hentValue()}"$jsonSak}"""
+        }
+
+        if (saksnummer != null) {
+            jsonSak = ""","saksnummer":"$saksnummer" """
+
+        }
+
+        return """{"avvikType":"$avvikstype","enhetsnummer":"$enhet"$jsonBeskrivelse$jsonDetaljer$jsonSak}"""
     }
 
     private fun hentKey() = detaljer.keys.iterator().next()
@@ -32,8 +47,9 @@ data class AvvikData(
     }
 
     fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!))
-    fun lagEndepunktUrl() = "/sak/$saksnummer/journal/$journalpostId/avvik"
-    fun lagEndepunktUrlForAvvikstype() = "/sak/$saksnummer/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik"
+    fun lagEndepunktUrl() = "/journal/$journalpostId/avvik"
+    fun lagEndepunktUrlForAvvikstype() = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik"
+    fun lagEndepunktUrlForHentAvvik() = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik?saksnummer=$saksnummer"
     fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
 
     fun hentJournalpostId() = FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!

@@ -8,7 +8,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
-    Gitt resttjenesten 'bidragDokumentJournalpost'
+    Gitt resttjenesten 'bidragDokument'
 
   Scenario: Sjekk operativt health endpoint
     Når jeg kaller helsetjenesten
@@ -28,7 +28,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
     Så skal http status være '200'
     Og så skal responsen være et objekt
-    Og følgende properties skal ligge i responsen:
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltene:
       | avsenderNavn  |
       | dokumentDato  |
       | dokumentType  |
@@ -37,7 +37,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
       | innhold       |
 
   Scenario: Sjekk at sak som ikke finnes git HttpStatus 404 - Not Found
-    Gitt jeg henter journalpost for sak "XYZ" som har id "BID"
+    Gitt jeg henter journalpost for sak "XYZ" som har id "BID-12345667"
     Så skal http status være '404'
 
   Scenario: Sjekk at journalpost kan oppdateres - James Bond
@@ -59,7 +59,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
     Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og responsen skal inneholde 'avsenderNavn' = 'Bond, James'
+    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bond, James'
 
   Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
     Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
@@ -80,7 +80,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
     Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og responsen skal inneholde 'avsenderNavn' = 'Trygdekontoret'
+    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
     Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
@@ -102,7 +102,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
     Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og responsen skal inneholde 'dokumentDato' = '2001-01-01'
+    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
     Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
@@ -124,4 +124,4 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
     Så skal http status være '202'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og responsen skal inneholde 'dokumentDato' = '2001-02-01'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-02-01'

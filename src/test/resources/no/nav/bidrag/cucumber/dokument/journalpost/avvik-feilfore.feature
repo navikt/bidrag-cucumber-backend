@@ -40,8 +40,8 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
     Når jeg oppretter avvik
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal http status være '200'
-    Og responsen skal inneholde 'feilfort' = 'true'
-    Og responsen skal ikke inneholde 'journalstatus' = 'S'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'feilfort' = 'true'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' uten verdi 'S'
     Og når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
     Og listen med avvikstyper skal ikke inneholde 'FEILFORE_SAK'

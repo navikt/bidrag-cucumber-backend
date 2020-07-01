@@ -44,7 +44,7 @@ class FellesEgenskaper {
         val responseObject = restTjeneste.hentResponseSomMap()
         val verdiFraResponse = responseObject[key]?.toString()
 
-        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()})").isEqualTo(value)
+        assertThat(verdiFraResponse).`as`("json response").isEqualTo(value)
     }
 
     @Og("responsen skal inneholde et objekt med navn {string} som har feltet {string} = {string}")
@@ -54,7 +54,51 @@ class FellesEgenskaper {
         @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>?
         val verdiFraResponse = objektFraResponse?.get(key)?.toString()
 
-        assertThat(verdiFraResponse).`as`("$objekt i json response (${restTjeneste.hentResponse()}) skal inneholde $key").isEqualTo(value)
+        assertThat(verdiFraResponse).`as`("$objekt skal inneholde $key").isEqualTo(value)
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har feltet {string} uten verdi {string}")
+    fun `responsen skal inneholde et objekt med feltet uten gitt verdi`(objekt: String, key: String, value: String) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+        @Suppress("UNCHECKED_CAST") val objektFraResponse = responseObject[objekt] as Map<String, Any>?
+        val verdiFraResponse = objektFraResponse?.get(key)?.toString()
+
+        assertThat(objektFraResponse).`as`("$objekt skal inneholde $key").containsKey(key)
+        assertThat(verdiFraResponse).`as`("$key skal ikke være $value").isNotEqualTo(value)
+
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har feltene:")
+    fun `responsen skal inneholde et objekt som har feltene`(objekt: String, felter: List<String>) {
+        val responseObject = restTjeneste.hentResponseSomMap()
+        val journalpostMap = responseObject[objekt] as Map<*, *>?
+        val manglerFelt = ArrayList<String>()
+
+        felter.forEach { if (!journalpostMap?.containsKey(it)!!) manglerFelt.add(it) }
+
+        assertThat(manglerFelt).`as`("Response skal ikke mangle noen av $felter").isEmpty()
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har et felt {string} med feltet {string}")
+    fun `responsen skal inneholde et objekt med felt som har felt`(objekt: String, objektFelt: String, felt: String) {
+        val journalpostResponse = restTjeneste.hentResponseSomMap()
+        val journalpostMap = journalpostResponse[objekt] as Map<*, *>?
+        @Suppress("UNCHECKED_CAST") val feltMap = journalpostMap?.get(objektFelt) as Map<String, *>?
+
+        assertThat(feltMap).`as`("Response skal inneholde feltet $felt").containsKey(felt)
+    }
+
+    @Og("responsen skal inneholde et objekt med navn {string} som har et felt {string} med feltene:")
+    fun `responsen skal inneholde et objekt med felt med feltene`(objekt: String, objektFelt: String, forventedeFelter: List<String>) {
+        val journalpostResponse = restTjeneste.hentResponseSomMap()
+        val journalpostMap = journalpostResponse[objekt] as Map<*, *>?
+        @Suppress("UNCHECKED_CAST") val reelleFelter = (journalpostMap?.get(objektFelt) as List<Map<*, *>>?)?.first()
+
+        assertThat(reelleFelter).isNotNull
+        val manglerFelt = ArrayList<String>()
+        forventedeFelter.forEach { if (!reelleFelter!!.containsKey(it)) manglerFelt.add(it) }
+
+        assertThat(manglerFelt).`as`("Response med $objektFelt skal ikke mangle noen av $forventedeFelter").isEmpty()
     }
 
     @Og("responsen skal ikke inneholde {string} = {string}")
@@ -62,7 +106,7 @@ class FellesEgenskaper {
         val responseObject = restTjeneste.hentResponseSomMap()
         val verdiFraResponse = responseObject[key]?.toString()
 
-        assertThat(verdiFraResponse).`as`("json response (${restTjeneste.hentResponse()}) skal inneholde $key").isNotEqualTo(value)
+        assertThat(verdiFraResponse).`as`("json response skal inneholde $key").isNotEqualTo(value)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -72,7 +116,7 @@ class FellesEgenskaper {
         val responseObject = restTjeneste.hentResponseSomListe()
 
         responseObject.forEach {
-            verifyer.assertThat(it.get(key)).`as`("id: ${it.get("journalpostId")}").isEqualTo(value)
+            verifyer.assertThat(it[key]).`as`("id: ${it["journalpostId"]}").isEqualTo(value)
         }
 
         verifyer.assertAll()
@@ -85,25 +129,20 @@ class FellesEgenskaper {
 
         properties.forEach { if (!responseObject.containsKey(it)) mangledeProps.add(it) }
 
-        assertThat(mangledeProps).`as`("${restTjeneste.hentResponse()} skal ikke mangle noen av $properties").isEmpty()
+        assertThat(mangledeProps).`as`("Responsen skal ha alle properties: $properties").isEmpty()
     }
 
     @Suppress("UNCHECKED_CAST")
     @Så("{string} skal ha følgende properties:")
     fun `gitt object skal ha folgende properties`(obj: String, properties: List<String>) {
         val responseObject = restTjeneste.hentResponseSomMap()
-        val objects = responseObject[obj]
-        val manglendeProperties: List<String>
-
-        if (objects is List<*>) {
-            manglendeProperties = restTjeneste.hentManglendeProperties(objects, properties)
-        } else if (objects is LinkedHashMap<*, *>) {
-            manglendeProperties = restTjeneste.hentManglendeProperties(objects, properties)
-        } else {
-            throw IllegalStateException("ukjennt type av $objects")
+        val manglendeProperties: List<String> = when (val objects = responseObject[obj]) {
+            is List<*> -> restTjeneste.hentManglendeProperties(objects, properties)
+            is LinkedHashMap<*, *> -> restTjeneste.hentManglendeProperties(objects, properties)
+            else -> throw IllegalStateException("ukjennt type av $objects")
         }
 
-        assertThat(manglendeProperties).`as`("$obj skal ikke mangle noen av $properties: ${restTjeneste.hentResponse()}")
+        assertThat(manglendeProperties).`as`("$obj skal ikke mangle noen av $properties i response")
                 .isEmpty()
     }
 
