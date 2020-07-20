@@ -72,14 +72,14 @@ open class RestTjeneste(
         headers.add(X_ENHET_HEADER, enhet ?: "4802")
 
         val time = "time:(from:now-1d,to:now))"
-        val columns = "columns:!(message,envclass,environment,level,application,host)"
+        val columns = "columns:!(message,level,application)"
         val index = "index:'96e648c0-980a-11e9-830a-e17bbd64b4db'"
         val query = "query:(language:lucene,query:\"${ScenarioManager.correlationIdForScenario}\")"
         val sort = "sort:!(!('@timestamp',desc))"
 
         ScenarioManager.log(
                 "Link for correlation-id (${ScenarioManager.correlationIdForScenario}):",
-                        "https://logs.adeo.no/app/kibana#/discover?_g=($time&_a=($columns,$index,interval:auto,$query,$sort)"
+                "https://logs.adeo.no/app/kibana#/discover?_g=($time&_a=($columns,$index,interval:auto,$query,$sort)"
         )
 
         return headers
