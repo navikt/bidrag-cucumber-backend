@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber.dokument
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
+import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions.assertThat
@@ -108,6 +109,18 @@ class AvvikEgenskaper {
         val listeMedGenerertJournalpostId = listeMedAlleJournalpostId.filter { avvikData.erForJournalpostId(it) }
 
         assertThat(listeMedGenerertJournalpostId).`as`("filtrert liste fra " + listeMedAlleJournalpostId).isEmpty()
+    }
+
+    @Gitt("jeg henter nylig opprettet journalpost av {string}")
+    fun `jeg henter nylig opprettet journalpost`(avvikType: String){
+        restTjenesteAvvik().exchangeGet("/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikType]}?saksnummer=${avvikData.saksnummer}")
+    }
+
+    @Så("skal enhet være {string}")
+    fun `skal enhet være`(enhet: String){
+        val resp = restTjenesteAvvik().hentResponseSomListeAvStrenger()
+        val journalpost:LinkedHashMap<String,String> = restTjenesteAvvik().hentResponseSomMap().get("journalpost") as LinkedHashMap<String, String>
+        assertThat(journalpost.get("journalforendeEnhet")).isEqualTo(enhet)
     }
 
     @Og("når jeg jeg henter journalpost etter avviksbehandling")
