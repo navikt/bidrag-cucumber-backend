@@ -28,7 +28,6 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
         "filnavn": "svada.pdf"
         }
         """
-
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
