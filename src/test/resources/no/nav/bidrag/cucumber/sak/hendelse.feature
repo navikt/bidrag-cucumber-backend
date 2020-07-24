@@ -10,3 +10,9 @@ Egenskap: bidrag-sak
     Gitt resttjenesten 'bidragSak'
     Når jeg henter bidraghendelser for sak med saksnummer "1500000"
     Så skal http status være '200'
+    Og så skal responsen være en liste
+    Og hvert element i listen skal ha følgende properties satt:
+      | hendelsetype  |
+      | enhet         |
+      | opprettetDato |
+      | resultat      |

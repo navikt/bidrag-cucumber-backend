@@ -9,4 +9,6 @@ class HendelseEgenskap {
     fun jeg_henter_bidragssaker_for_person_med_fnr(saksnummer: String) {
         FellesEgenskaper.restTjeneste.exchangeGet("/hendelse/sak/$saksnummer")
     }
+
+
 }
