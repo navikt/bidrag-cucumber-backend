@@ -22,7 +22,7 @@ class JournalpostEgenskaper {
         verifyer.assertAll()
     }
 
-    @Gitt("jeg endrer journalpost som har id {string} for bidragDokument:")
+    @Gitt("jeg endrer journalpost som har id {string}:")
     fun `jeg endrer journalpost som har id`(journalpostId: String, json: String) {
         restTjeneste.exchangePut("/journal/$journalpostId", json)
     }
