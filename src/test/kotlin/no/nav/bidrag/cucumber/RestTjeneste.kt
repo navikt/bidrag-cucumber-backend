@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
+import java.time.LocalDate
 import java.util.LinkedHashMap
 
 
@@ -71,7 +72,12 @@ open class RestTjeneste(
         headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.correlationIdForScenario)
         headers.add(X_ENHET_HEADER, enhet ?: "4802")
 
-        val time = "time:(from:now-1d,to:now))"
+        val now = LocalDate.now()
+        val year = now.year
+        val month = now.monthValue
+        val dayOfMonth = now.dayOfMonth
+
+        val time = "time:(from:'${"$year-$month-$dayOfMonth"}T22:00:00.000Z',to:'${"$year-$month-$dayOfMonth"}T23:59:59.999Z')"
         val columns = "columns:!(message,level,application)"
         val index = "index:'96e648c0-980a-11e9-830a-e17bbd64b4db'"
         val query = "query:(language:lucene,query:\"${ScenarioManager.correlationIdForScenario}\")"
