@@ -1,4 +1,4 @@
-package no.nav.bidrag.cucumber.sak
+package no.nav.bidrag.cucumber.hendelse
 
 import io.cucumber.java.no.Når
 import no.nav.bidrag.cucumber.FellesEgenskaper

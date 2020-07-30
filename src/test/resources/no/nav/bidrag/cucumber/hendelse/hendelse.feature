@@ -1,6 +1,6 @@
 # language: no
-@bidrag-sak
-Egenskap: bidrag-sak
+@bidrag-hendelse
+Egenskap: bidrag-hendelse
 
   Tester REST API til endepunktet BidragHendesleController i bidrag-sak.
   URLer til tjenester hentes via fasit.adeo.no og gjøres ved å spesifisere
