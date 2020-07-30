@@ -41,7 +41,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Så skal http status være '404'
 
   Scenario: Sjekk at journalpost kan oppdateres - James Bond
-    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+    Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
             {
             "journalpostId": 30040789,
@@ -62,7 +62,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bond, James'
 
   Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
-    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+    Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
             {
             "journalpostId": 30040789,
@@ -83,7 +83,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
-    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+    Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
             {
             "journalpostId": 30040789,
@@ -105,7 +105,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
-    Gitt jeg endrer journalpost for sak '0000004' som har id 'BID-30040789' for bidragDokument:
+    Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
             {
             "journalpostId": 30040789,
