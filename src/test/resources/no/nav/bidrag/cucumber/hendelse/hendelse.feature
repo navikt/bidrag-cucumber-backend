@@ -2,7 +2,7 @@
 @bidrag-hendelse
 Egenskap: bidrag-hendelse
 
-  Tester REST API til endepunktet BidragHendesleController i bidrag-sak.
+  Tester REST API til endepunktet BidragHendesleController i bidrag-hendelse.
   URLer til tjenester hentes via fasit.adeo.no og gjøres ved å spesifisere
   alias til en RestService record i fasit for et gitt miljø.
 
