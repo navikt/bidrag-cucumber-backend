@@ -24,10 +24,11 @@ internal const val URL_ISSO_REDIRECT = "https://$ALIAS_BIDRAG_UI.nais.preprod.lo
 
 // Vault
 internal const val VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER = "bidrag-hendelse-producer"
+internal const val VAULT_SUPPORT_BIDRAG_HENDELSE = "bidrag-hendelse"
 
 // application vs. context path
 internal val CONTEXT_PATH_PER_APPLICATION = mapOf(
-        VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER to "/bidrag-hendelse-producer"
+        VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER to "/bidrag-hendelse-producer", VAULT_SUPPORT_BIDRAG_HENDELSE to "/bidrag-hendelse"
 )
 
 // Headers
