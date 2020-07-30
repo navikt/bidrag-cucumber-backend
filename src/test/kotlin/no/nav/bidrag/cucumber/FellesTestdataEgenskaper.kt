@@ -40,6 +40,11 @@ class FellesTestdataEgenskaper {
         }
     }
 
+    @Og("opprettet journalpost har enhet {string}")
+    fun `opprettet journalpost har enhet`(enhet: String) {
+        assertThat(journalpostIdPerKey["jouranlforendeEnhet"]).isEqualTo(enhet);
+    }
+
     @Gitt("at jeg oppretter journalpost for {string}:")
     fun `opprett journalpost`(key: String, jpJson: String) {
         if (!journalpostIdPerKey.containsKey(key)) {

@@ -28,7 +28,6 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
         "filnavn": "svada.pdf"
         }
         """
-
   Scenario: Sjekk avviksvalg for gitt journalpost
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
@@ -38,3 +37,6 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
     Når jeg oppretter avvik
     Så skal http status være '200'
 
+  Scenario: Sjekk at riktig enhet blir journalført
+    Gitt jeg henter nylig opprettet journalpost av 'INNG_TIL_UTG_DOKUMENT'
+    Så skal enhet være '4806'
