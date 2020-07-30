@@ -25,6 +25,11 @@ class FellesEgenskaper {
         restTjeneste = RestTjeneste(alias)
     }
 
+    @Gitt("nais applikasjon {string}")
+    fun gittNaisApp(naisApp: String) {
+        restTjeneste = RestTjeneste(naisApp)
+    }
+
     @Så("skal http status være {string}")
     fun `skal http status vaere`(enHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
