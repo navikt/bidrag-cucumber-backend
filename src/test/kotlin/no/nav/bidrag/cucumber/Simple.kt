@@ -7,7 +7,8 @@ internal class Simple {
     companion object {
         private val objectMapper = ObjectMapper()
         private val supportedApplications = HashSet<String>(listOf(
-                VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER
+                VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER,
+                VAULT_SUPPORT_BIDRAG_HENDELSE
         ))
     }
 
