@@ -7,7 +7,7 @@ Egenskap: bidrag-hendelse
   alias til en RestService record i fasit for et gitt miljø.
 
   Scenario: Sjekk at vi får bidraghendelser for en sak
-    Gitt resttjenesten 'bidragSak'
+    Gitt resttjenesten 'bidragHendelse'
     Når jeg henter bidraghendelser for sak med saksnummer "1500000"
     Så skal http status være '200'
     Og så skal responsen være en liste
