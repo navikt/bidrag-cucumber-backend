@@ -117,9 +117,9 @@ class AvvikEgenskaper {
     }
 
     @Så("skal enhet være {string}")
-    fun `skal enhet være`(enhet: String) {
-        val resp = restTjenesteAvvik().hentResponseSomListeAvStrenger()
-        val journalpost: LinkedHashMap<String, String> = restTjenesteAvvik().hentResponseSomMap().get("journalpost") as LinkedHashMap<String, String>
+    fun `skal enhet vare`(enhet: String) {
+        val response = restTjenesteAvvik().hentResponseSomMap()
+        @Suppress("UNCHECKED_CAST") val journalpost: LinkedHashMap<String, String> = response.get("journalpost") as LinkedHashMap<String, String>
         assertThat(journalpost.get("journalforendeEnhet")).isEqualTo(enhet)
     }
 
