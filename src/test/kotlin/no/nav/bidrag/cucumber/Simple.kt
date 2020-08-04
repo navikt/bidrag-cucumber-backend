@@ -28,14 +28,7 @@ internal class Simple {
         logFilepaths(projFolder, applicationName, miljo)
 
         val jsonPath = "$projFolder/$applicationName/nais/$miljo.json"
-        val jsonFileAsMap = try {
-            @Suppress("UNCHECKED_CAST")
-            objectMapper.readValue(File(jsonPath), Map::class.java) as Map<String, String>
-        } catch (e: Exception) {
-            System.err.println("Kunne ikke lese $jsonPath - ${e.javaClass.simpleName}: ${e.message}")
-            readWithGson(jsonPath)
-        }
-
+        val jsonFileAsMap = readWithGson(jsonPath)
         val ingressPreprod = jsonFileAsMap["ingress_preprod"]
 
         return "${ingressPreprod}${CONTEXT_PATH_PER_APPLICATION[applicationName]}"
