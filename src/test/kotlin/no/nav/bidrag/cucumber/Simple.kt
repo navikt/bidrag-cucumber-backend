@@ -1,7 +1,10 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 
 internal class Simple {
     companion object {
@@ -25,11 +28,19 @@ internal class Simple {
         logFilepaths(projFolder, applicationName, miljo)
 
         val jsonPath = "$projFolder/$applicationName/nais/$miljo.json"
-        val jsonFileAsMap = objectMapper.readValue(File(jsonPath), Map::class.java)
+        val jsonFileAsMap = readWithGson(jsonPath)
         val ingressPreprod = jsonFileAsMap["ingress_preprod"]
 
         return "${ingressPreprod}${CONTEXT_PATH_PER_APPLICATION[applicationName]}"
                 .replace("//", "/").replace("https:/", "https://")
+    }
+
+    private fun readWithGson(jsonPath: String): Map<String, String> {
+        val bufferedReader = BufferedReader(FileReader(jsonPath))
+        val gson = Gson()
+
+        @Suppress("UNCHECKED_CAST")
+        return gson.fromJson(bufferedReader, Map::class.java) as Map<String, String>
     }
 
     private fun logFilepaths(projPath: String, applicationName: String, miljo: String) {
