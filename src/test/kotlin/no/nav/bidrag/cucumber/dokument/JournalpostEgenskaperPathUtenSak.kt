@@ -29,7 +29,7 @@ class JournalpostEgenskaperPathUtenSak {
     @Og("jeg registrerer endring av opprettet journalpost, {string}, med path {string}, med enhet {string}:")
     fun `jeg registrerer endring av journalpost med http api`(nokkelTilOpprettedeTestData: String, requestSti: String, endreJsonCommand: String, enhet: String) {
         val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkelTilOpprettedeTestData]
-        val path = requestSti.removeSuffix("{}")
-        FellesEgenskaper.restTjeneste.exchangePut(path + journalpostId, enhet, endreJsonCommand)
+        val path = requestSti.removeSuffix("{}") + journalpostId
+        FellesEgenskaper.restTjeneste.exchangePut(path, enhet, endreJsonCommand)
     }
 }
