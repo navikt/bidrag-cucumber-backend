@@ -121,7 +121,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_BDJ', med path '/journal/{}':
+    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_BDJ', med path '/journal/{}', med enhet '4806':
       """
       {
         "skalJournalfores":true,
@@ -141,3 +141,4 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og at jeg henter endret journalpost for 'JOURNALFOR_BDJ' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'J'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalforendeEnhet' = '4806'
