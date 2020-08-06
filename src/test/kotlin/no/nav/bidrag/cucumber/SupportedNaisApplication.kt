@@ -18,9 +18,8 @@ internal class SupportedNaisApplication {
         if (naisConfigurationFolder == null) {
             naisConfigurationFolder = System.getProperty(PROJECT_NAIS_FOLDER)
 
-            if (naisConfigurationFolder == null || !File("$naisConfigurationFolder").exists()) {
-                val message = "Fant ikke mappe som holder alle nais applikasjoner! Property: $PROJECT_NAIS_FOLDER, verdi: $naisConfigurationFolder"
-                throw IllegalStateException(message)
+            if (naisConfigurationFolder == null) {
+                throw IllegalStateException("Fant ikke mappe som holder nais applikasjoner! Property '$PROJECT_NAIS_FOLDER' er null.")
             }
         }
 
