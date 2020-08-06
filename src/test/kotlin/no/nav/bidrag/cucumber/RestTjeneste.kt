@@ -25,7 +25,7 @@ open class RestTjeneste(
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
 
-    constructor(alias: String) : this(alias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(alias))
+    constructor(applicationOrAlias: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias))
 
     fun hentEndpointUrl() = debugFullUrl
     fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
