@@ -13,26 +13,26 @@ internal class CacheRestTemplateMedBaseUrl {
         private val cache: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
         private val environment = Environment()
         private val fasit = Fasit()
-        private val simple = Simple()
+        private val simpleNaisConfiguration = NaisConfiguration()
     }
 
-    fun hentEllerKonfigurer(aliasOrApplication: String): RestTjeneste.RestTemplateMedBaseUrl {
-        if (cache.containsKey(aliasOrApplication)) {
-            return cache[aliasOrApplication]!!
+    fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
+        if (cache.containsKey(applicationOrAlias)) {
+            return cache[applicationOrAlias]!!
         }
 
-        val fullContextPath = when (simple.supports(aliasOrApplication)) {
-            true -> simple.hentFullContextPath(aliasOrApplication)
-            false -> fasit.hentFullContextPath(aliasOrApplication)
+        val fullContextPath = when (simpleNaisConfiguration.supports(applicationOrAlias)) {
+            true -> simpleNaisConfiguration.hentFullContextPath(applicationOrAlias)
+            false -> fasit.hentFullContextPath(applicationOrAlias)
         }
 
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fullContextPath)
 
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
-        cache[aliasOrApplication] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, fullContextPath)
+        cache[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, fullContextPath)
 
-        return cache[aliasOrApplication]!!
+        return cache[applicationOrAlias]!!
     }
 
     private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
