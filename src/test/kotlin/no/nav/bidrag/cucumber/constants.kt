@@ -22,15 +22,6 @@ internal const val URL_ISSO_AUTHORIZE = "https://isso-q.adeo.no/isso/oauth2/auth
 internal const val URL_ISSO_ACCESS_TOKEN = "https://isso-q.adeo.no:443/isso/oauth2/access_token"
 internal const val URL_ISSO_REDIRECT = "https://$ALIAS_BIDRAG_UI.nais.preprod.local/isso"
 
-// Vault
-internal const val VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER = "bidrag-hendelse-producer"
-internal const val VAULT_SUPPORT_BIDRAG_HENDELSE = "bidrag-hendelse"
-
-// application vs. context path
-internal val CONTEXT_PATH_PER_APPLICATION = mapOf(
-        VAULT_SUPPORT_BIDRAG_HENDELSE_PRODUCER to "/bidrag-hendelse-producer", VAULT_SUPPORT_BIDRAG_HENDELSE to "/bidrag-hendelse"
-)
-
 // Headers
 internal const val X_ENHET_HEADER = "X-Enhet"
 internal const val X_OPENAM_PASSW_HEADER = "X-OpenAM-Password"
