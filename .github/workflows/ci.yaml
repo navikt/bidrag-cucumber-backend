@@ -9,7 +9,7 @@ jobs:
   bump_snapshot:
     runs-on: ubuntu-latest
     name: Bump SNAPSHOT version
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v2
