@@ -48,13 +48,13 @@ Cucumber støtter flere språk og for mer detaljert oversikt over funksjonalitet
 
 ### GitHub Workflow
 
-Cucumber testene brukes i github workflow når en push blir gjort til en branch eller master på en nais applikasjon under bidrag. Hvis en endring av en
+Cucumber testene brukes i github workflow når en push blir gjort til en branch eller main på en nais applikasjon under bidrag. Hvis en endring av en
 nais applikasjon krever endringer av cucumber testene, så kod disse endringene i en feature branch tiljørende bidrag-cucumber-backend (kall feature-
 branchen `feature`) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken som helst feature-
 branch tilhørende nais-applikasjonen.
 
 - action: bidrag-maven/cucumber-backend/@v1.0.4
-- les https://github.com/navikt/bidrag-maven/blob/master/cucumber-backend/README.md
+- les https://github.com/navikt/bidrag-maven/blob/main/cucumber-backend/README.md
  
 
 ### Kjøring
