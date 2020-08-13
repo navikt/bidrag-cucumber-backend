@@ -117,5 +117,3 @@ mvn cluecumber-report:reporting
 ```
 
 Man kan også gjøre både testing og rapportgenerering i et steg med `mvn install`
-
-Når cucumber kjøres på jenkins, vil jenkins in egen plugin for å generere cucumber rapporter bli brukt.
