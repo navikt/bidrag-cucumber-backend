@@ -34,8 +34,7 @@ internal class CacheRestTemplateMedBaseUrl {
             return cache[applicationOrAlias]!!
         }
 
-        val test = simpleNaisConfiguration.supports(applicationOrAlias);
-
+        simpleNaisConfiguration.supports(applicationOrAlias)
         val applicationUrl = simpleNaisConfiguration.hentApplicationHostUrl(applicationOrAlias) + bestemApplicationContextPath(applicationContext);
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias, applicationUrl)
@@ -43,17 +42,12 @@ internal class CacheRestTemplateMedBaseUrl {
 
 
     private fun bestemApplicationContextPath(applicationContext: String): String {
-        var applicationContextPath = applicationContext
-        if (applicationContext != null && !applicationContext.isEmpty()) {
-            if (applicationContext.equals("/")) {
-                applicationContextPath = ""
-            } else {
-                applicationContextPath = applicationContext + "/"
-            }
-        } else if (applicationContext == null) {
+        var applicationContextPath: String
+        if (!applicationContext.isEmpty() && applicationContext.equals("/")) {
             applicationContextPath = ""
+        } else {
+            applicationContextPath = applicationContext + "/"
         }
-
         return applicationContextPath
     }
 

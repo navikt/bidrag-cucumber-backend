@@ -2,7 +2,6 @@ package no.nav.bidrag.cucumber.arkivering
 
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import junit.framework.Assert.assertTrue
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions
@@ -12,12 +11,12 @@ class ArkiveringEgenskap {
 
     @Når("jeg ber om at en journalpost uten dokument i brevlager, sendes til {string} i Joark via bidrag-dokument-arkiveringsendepunkt med sti {string}")
     fun `arkivere journalpost`(key: String, requestSti: String) {
-        val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[key]?.replace("BID-", "" as String)
+        val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[key]?.replace("BID-", "")
         val path = requestSti.replace("{}", journalpostId as String)
         try {
             FellesEgenskaper.restTjeneste.exchangePost(path)
         } catch (e: HttpServerErrorException) {
-            assertTrue(!e.message.isNullOrBlank())
+            assert(!e.message.isNullOrBlank())
         }
     }
 
