@@ -16,21 +16,55 @@ internal class CacheRestTemplateMedBaseUrl {
         private val simpleNaisConfiguration = NaisConfiguration()
     }
 
-    fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
+    fun hentEllerKonfigurer(applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
+        if (cache.containsKey(applicationContext)) {
+            return cache[applicationContext]!!
+        }
+
+        val appliationUrl = when (simpleNaisConfiguration.supports(applicationContext)) {
+            true -> simpleNaisConfiguration.hentApplicationHostUrl(applicationContext) + applicationContext + '/'
+            false -> fasit.hentFullContextPath(applicationContext)
+        }
+
+        return hentEllerKonfigurerApplikasjonForUrl(applicationContext, appliationUrl);
+    }
+
+    fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
         if (cache.containsKey(applicationOrAlias)) {
             return cache[applicationOrAlias]!!
         }
 
-        val fullContextPath = when (simpleNaisConfiguration.supports(applicationOrAlias)) {
-            true -> simpleNaisConfiguration.hentFullContextPath(applicationOrAlias)
-            false -> fasit.hentFullContextPath(applicationOrAlias)
+        val test = simpleNaisConfiguration.supports(applicationOrAlias);
+
+        val applicationUrl = simpleNaisConfiguration.hentApplicationHostUrl(applicationOrAlias) + bestemApplicationContextPath(applicationContext);
+
+        return hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias, applicationUrl)
+    }
+
+
+    private fun bestemApplicationContextPath(applicationContext: String): String {
+        var applicationContextPath = applicationContext
+        if (applicationContext != null && !applicationContext.isEmpty()) {
+            if (applicationContext.equals("/")) {
+                applicationContextPath = ""
+            } else {
+                applicationContextPath = applicationContext + "/"
+            }
+        } else if (applicationContext == null) {
+            applicationContextPath = ""
         }
 
+        return applicationContextPath
+    }
+
+    fun hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
+
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
-        val httpHeaderRestTemplate = environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), fullContextPath)
+        val httpHeaderRestTemplate = environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
-        cache[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, fullContextPath)
+
+        cache[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 
         return cache[applicationOrAlias]!!
     }

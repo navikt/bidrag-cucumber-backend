@@ -48,12 +48,12 @@ internal class SupportedNaisApplication {
     /**
      * before calling this method, isSupported(applicationName) must be true
      */
-    internal fun fetchFullContextPath(applicationName: String): String {
+    internal fun fetchApplicationHostUrl(applicationName: String): String {
 
         val jsonFileAsMap = readWithGson(namespaceJsonFilePathPerAppName[applicationName]!!)
         val ingressPreprod = jsonFileAsMap["ingress_preprod"]
 
-        return "${ingressPreprod}$applicationName".replace("//", "/").replace("https:/", "https://")
+        return "${ingressPreprod}".replace("//", "/").replace("https:/", "https://")
     }
 
     private fun readWithGson(jsonPath: String): Map<String, String> {
