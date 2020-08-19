@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
-import java.util.LinkedHashMap
 
 
 @Suppress("UNCHECKED_CAST")
@@ -25,6 +24,7 @@ open class RestTjeneste(
     protected lateinit var responseEntity: ResponseEntity<String>
 
     constructor(applicationOrAlias: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias))
+    constructor(applicationOrAlias: String, applicationContext: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias, applicationContext))
 
     fun hentEndpointUrl() = debugFullUrl
     fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
@@ -100,6 +100,19 @@ open class RestTjeneste(
         exchange(jsonEntity, endpointUrl, HttpMethod.POST)
     }
 
+    fun exchangePost(endpointUrl: String) {
+        val jsonEntity = httpEntity(endpointUrl)
+        exchange(jsonEntity, endpointUrl, HttpMethod.POST)
+    }
+
+    private fun httpEntity(endpointUrl: String): HttpEntity<String> {
+        this.debugFullUrl = rest.baseUrl + endpointUrl
+        val headers = initHttpHeadersWithCorrelationIdAndEnhet()
+        headers.contentType = MediaType.APPLICATION_JSON
+
+        return HttpEntity(headers)
+    }
+
     private fun httpEntity(endpointUrl: String, enhet: String?, journalpostJson: String): HttpEntity<String> {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationIdAndEnhet(enhet)
@@ -114,6 +127,7 @@ open class RestTjeneste(
             responseEntity = rest.template.exchange(endpointUrl, httpMethod, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
             System.err.println("$httpMethod FEILET: ${this.debugFullUrl}: $e")
+            responseEntity = ResponseEntity.status(e.statusCode).body<Any>(e.message) as ResponseEntity<String>
             throw e
         }
     }
@@ -126,6 +140,7 @@ open class RestTjeneste(
         } catch (e: HttpStatusCodeException) {
             System.err.println("POST FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
+
         }
     }
 

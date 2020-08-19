@@ -9,6 +9,7 @@ import io.cucumber.java.no.Så
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus
+import kotlin.test.assertTrue
 
 class FellesEgenskaper {
     companion object {
@@ -30,12 +31,22 @@ class FellesEgenskaper {
         restTjeneste = RestTjeneste(naisApp)
     }
 
+    @Gitt("nais applikasjon {string} med kontekst {string}")
+    fun gittNaisAppMedKontekst(naisApp: String, context: String) {
+        restTjeneste = RestTjeneste(naisApp, context)
+    }
+
     @Så("skal http status være {string}")
     fun `skal http status vaere`(enHttpStatus: String) {
         val httpStatus = HttpStatus.valueOf(enHttpStatus.toInt())
 
         assertThat(restTjeneste.hentHttpStatus()).`as`("HttpStatus for ${restTjeneste.hentEndpointUrl()}")
                 .isEqualTo(httpStatus)
+    }
+
+    @Og("responsen skal inneholde feilmeldingen {string}")
+    fun `responsen skal inneholde feilmeldingen`(feilmelding: String) {
+        assertTrue (restTjeneste.hentResponse().toString().contains(feilmelding))
     }
 
     @Og("så skal responsen være et objekt")
