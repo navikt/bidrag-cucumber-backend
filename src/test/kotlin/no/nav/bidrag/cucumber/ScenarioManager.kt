@@ -29,19 +29,19 @@ open class ScenarioManager {
         fun createQueryLinkForCorrelationId(): String {
             val now = LocalDate.now()
             val year = now.year
-            val month = now.monthValue
+            val month = if (now.monthValue < 10) "0${now.monthValue}" else "${now.monthValue}"
             val dayOfMonth = now.dayOfMonth
 
-            val time = "time:(from:'${"$year-$month-$dayOfMonth"}T00:00:00.000Z',to:'${"$year-$month-$dayOfMonth"}T23:59:59.999Z')"
+            val time = "time:(from:%27${"$year-$month-$dayOfMonth"}T00:00:00.000Z%27,to:%27${"$year-$month-$dayOfMonth"}T23:59:59.999Z%27))"
             val columns = "columns:!(message,level,application)"
-            val index = "index:'96e648c0-980a-11e9-830a-e17bbd64b4db'"
-            val query = "query:(language:lucene,query:\"${correlationIdForScenario}\")"
-            val sort = "sort:!(!('@timestamp',desc))"
+            val index = "index:%2796e648c0-980a-11e9-830a-e17bbd64b4db%27"
+            val query = "query:(language:lucene,query:%22$correlationIdForScenario%22)"
+            val sort = "sort:!(!(%27@timestamp%27,desc))"
 
             return "https://logs.adeo.no/app/kibana#/discover?_g=($time&_a=($columns,$index,interval:auto,$query,$sort)"
         }
 
-        fun createCorrelationIdLinkTitle() = "Link for correlation-id (${correlationIdForScenario}):"
+        fun createCorrelationIdLinkTitle() = "Link for correlation-id ($correlationIdForScenario):"
         fun fetchCorrelationIdForScenario() = correlationIdForScenario
     }
 }
