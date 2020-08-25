@@ -34,7 +34,7 @@ internal class Fasit {
     }
 
     internal fun hentFullContextPath(alias: String): String {
-        val miljo = Environment.fetch()
+        val miljo = Environment.fetchPhysical()
         val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
 
