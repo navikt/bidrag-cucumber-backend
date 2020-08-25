@@ -7,9 +7,11 @@ import java.net.URI
 internal class Environment {
 
     companion object {
-        private const val Q0 = "q0"
+        private const val ENV_FEATURE = "feature"
+        private const val ENV_MAIN = "main"
 
-        private var environment: String? = null
+        private var physicalEnvironemnt: String? = null
+        private var physical: Map<String, String> = mapOf(Pair(ENV_MAIN, "q0"), Pair(ENV_FEATURE, "q1"))
 
         internal val offline by lazy {
             Fasit.hentFasitRessursSomJson(
@@ -21,18 +23,22 @@ internal class Environment {
             return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
-        fun fetch(): String {
-            if (environment != null) {
-                return environment as String
+        fun fetchPhysical(): String {
+            if (physicalEnvironemnt != null) {
+                return physicalEnvironemnt as String
             }
 
             if (offline) {
-                return Q0
+                return physical.getValue(ENV_MAIN)
             }
 
-            environment = System.getProperty(ENVIRONMENT)
+            physicalEnvironemnt = physical[System.getProperty(ENVIRONMENT)]
 
-            return environment ?: Q0
+            if (physicalEnvironemnt == null) {
+                physicalEnvironemnt = physical[ENV_MAIN]
+            }
+
+            return physicalEnvironemnt!!
         }
 
         fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
@@ -40,7 +46,7 @@ internal class Environment {
                 ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
 
         fun use(miljo: String) {
-            environment = miljo
+            physicalEnvironemnt = miljo
         }
 
         fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke nav-bruker (ala [x]123456)")

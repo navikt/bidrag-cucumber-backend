@@ -31,7 +31,7 @@ internal class SupportedNaisApplication {
     private fun putSupportStatus(applicationName: String) {
         val applfolder = File("$naisConfigurationFolder/$applicationName")
         val naisFolder = File("$naisConfigurationFolder/$applicationName/nais")
-        val jsonFile = File("$naisConfigurationFolder/$applicationName/nais/${Environment.fetch()}.json")
+        val jsonFile = File("$naisConfigurationFolder/$applicationName/nais/${Environment.fetchPhysical()}.json")
 
         println("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
         println("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
