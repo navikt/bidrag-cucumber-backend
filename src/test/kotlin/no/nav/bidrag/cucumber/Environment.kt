@@ -10,8 +10,8 @@ internal class Environment {
         private const val ENV_FEATURE = "feature"
         private const val ENV_MAIN = "main"
 
-        private var physicalEnvironemnt: String? = null
-        private var physical: Map<String, String> = mapOf(Pair(ENV_MAIN, "q0"), Pair(ENV_FEATURE, "q1"))
+        private var namespace: String? = null
+        private var namespaceForEnvironment: Map<String, String> = mapOf(Pair(ENV_MAIN, "q0"), Pair(ENV_FEATURE, "q1"))
 
         internal val offline by lazy {
             Fasit.hentFasitRessursSomJson(
@@ -19,34 +19,38 @@ internal class Environment {
             ).offline
         }
 
+        internal val miljo by lazy {
+                System.getProperty(ENVIRONMENT) ?: throw IllegalStateException("Fant ikke miljø for kjøring")
+        }
+
         internal fun createCorrelationIdValue(): String {
             return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
-        fun fetchPhysical(): String {
-            if (physicalEnvironemnt != null) {
-                return physicalEnvironemnt as String
+        fun fetchNamespace(): String {
+            if (namespace != null) {
+                return namespace as String
             }
 
             if (offline) {
-                return physical.getValue(ENV_MAIN)
+                return namespaceForEnvironment.getValue(ENV_MAIN)
             }
 
-            physicalEnvironemnt = physical[System.getProperty(ENVIRONMENT)]
+            namespace = namespaceForEnvironment[miljo]
 
-            if (physicalEnvironemnt == null) {
-                physicalEnvironemnt = physical[ENV_MAIN]
+            if (namespace == null) {
+                namespace = namespaceForEnvironment[ENV_MAIN]
             }
 
-            return physicalEnvironemnt!!
+            return namespace ?: throw IllegalStateException("Ikke noe namespace er konfigurert! Sjekk konfigurasjon for '$namespace'/'$ENV_MAIN'.")
         }
 
         fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
         fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH)
                 ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
 
-        fun use(miljo: String) {
-            physicalEnvironemnt = miljo
+        fun use(namespace: String) {
+            this.namespace = namespace
         }
 
         fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke nav-bruker (ala [x]123456)")
