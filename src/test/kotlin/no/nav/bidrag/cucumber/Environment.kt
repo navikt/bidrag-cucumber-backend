@@ -9,9 +9,11 @@ internal class Environment {
     companion object {
         private const val ENV_FEATURE = "feature"
         private const val ENV_MAIN = "main"
-
-        private var namespace: String? = null
         private var namespaceForEnvironment: Map<String, String> = mapOf(Pair(ENV_MAIN, "q0"), Pair(ENV_FEATURE, "q1"))
+
+        internal val namespace: String by lazy {
+            fetchNamespace()
+        }
 
         internal val offline by lazy {
             Fasit.hentFasitRessursSomJson(
@@ -20,38 +22,26 @@ internal class Environment {
         }
 
         internal val miljo by lazy {
-                System.getProperty(ENVIRONMENT) ?: throw IllegalStateException("Fant ikke miljø for kjøring")
+            System.getProperty(ENVIRONMENT) ?: throw IllegalStateException("Fant ikke miljø for kjøring")
         }
 
         internal fun createCorrelationIdValue(): String {
             return "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
-        fun fetchNamespace(): String {
-            if (namespace != null) {
-                return namespace as String
-            }
-
+        private fun fetchNamespace(): String {
             if (offline) {
                 return namespaceForEnvironment.getValue(ENV_MAIN)
             }
 
-            namespace = namespaceForEnvironment[miljo]
+            val wantedNamespace = namespaceForEnvironment[System.getProperty(PROJECT_NAIS_FOLDER)]
 
-            if (namespace == null) {
-                namespace = namespaceForEnvironment[ENV_MAIN]
-            }
-
-            return namespace ?: throw IllegalStateException("Ikke noe namespace er konfigurert! Sjekk konfigurasjon for '$namespace'/'$ENV_MAIN'.")
+            return wantedNamespace ?: namespaceForEnvironment.getValue(ENV_MAIN)
         }
 
         fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
         fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH)
                 ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
-
-        fun use(namespace: String) {
-            this.namespace = namespace
-        }
 
         fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke nav-bruker (ala [x]123456)")
         fun userAuthentication() = System.getProperty(CREDENTIALS_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til ${user()}")

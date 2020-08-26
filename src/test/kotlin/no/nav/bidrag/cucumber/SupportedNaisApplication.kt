@@ -52,7 +52,7 @@ internal class SupportedNaisApplication {
             return miljoJson
         }
 
-        return File("$naisConfigurationFolder/$applicationName/nais/${Environment.fetchNamespace()}.json")
+        return File("$naisConfigurationFolder/$applicationName/nais/${Environment.namespace}.json")
     }
 
     /**
