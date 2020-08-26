@@ -34,8 +34,7 @@ internal class Fasit {
     }
 
     internal fun hentFullContextPath(alias: String): String {
-        val namespace = Environment.fetchNamespace()
-        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$namespace")
+        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=${Environment.namespace}")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
 
         return fasitRessurs.url()

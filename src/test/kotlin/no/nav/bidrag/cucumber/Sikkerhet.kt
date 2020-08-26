@@ -41,7 +41,10 @@ class Sikkerhet {
     }
 
     fun fetchOnlineIdToken(): String {
-        val namespace = Environment.fetchNamespace()
+        return fetchOnlineIdToken(Environment.namespace)
+    }
+
+    fun fetchOnlineIdToken(namespace: String): String {
         finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(namespace)
         finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(finalValueCache[OPEN_ID_FASIT] as Fasit.FasitRessurs)
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
@@ -88,16 +91,16 @@ class Sikkerhet {
                 header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
 
-        log("Hent token id for $testUser in ${Environment.fetchNamespace()} from $URL_ISSO")
+        log("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")
 
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.fetchNamespace()}")
+                .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.namespace}")
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        log("Setting up security for $testUser running in ${Environment.fetchNamespace()}")
+        log("Setting up security for $testUser running in ${Environment.namespace}")
 
-        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for $testUser in ${Environment.fetchNamespace()}")
+        return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for $testUser in ${Environment.namespace}")
     }
 
     private fun log(string: String) {
@@ -116,7 +119,7 @@ class Sikkerhet {
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
         val httpEntityWithHeaders = initHttpEntity(
-                "client_id=bidrag-ui-${Environment.fetchNamespace()}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
+                "client_id=bidrag-ui-${Environment.namespace}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
                 header(HttpHeaders.CACHE_CONTROL, "no-cache"),
                 header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded"),
                 header(HttpHeaders.COOKIE, "nav-isso=$tokenIdForAuthenticatedTestUser")
@@ -132,7 +135,7 @@ class Sikkerhet {
     }
 
     private fun hentIdToken(codeFraLocationHeader: String, passordOpenAm: String): String {
-        val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.fetchNamespace()}:$passordOpenAm"
+        val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.namespace}:$passordOpenAm"
         val httpEntityWithHeaders = initHttpEntity(
                 "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=$URL_ISSO_REDIRECT",
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(openApAuth.toByteArray(Charsets.UTF_8)))),
