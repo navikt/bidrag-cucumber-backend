@@ -31,7 +31,7 @@ internal class SupportedNaisApplication {
     private fun putSupportStatus(applicationName: String) {
         val applfolder = File("$naisConfigurationFolder/$applicationName")
         val naisFolder = File("$naisConfigurationFolder/$applicationName/nais")
-        val jsonFile = File("$naisConfigurationFolder/$applicationName/nais/${Environment.fetchPhysical()}.json")
+        val jsonFile = fetchNaisConfiguration(applicationName)
 
         println("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
         println("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
@@ -43,6 +43,16 @@ internal class SupportedNaisApplication {
         if (isSupported) {
             namespaceJsonFilePathPerAppName[applicationName] = jsonFile.absolutePath
         }
+    }
+
+    private fun fetchNaisConfiguration(applicationName: String): File {
+        val miljoJson = File("$naisConfigurationFolder/$applicationName/nais/${Environment.miljo}.json")
+
+        if (miljoJson.exists()) {
+            return miljoJson
+        }
+
+        return File("$naisConfigurationFolder/$applicationName/nais/${Environment.fetchNamespace()}.json")
     }
 
     /**

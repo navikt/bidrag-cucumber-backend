@@ -21,7 +21,7 @@ internal class Fasit {
             val fasitJson = try {
                 fasitTemplate.getForObject(resourceUrl, String::class.java)
             } catch (e: ResourceAccessException) {
-                return FasitJson(true)
+                return FasitJson(offline = true)
             }
 
             return FasitJson(fasitJson, false)
@@ -34,8 +34,8 @@ internal class Fasit {
     }
 
     internal fun hentFullContextPath(alias: String): String {
-        val miljo = Environment.fetchPhysical()
-        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
+        val namespace = Environment.fetchNamespace()
+        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$namespace")
         val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
 
         return fasitRessurs.url()
@@ -61,7 +61,7 @@ internal class Fasit {
 
     private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
 
-     data class FasitRessurs(
+    data class FasitRessurs(
             internal val alias: String,
             private val type: String,
             private val ressurser: MutableMap<String, String?> = HashMap()
@@ -90,7 +90,5 @@ internal class Fasit {
         fun passordUrl() = ressurser["passord.url"] ?: "ingen url for $alias"
     }
 
-    internal class FasitJson(val json: String?, val offline: Boolean) {
-        constructor(offline: Boolean) : this(null, offline)
-    }
+    internal data class FasitJson(var json: String? = null, val offline: Boolean)
 }
