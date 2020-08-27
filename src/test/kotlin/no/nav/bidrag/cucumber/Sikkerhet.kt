@@ -3,13 +3,13 @@ package no.nav.bidrag.cucumber
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.security.oidc.test.support.jersey.TestTokenGeneratorResource
 import org.apache.tomcat.util.codec.binary.Base64
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import java.nio.charset.StandardCharsets
-import java.time.LocalTime
 
 class Sikkerhet {
 
@@ -17,6 +17,7 @@ class Sikkerhet {
         private const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
         private const val OPEN_ID_FASIT = "OPEN ID FASIT"
         private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+        private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
 
         private lateinit var onlineToken: String
         private val finalValueCache: MutableMap<String, Any> = HashMap()
@@ -35,12 +36,12 @@ class Sikkerhet {
             return onlineToken
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.first { it.fileName != null && it.fileName!!.endsWith("kt") }}"
-            log("Feil ved henting av online id token, $exception", LogLevel.ERROR)
+            LOGGER.error("Feil ved henting av online id token, $exception")
             throw e
         }
     }
 
-    fun fetchOnlineIdToken(): String {
+    private fun fetchOnlineIdToken(): String {
         return fetchOnlineIdToken(Environment.namespace)
     }
 
@@ -50,7 +51,7 @@ class Sikkerhet {
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
-        log("Fetched id token for ${Environment.testUser()}")
+        LOGGER.info("Fetched id token for ${Environment.testUser()}")
 
         return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
@@ -63,7 +64,7 @@ class Sikkerhet {
 
         val openIdConnectFasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
 
-        log("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
+        LOGGER.info("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
 
         return openIdConnectFasitRessurs
     }
@@ -75,7 +76,7 @@ class Sikkerhet {
                 header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
 
-        log("Finding OpenAM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
+        LOGGER.info("Finding OpenAM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
 
         return Environment().initRestTemplate(openIdConnectFasitRessurs.passordUrl())
                 .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
@@ -91,30 +92,16 @@ class Sikkerhet {
                 header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
 
-        log("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")
+        LOGGER.info("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")
 
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
                 .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.namespace}")
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
-        log("Setting up security for $testUser running in ${Environment.namespace}")
+        LOGGER.info("Setting up security for $testUser running in ${Environment.namespace}")
 
         return authMap["tokenId"] as String? ?: throw IllegalStateException("Fant ikke id token i json for $testUser in ${Environment.namespace}")
-    }
-
-    private fun log(string: String) {
-        log(string, LogLevel.INFO)
-    }
-
-    private fun log(string: String, level: LogLevel) {
-        val logMessage = "${LocalTime.now()} - $level Sikkerhet.kt: $string"
-
-        if (level == LogLevel.ERROR) {
-            System.err.println(logMessage)
-        } else {
-            println(logMessage)
-        }
     }
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
