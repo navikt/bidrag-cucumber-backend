@@ -5,7 +5,7 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
-internal class Fasit {
+class Fasit {
 
     companion object {
         private var fasitTemplate = RestTemplate()
@@ -31,13 +31,6 @@ internal class Fasit {
             val resourceUrl = buildUriString(URL_FASIT, *queries)
             return Fasit().hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
         }
-    }
-
-    internal fun hentFullContextPath(alias: String): String {
-        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=${Environment.namespace}")
-        val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
-
-        return fasitRessurs.url()
     }
 
     internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitRessurs {
