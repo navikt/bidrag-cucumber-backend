@@ -5,7 +5,7 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
-internal class Fasit {
+class Fasit {
 
     companion object {
         private var fasitTemplate = RestTemplate()
@@ -21,7 +21,7 @@ internal class Fasit {
             val fasitJson = try {
                 fasitTemplate.getForObject(resourceUrl, String::class.java)
             } catch (e: ResourceAccessException) {
-                return FasitJson(true)
+                return FasitJson(offline = true)
             }
 
             return FasitJson(fasitJson, false)
@@ -31,14 +31,6 @@ internal class Fasit {
             val resourceUrl = buildUriString(URL_FASIT, *queries)
             return Fasit().hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
         }
-    }
-
-    internal fun hentFullContextPath(alias: String): String {
-        val miljo = Environment.fetch()
-        val resourceUrl = buildUriString(URL_FASIT, "type=restservice", "alias=$alias", "environment=$miljo")
-        val fasitRessurs = hentFasitRessurs(resourceUrl, alias, "rest")
-
-        return fasitRessurs.url()
     }
 
     internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitRessurs {
@@ -61,7 +53,7 @@ internal class Fasit {
 
     private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
 
-     data class FasitRessurs(
+    data class FasitRessurs(
             internal val alias: String,
             private val type: String,
             private val ressurser: MutableMap<String, String?> = HashMap()
@@ -90,7 +82,5 @@ internal class Fasit {
         fun passordUrl() = ressurser["passord.url"] ?: "ingen url for $alias"
     }
 
-    internal class FasitJson(val json: String?, val offline: Boolean) {
-        constructor(offline: Boolean) : this(null, offline)
-    }
+    internal data class FasitJson(var json: String? = null, val offline: Boolean)
 }

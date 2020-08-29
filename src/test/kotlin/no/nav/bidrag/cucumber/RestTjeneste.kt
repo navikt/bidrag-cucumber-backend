@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.CorrelationId
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -19,11 +20,15 @@ open class RestTjeneste(
         private val rest: RestTemplateMedBaseUrl,
         private val sikkerhet: Sikkerhet = Sikkerhet()
 ) {
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
+    }
 
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
 
     constructor(applicationOrAlias: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias))
+    constructor(alias: String, fasitRessurs: Fasit.FasitRessurs) : this(alias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(alias, fasitRessurs))
     constructor(applicationOrAlias: String, applicationContext: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias, applicationContext))
 
     fun hentEndpointUrl() = debugFullUrl
@@ -123,10 +128,10 @@ open class RestTjeneste(
 
     private fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
         try {
-            println(jsonEntity)
+            LOGGER.info("$httpMethod: $jsonEntity")
             responseEntity = rest.template.exchange(endpointUrl, httpMethod, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            System.err.println("$httpMethod FEILET: ${this.debugFullUrl}: $e")
+            LOGGER.error("$httpMethod FEILET: ${this.debugFullUrl}: $e")
             responseEntity = ResponseEntity.status(e.statusCode).body<Any>(e.message) as ResponseEntity<String>
             throw e
         }
@@ -138,9 +143,8 @@ open class RestTjeneste(
         responseEntity = try {
             rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            System.err.println("POST FEILET: ${this.debugFullUrl}: $e")
+            LOGGER.error("POST FEILET: ${this.debugFullUrl}: $e")
             ResponseEntity(e.statusCode)
-
         }
     }
 
