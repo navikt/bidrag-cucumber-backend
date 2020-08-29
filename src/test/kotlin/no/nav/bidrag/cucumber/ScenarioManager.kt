@@ -1,10 +1,12 @@
 package no.nav.bidrag.cucumber
 
 import io.cucumber.java.Scenario
+import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
 open class ScenarioManager {
     companion object {
+        private val LOGGER = LoggerFactory.getLogger(ScenarioManager::class.java)
         private var scenario: Scenario? = null
         private var correlationIdForScenario: String? = null
 
@@ -22,7 +24,7 @@ open class ScenarioManager {
                 val title = if (messageTitle != null) "<h5>$messageTitle</h5>" else ""
                 scenario!!.log("$title<p>\n$message\n</p>")
             } else {
-                System.err.println("cannot log '$message' to scenario")
+                LOGGER.error("cannot log '$message' to scenario")
             }
         }
 
