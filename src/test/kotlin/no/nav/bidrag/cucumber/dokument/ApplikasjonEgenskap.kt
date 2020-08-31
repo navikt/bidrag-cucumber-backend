@@ -1,6 +1,5 @@
 package no.nav.bidrag.cucumber.dokument
 
-import io.cucumber.java.Before
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
 import no.nav.bidrag.cucumber.RestTjeneste
@@ -10,12 +9,9 @@ import java.util.EnumSet
 
 class ApplikasjonEgenskap  {
     companion object {
-        lateinit var restTjeneste: RestTjeneste
-    }
-
-    @Before
-    fun `initier RestTjeneste`() {
-        restTjeneste = RestTjeneste("bidragDokument")
+        val restTjeneste: RestTjeneste by lazy {
+            RestTjeneste("bidragDokument")
+        }
     }
 
     @Når("det gjøres et kall til {string}")
