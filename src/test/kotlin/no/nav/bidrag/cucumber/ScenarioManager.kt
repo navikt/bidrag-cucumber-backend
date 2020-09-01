@@ -34,7 +34,7 @@ open class ScenarioManager {
             val month = if (now.monthValue < 10) "0${now.monthValue}" else "${now.monthValue}"
             val dayOfMonth = if (now.monthValue > 9) "${now.dayOfMonth}" else "0${now.dayOfMonth}"
 
-            val time = "time:(from:%27${"$year-$month-$dayOfMonth"}T00:00:00.000Z%27,to:%27${"$year-$month-$dayOfMonth"}T23:59:59.999<Z%27)"
+            val time = "time:(from:%27${"$year-$month-$dayOfMonth"}T00:00:00.000Z%27,to:%27${"$year-$month-$dayOfMonth"}T23:59:59.999Z%27)"
             val columns = "columns:!(message,level,application)"
             val index = "index:%2796e648c0-980a-11e9-830a-e17bbd64b4db%27"
             val query = "query:(language:lucene,query:%22$correlationIdForScenario%22)"
