@@ -20,8 +20,6 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
         "fagomrade": "BID",
         "gjelder": "***REMOVED***",
         "journaldato": "2019-01-01",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2019-01-01",
         "originalBestilt": "false",
         "saksnummer": "0000003",

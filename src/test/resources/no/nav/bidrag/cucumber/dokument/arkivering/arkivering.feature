@@ -21,8 +21,6 @@ Egenskap: bidrag-dokument-arkivering
         "gjelder": "123",
         "journaldato": "2020-08-01",
         "journalstatus"  : "R",
-        "journalforendeEnhet": "4806",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-08-01",
         "skannetDato": "2020-08-01",
         "saksnummer": "0000003"
