@@ -18,8 +18,6 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
         "fagomrade": "BID",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2019-01-01",
         "skannetDato": "2019-01-01",
         "saksnummer": "0000003"
