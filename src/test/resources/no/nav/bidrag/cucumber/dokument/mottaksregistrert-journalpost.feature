@@ -29,8 +29,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "fagomrade": "BID",
         "gjelder": "06127412345",
         "journaldato": "2020-02-02",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-02-02",
         "skannetDato": "2020-02-02",
         "journalstatus": "M"
@@ -52,8 +50,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "fagomrade": "BID",
         "gjelder": "06127412345",
         "journaldato": "2020-02-02",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-02-02",
         "skannetDato": "2020-02-02",
         "journalstatus": "J"
@@ -75,8 +71,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "fagomrade": "BID",
         "gjelder": "06127412345",
         "journaldato": "2020-02-02",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-02-02",
         "skannetDato": "2020-02-02",
         "journalstatus": "M"
@@ -114,8 +108,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "fagomrade": "BID",
         "gjelder": "06127412345",
         "journaldato": "2020-02-02",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-02-02",
         "skannetDato": "2020-02-02",
         "journalstatus": "M"
@@ -154,8 +146,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "fagomrade": "BID",
         "gjelder": "06127412345",
         "journaldato": "2020-02-02",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "mottattDato": "2020-02-02",
         "skannetDato": "2020-02-02",
         "journalstatus": "M"

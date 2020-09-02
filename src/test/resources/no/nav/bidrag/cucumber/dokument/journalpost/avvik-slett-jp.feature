@@ -17,8 +17,6 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
         "fagomrade": "BID",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
-        "journalforendeEnhet": "1289",
-        "journalfortAv": "Behandler, Zakarias",
         "journalstatus": "D",
         "mottattDato": "2019-01-01",
         "saksnummer": "0000003"
