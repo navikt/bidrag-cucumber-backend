@@ -23,31 +23,17 @@ jobs:
           PODS_TESTDATA=$(kubectl get pods -n q1 -l app=bidrag-dokument-testdata  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n q1 $(echo $PODS_TESTDATA | sed 's;\n; ;')
 
-  wait-k8:
-    name: wait for restart of kubernates pods
-    runs-on: self-hosted
-    needs: restart-testdata
-
-    steps:
-      - name: wait for bidrag-dokument-testdata to deploy after restart
-        run: |
-          echo wait for bidrag-dokument-testdata to deploy after restart
-          while [ $(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $2}' | grep -v READY | grep 0/1 | wc -l) -ne 0 ]
-          do
-            echo -n "..."
-          done
-
   run-tests:
     runs-on: self-hosted
     name: run cucumber integration tests
-    needs: wait-k8
+    needs: restart-testdata
 
     steps:
       - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - name: wait for bidrag-dokument-testdata to deploy after restart
-          run: |
+        run: |
             echo wait for bidrag-dokument-testdata to deploy after restart
             while [ $(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $2}' | grep -v READY | grep 0/1 | wc -l) -ne 0 ]
             do
