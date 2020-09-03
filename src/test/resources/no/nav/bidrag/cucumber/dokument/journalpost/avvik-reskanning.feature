@@ -19,7 +19,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
         "dokumentreferanse": "string",
         "fagomrade": "BID",
         "gjelder": "29118044353",
-        "journaldato": "2019-01-01",f
+        "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",
         "saksnummer": "0000003",
         "skannetDato": "2019-01-01"
