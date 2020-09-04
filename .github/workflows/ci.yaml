@@ -6,9 +6,9 @@ on:
 
 jobs:
 
-  restart-testdata:
-    name: restart kubernetes pods bidrag-dokument-testdata
+  run-tests:
     runs-on: self-hosted
+    name: run cucumber integration tests
 
     steps:
       - run: kubectl config use-context dev-fss
@@ -22,13 +22,6 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n q1 -l app=bidrag-dokument-testdata  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n q1 $(echo $PODS_TESTDATA | sed 's;\n; ;')
-
-  run-tests:
-    runs-on: self-hosted
-    name: run cucumber integration tests
-    needs: restart-testdata
-
-    steps:
       - uses: navikt/bidrag-integration/cucumber-clone-tags@feature/fix.tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
@@ -50,6 +43,13 @@ jobs:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
           PIP_USER_AUTHENTICATION: ${{ secrets.PIP_USER_AUTHENTICATION }}
+      - name: Remove files from workspace
+        run: |
+          cd $RUNNER_WORKSPACE
+          echo deleting files
+          ls -al
+          sudo rm -rf *
+        if: ${{ failure() || success() }}
 
   bump_snapshot:
     runs-on: ubuntu-latest
@@ -76,17 +76,3 @@ jobs:
           pattern: "pom.xml"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  delete-ws:
-    runs-on: self-hosted
-    name: run cucumber integration tests
-    needs: restart-testdata
-
-    steps:
-      - name: Remove files from workspace
-        run: |
-          cd $RUNNER_WORKSPACE
-          echo deleting files
-          ls -al
-          sudo rm -rf *
-        if: ${{ failure() || success() }}
