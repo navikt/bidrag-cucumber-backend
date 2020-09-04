@@ -80,7 +80,7 @@ jobs:
   delete-ws:
     runs-on: self-hosted
     name: run cucumber integration tests
-    needs: run-tests
+    needs: restart-testdata
 
     steps:
       - name: Remove files from workspace
