@@ -2,13 +2,13 @@
 Integrasjonstester for backend mikrotjenester i bidrag
 
 ## workflow
-![](https://github.com/navikt/bidrag-cucumber-backend/workflows/bump%20version/badge.svg)
+![](https://github.com/navikt/bidrag-cucumber-backend/workflows/continuous%20integration/badge.svg)
 
 ## beskrivelse
 
 Kotlin gjør det enkelt å skape lett leselig tester og dette er satt opp med `Gherkin`-filer (*.feature) som har norsk tekst og ligger i `src/test/resources/<pakkenavn>`
 
-BDD (Behaviour driven development) beskrives i `Gherkin`-filene (*.featue) som kjører automatiserte tester på bakgrunnen av funksjonaliteten som skal støttes.
+BDD (Behaviour driven development) beskrives i `Gherkin`-filene (`*.featue`) som kjører automatiserte tester på bakgrunnen av funksjonaliteten som skal støttes.
 Eks: på en `gherkin` fil på norsk 
 
 ```
