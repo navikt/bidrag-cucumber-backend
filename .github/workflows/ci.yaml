@@ -1,4 +1,4 @@
-name: bump version
+name: continuous integration
 on:
   push:
     branches:
@@ -6,9 +6,55 @@ on:
 
 jobs:
 
+  run-tests:
+    runs-on: self-hosted
+    name: run cucumber integration tests
+
+    steps:
+      - run: kubectl config use-context dev-fss
+      - name: restart bidrag-dokument-testdata pods for pods in the default namespace
+        if: github.ref == 'refs/heads/main'
+        run: |
+          PODS_TESTDATA=$(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $1}' | grep -v NAME)
+          kubectl delete pods $(echo $PODS_TESTDATA | sed 's;\n; ;')
+      - name: restart bidrag-dokument-testdata pods for pods in the feature namespace
+        if: github.ref != 'refs/heads/main'
+        run: |
+          PODS_TESTDATA=$(kubectl get pods -n q1 -l app=bidrag-dokument-testdata  | awk '{print $1}' | grep -v NAME)
+          kubectl delete pods -n q1 $(echo $PODS_TESTDATA | sed 's;\n; ;')
+      - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
+        env:
+          WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
+      - name: wait for bidrag-dokument-testdata to deploy after restart
+        run: |
+            echo wait for bidrag-dokument-testdata to deploy after restart
+            while [ $(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $2}' | grep -v READY | grep 0/1 | wc -l) -ne 0 ]
+            do
+              echo -n "..."
+            done
+      - uses: navikt/bidrag-maven/cucumber-backend@v5
+        with:
+          maven_command: test
+          maven_image: maven:3.6.3-jdk-14
+          username: j104364
+          test_user: z992903
+          pip_user: srvbisys
+        env:
+          USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
+          TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
+          PIP_USER_AUTHENTICATION: ${{ secrets.PIP_USER_AUTHENTICATION }}
+      - name: Remove files from workspace
+        run: |
+          cd $RUNNER_WORKSPACE
+          echo deleting files
+          ls -al
+          sudo rm -rf *
+        if: ${{ failure() || success() }}
+
   bump_snapshot:
     runs-on: ubuntu-latest
     name: Bump SNAPSHOT version
+    needs: run-tests
     if: github.ref == 'refs/heads/main'
 
     steps:
