@@ -29,7 +29,7 @@ jobs:
     needs: restart-testdata
 
     steps:
-      - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
+      - uses: navikt/bidrag-integration/cucumber-clone-tags@feature/fix.tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - name: wait for bidrag-dokument-testdata to deploy after restart
