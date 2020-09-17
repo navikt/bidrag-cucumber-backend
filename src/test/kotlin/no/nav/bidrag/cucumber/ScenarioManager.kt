@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber
 import io.cucumber.java.Scenario
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 open class ScenarioManager {
     companion object {
@@ -29,12 +30,10 @@ open class ScenarioManager {
         }
 
         fun createQueryLinkForCorrelationId(): String {
-            val now = LocalDate.now()
-            val year = now.year
-            val month = if (now.monthValue < 10) "0${now.monthValue}" else "${now.monthValue}"
-            val dayOfMonth = if (now.monthValue > 9) "${now.dayOfMonth}" else "0${now.dayOfMonth}"
+            val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val date = LocalDate.now().format(pattern)
 
-            val time = "time:(from:%27${"$year-$month-$dayOfMonth"}T00:00:00.000Z%27,to:%27${"$year-$month-$dayOfMonth"}T23:59:59.999Z%27)"
+            val time = "time:(from:%27${date}T00:00:00.000Z%27,to:%27${date}T23:59:59.999Z%27)"
             val columns = "columns:!(message,level,application)"
             val index = "index:%2796e648c0-980a-11e9-830a-e17bbd64b4db%27"
             val query = "query:(language:lucene,query:%22$correlationIdForScenario%22)"
