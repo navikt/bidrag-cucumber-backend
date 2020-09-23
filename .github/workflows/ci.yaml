@@ -35,7 +35,7 @@ jobs:
       - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
           maven_command: test
-          maven_image: maven:3.6.3-jdk-14
+          maven_image: maven:3.6.3-openjdk-15
           username: j104364
           test_user: z992903
           pip_user: srvbisys
