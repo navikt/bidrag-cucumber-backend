@@ -51,26 +51,41 @@ jobs:
           sudo rm -rf *
         if: ${{ failure() || success() }}
 
-  bump_snapshot:
+  bump_dev_version:
     runs-on: ubuntu-latest
     name: Bump SNAPSHOT version
+    if: github.ref == 'refs/heads/feature/msg'
     needs: run-tests
-    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          MSG=$(git log --format=%B -n 1 $(git rev-parse HEAD) | cat -)
+
+          if [[ $MSG =~ ^Bumped* ]]; then
+            echo ::set-env name=DO_COMMIT::false
+          elif
+            echo ::set-env name=DO_COMMIT::true
+          fi
+        id: commit
       - uses: actions/cache@v1
+        if: env.DO_COMMIT == 'true'
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - uses: navikt/bidrag-maven/setup@v4
+        if: env.DO_COMMIT == 'true'
       - run: mvn release:update-versions
+        if: env.DO_COMMIT == 'true'
       - run: |
           BUMPED_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo ::set-output name=version::${BUMPED_VERSION}
         id: snapshot
+        if: env.DO_COMMIT == 'true'
       - uses: navikt/bidrag-git/commit@v3
+        if: env.DO_COMMIT == 'true'
         with:
           commit_message: "Bumped to new version: ${{ steps.snapshot.outputs.version }}"
           pattern: "pom.xml"
