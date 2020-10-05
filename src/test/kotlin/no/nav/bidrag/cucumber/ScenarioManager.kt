@@ -36,7 +36,7 @@ open class ScenarioManager {
             val time = "time:(from:%27${date}T00:00:00.000Z%27,to:%27${date}T23:59:59.999Z%27)"
             val columns = "columns:!(message,level,application)"
             val index = "index:%2796e648c0-980a-11e9-830a-e17bbd64b4db%27"
-            val query = "query:(language:lucene,query:%22$correlationIdForScenario%22)"
+            val query = "query:(language:lucene,query:'x_correlationId:%22$correlationIdForScenario%22')"
             val sort = "sort:!(!(%27@timestamp%27,desc))"
 
             return "https://logs.adeo.no/app/kibana#/discover?_g=($time)&_a=($columns,$index,interval:auto,$query,$sort)"
