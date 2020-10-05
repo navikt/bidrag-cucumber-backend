@@ -43,6 +43,6 @@ open class ScenarioManager {
         }
 
         fun createCorrelationIdLinkTitle() = "Link for correlation-id ($correlationIdForScenario):"
-        fun fetchCorrelationIdForScenario() = correlationIdForScenario
+        fun getCorrelationIdForScenario() = correlationIdForScenario
     }
 }
