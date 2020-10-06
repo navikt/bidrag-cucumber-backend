@@ -86,10 +86,9 @@ Alle parametre for en fullstendig kjøring av alle prosjekter er:
 mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<ditt passord>
  -DTEST_USER=<testbruker, ie: Zxxxxxx> -DTEST_AUTH=<testbrukerens passord>
  -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> -DPIP_AUTH=<pip brukers passord>
- -DPROJECT_NAIS_FOLDER=<mappe for github-prosjekt som har en nais folder for ingress-konfigurasjon>
+ -DPROJECT_NAIS_FOLDER=<mappe for github-prosjekt som har en nais folder for ingress-konfigurasjon ([main/feature].json)>
 ```
-_**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak <br>
-_**PS!**_ *PROJECT_NAIS_FOLDER* blir bare brukt av prosjekter som bruker "simple configuration" og ikke et Fasit- oppsett
+_**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak
 
 #### Kjøring lokalt
 `bidrag-cucumber-backend` kan også kjøres lokalt, men mange av gherkin-feature-filene er ikke desikgnet med tanke
