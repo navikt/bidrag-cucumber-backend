@@ -62,25 +62,26 @@ jobs:
       - run: |
           MSG=$(git log --format=%B -n 1 $(git rev-parse HEAD) | cat -)
 
-          [[ "$MSG" == "Bumped"* ]] && echo ::set-env name=DO_COMMIT::false || echo ::set-env name=DO_COMMIT::true
+          [[ "$MSG" == "Bumped"* ]] && echo do_commit=false >> $GITHUB_ENV || echo do_commit=true >> $GITHUB_ENV
+      - run: env
       - uses: actions/cache@v1
-        if: env.DO_COMMIT == 'true'
+        if: env.do_commit == 'true'
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - uses: navikt/bidrag-maven/setup@v4
-        if: env.DO_COMMIT == 'true'
+        if: env.do_commit == 'true'
       - run: mvn release:update-versions
-        if: env.DO_COMMIT == 'true'
+        if: env.do_commit == 'true'
       - run: |
           BUMPED_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo ::set-output name=version::${BUMPED_VERSION}
         id: snapshot
-        if: env.DO_COMMIT == 'true'
+        if: env.do_commit == 'true'
       - uses: navikt/bidrag-git/commit@v3
-        if: env.DO_COMMIT == 'true'
+        if: env.do_commit == 'true'
         with:
           commit_message: "Bumped to new version: ${{ steps.snapshot.outputs.version }}"
           pattern: "pom.xml"
