@@ -62,12 +62,7 @@ jobs:
       - run: |
           MSG=$(git log --format=%B -n 1 $(git rev-parse HEAD) | cat -)
 
-          if [[ $MSG =~ ^Bumped* ]]; then
-            echo ::set-env name=DO_COMMIT::false
-          elif
-            echo ::set-env name=DO_COMMIT::true
-          fi
-        id: commit
+          [[ "$MSG" == "Bumped"* ]] && echo ::set-env name=DO_COMMIT::false || echo ::set-env name=DO_COMMIT::true
       - uses: actions/cache@v1
         if: env.DO_COMMIT == 'true'
         with:
