@@ -73,7 +73,7 @@ open class RestTjeneste(
 
     private fun initHttpHeadersWithCorrelationIdAndEnhet(enhet: String?): HttpHeaders {
         val headers = HttpHeaders()
-        headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.fetchCorrelationIdForScenario())
+        headers.add(CorrelationId.CORRELATION_ID_HEADER, ScenarioManager.getCorrelationIdForScenario())
         headers.add(X_ENHET_HEADER, enhet ?: "4802")
 
         ScenarioManager.log(
