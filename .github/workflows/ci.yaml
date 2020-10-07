@@ -61,10 +61,11 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           MSG=$(git log --format=%B -n 1 $(git rev-parse HEAD) | cat -)
+          COMMIT=$([[ "$MSG" == "Bumped"* ]] && echo false >> $GITHUB_ENV || echo true)
 
-          [[ "$MSG" == "Bumped"* ]] && echo do_commit=false >> $GITHUB_ENV || echo do_commit=true >> $GITHUB_ENV
+          echo do_commit=$COMMIT >> $GITHUB_ENV
 
-          echo "'$MSG', commit: ${{ env.do_commit }}"
+          echo "'$MSG', commit: $COMMIT"
       - run: env
       - uses: actions/cache@v1
         if: env.do_commit == true
