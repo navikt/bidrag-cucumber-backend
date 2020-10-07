@@ -66,15 +66,16 @@ jobs:
           export COUNT_BUMPER=$(echo "$AUTHOR" | grep -c bumper || echo 0)
           echo "count : $COUNT_BUMPER"
 
-          if [[ $COUNT_BUMPER -ne 0 ]]; then
-            export COMMIT=true
-          elif
-            export COMMIT=false
-          fi
+          # if [[ $COUNT_BUMPER -ne 0 ]]; then
+          #   export COMMIT=true
+          # elif
+          #   export COMMIT=false
+          # fi
 
-          echo "commit: $COMMIT"
+          # echo "commit: $COMMIT"
 
-          echo do_commit=$COMMIT >> $GITHUB_ENV
+          # echo do_commit=$COMMIT >> $GITHUB_ENV
+          echo do_commit=true >> $GITHUB_ENV
 
       - run: env
       - uses: actions/cache@v1
