@@ -10,14 +10,14 @@ import org.springframework.http.MediaType
 class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(RestTjenesteTestdata::class.java)
-        private var idForTestdataResponse: Map<String, Any>? = null
+        private var idsInTestdataResponse: Map<String, Any>? = null
     }
 
     fun opprettJournalpost(journalpostJson: String) {
-        if (idForTestdataResponse == null) {
+        if (idsInTestdataResponse == null) {
             exchangeGet("journal/max/ids")
-            idForTestdataResponse = hentResponseSomMap()
-            ScenarioManager.log(">>>> $idForTestdataResponse <<<<")
+            idsInTestdataResponse = hentResponseSomMap()
+            ScenarioManager.log(">>>> $idsInTestdataResponse <<<<")
         }
 
         val correlationIdWithContentType = initHttpHeadersWithCorrelationIdAndEnhet()
@@ -27,9 +27,9 @@ class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
     }
 
     fun slettOpprettedeData() {
-        if (idForTestdataResponse != null) {
-            val fraJpId = idForTestdataResponse?.get("maxJournalpostId")
-            val fraJsakId = idForTestdataResponse?.get("maxJournalsakId")
+        if (idsInTestdataResponse != null) {
+            val fraJpId = idsInTestdataResponse?.get("maxJournalpostId")
+            val fraJsakId = idsInTestdataResponse?.get("maxJournalsakId")
             val endpointUrl = "journal/delete/fra-jp-id/$fraJpId/fra-jsak-id/$fraJsakId"
             ScenarioManager.useScenarioForLogging = false
             exchangeDelete(endpointUrl)
