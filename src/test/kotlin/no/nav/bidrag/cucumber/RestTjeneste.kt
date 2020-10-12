@@ -110,7 +110,7 @@ open class RestTjeneste(
         exchange(jsonEntity, endpointUrl, HttpMethod.POST)
     }
 
-    private fun httpEntity(endpointUrl: String): HttpEntity<String> {
+    internal fun httpEntity(endpointUrl: String): HttpEntity<String> {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationIdAndEnhet()
         headers.contentType = MediaType.APPLICATION_JSON
@@ -126,7 +126,7 @@ open class RestTjeneste(
         return HttpEntity(journalpostJson, headers)
     }
 
-    private fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
+    internal fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
         try {
             LOGGER.info("$httpMethod: $jsonEntity")
             responseEntity = rest.template.exchange(endpointUrl, httpMethod, jsonEntity, String::class.java)
