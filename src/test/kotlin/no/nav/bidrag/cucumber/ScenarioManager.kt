@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter
 
 open class ScenarioManager {
     companion object {
-        internal var useScenarioForLogging = true
         private val LOGGER = LoggerFactory.getLogger(ScenarioManager::class.java)
         private var scenario: Scenario? = null
         private var correlationIdForScenario: String? = null
@@ -22,7 +21,7 @@ open class ScenarioManager {
         }
 
         fun log(messageTitle: String?, message: String) {
-            if (scenario != null && useScenarioForLogging) {
+            if (scenario != null) {
                 val title = if (messageTitle != null) "<h5>$messageTitle</h5>" else ""
                 scenario!!.log("$title<p>\n$message\n</p>")
             } else {

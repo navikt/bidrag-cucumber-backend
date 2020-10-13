@@ -31,7 +31,6 @@ class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
             val fraJpId = idsInTestdataResponse?.get("maxJournalpostId")
             val fraJsakId = idsInTestdataResponse?.get("maxJournalsakId")
             val endpointUrl = "journal/delete/fra-jp-id/$fraJpId/fra-jsak-id/$fraJsakId"
-            ScenarioManager.useScenarioForLogging = false
             exchangeDelete(endpointUrl)
             LOGGER.info("slettet testdata (ikke mottaksregistrert: $endpointUrl")
             idsInTestdataResponse = null
