@@ -10,8 +10,14 @@ import org.junit.runner.RunWith
  */
 @RunWith(Cucumber::class)
 class After {
-    @After("@bidrag-dokument,@bidrag-dokument-journalpost")
-    fun deleteCreatedTestdata() {
+    @After("@bidrag-dokument")
+    fun deleteCreatedTestdataForBidragDoument() {
+        val restTjenesteTestdata = RestTjenesteTestdata("bidragDokumentTestdata")
+        restTjenesteTestdata.slettOpprettedeData()
+    }
+
+    @After("@bidrag-dokument-journalpost")
+    fun deleteCreatedTestdataForBidragDokumentJournalpost() {
         val restTjenesteTestdata = RestTjenesteTestdata("bidragDokumentTestdata")
         restTjenesteTestdata.slettOpprettedeData()
     }

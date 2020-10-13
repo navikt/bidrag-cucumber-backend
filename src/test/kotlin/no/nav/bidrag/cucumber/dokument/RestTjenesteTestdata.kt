@@ -34,6 +34,7 @@ class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
             ScenarioManager.useScenarioForLogging = false
             exchangeDelete(endpointUrl)
             LOGGER.info("slettet testdata (ikke mottaksregistrert: $endpointUrl")
+            idsInTestdataResponse = null
         }
     }
 
