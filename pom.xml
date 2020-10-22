@@ -9,7 +9,7 @@
 
   <properties>
     <!-- dependencies -->
-    <apache-httpcomponenents.version>4.5.12</apache-httpcomponenents.version>
+    <apache-httpcomponenents.version>4.5.13</apache-httpcomponenents.version>
     <bidrag-commons.version>0.4.2</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>6.7.0</cucumber.version>
@@ -61,6 +61,19 @@
         <artifactId>kotlin-stdlib-common</artifactId>
         <version>${kotlin.version}</version>
       </dependency>
+
+      <!-- Override vulnerable dependenceis -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${apache.httpcomponents.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-jaxb</artifactId>
+        <version>2.31</version>
+      </dependency>
+    </dependencies>
     </dependencies>
   </dependencyManagement>
 
