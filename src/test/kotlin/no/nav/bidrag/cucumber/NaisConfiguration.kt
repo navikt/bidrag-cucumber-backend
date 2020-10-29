@@ -68,19 +68,47 @@ internal class NaisConfiguration {
     internal fun hentApplicationHostUrl(applicationNameOrAlias: String): String {
 
         val applicationName = determineAppklicationName(applicationNameOrAlias)
-        val nameSpaceJsonFile = namespaceJsonFilePathPerAppName[applicationName] ?: throw IllegalStateException("no path for $applicationName in $namespaceJsonFilePathPerAppName")
-        val jsonFileAsMap = readWithGson(nameSpaceJsonFile)
-        val ingressPreprod = jsonFileAsMap["ingress_preprod"]
+        val nameSpaceJsonFile = namespaceJsonFilePathPerAppName[applicationName]
+                ?: throw IllegalStateException("no path for $applicationName in $namespaceJsonFilePathPerAppName")
 
-        return "$ingressPreprod".replace("//", "/").replace("https:/", "https://")
+        val jsonFileAsMap = readWithGson(nameSpaceJsonFile)
+        var ingress = jsonFileAsMap["ingress_preprod"]
+
+        if (ingress == null) {
+            for (json in jsonFileAsMap) {
+                println(json)
+            }
+
+            @Suppress("UNCHECKED_CAST") val ingresses = jsonFileAsMap["ingresses"] as List<String>
+            ingress = fetchIngress(ingresses)
+        }
+
+        return "$ingress".replace("//", "/").replace("https:/", "https://")
     }
 
-    private fun readWithGson(jsonPath: String): Map<String, String> {
+    private fun fetchIngress(ingresses: List<String?>): String? {
+
+        for (ingress in ingresses) {
+            if (ingress?.contains(Regex("preprod.local"))!!) {
+                return ingress
+            }
+        }
+
+        for (ingress in ingresses) {
+            if (ingress?.contains(Regex("dev.adeo"))!!) {
+                return ingress
+            }
+        }
+
+        throw IllegalStateException("Kunne ikke fastslå ingress til tjeneste!")
+    }
+
+    private fun readWithGson(jsonPath: String): Map<String, Any> {
         val bufferedReader = BufferedReader(FileReader(jsonPath))
         val gson = Gson()
 
         @Suppress("UNCHECKED_CAST")
-        return gson.fromJson(bufferedReader, Map::class.java) as Map<String, String>
+        return gson.fromJson(bufferedReader, Map::class.java) as Map<String, Any>
     }
 
     private fun determineAppklicationName(applicationNameOrAlias: String): String {
