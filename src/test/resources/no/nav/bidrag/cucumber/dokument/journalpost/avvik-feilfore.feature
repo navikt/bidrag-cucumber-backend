@@ -21,7 +21,8 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
         "gjelder": "***REMOVED***",
         "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",
-        "saksnummer": "0000003"
+        "saksnummer": "0000003",
+        "journalstatus": "J"
         }
         """
 
