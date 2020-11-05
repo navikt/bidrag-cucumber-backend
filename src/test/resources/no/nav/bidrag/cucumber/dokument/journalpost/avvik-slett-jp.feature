@@ -14,6 +14,7 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
         "batchNavn": "En batch",
         "beskrivelse": "Test slett journalpost",
         "dokumentType": "U",
+        "journalstatus": "J",
         "fagomrade": "BID",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",

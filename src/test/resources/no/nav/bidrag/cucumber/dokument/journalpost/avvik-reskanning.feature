@@ -18,6 +18,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
         "dokumentdato": "2019-01-01",
         "dokumentreferanse": "string",
         "fagomrade": "BID",
+        "journalstatus": "J",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",

@@ -17,6 +17,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
         "dokumentdato": "2019-01-01",
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
+        "journalstatus": "J",
         "filnavn": "svada.pdf",
         "gjelder": "29118044353",
         "journaldato": "2019-01-01",
