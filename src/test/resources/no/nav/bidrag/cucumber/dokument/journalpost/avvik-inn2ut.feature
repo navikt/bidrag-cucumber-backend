@@ -20,6 +20,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
         "filnavn": "svada.pdf",
         "gjelder": "***REMOVED***",
         "journaldato": "2019-01-01",
+        "journalstatus": "J",
         "mottattDato": "2019-01-01",
         "saksnummer": "0000003",
         "skannetDato": "2019-01-01",
