@@ -16,7 +16,7 @@ Egenskap: Avvikshendelse ENDRE_FAGOMRADE på journalposter som er mottaksregistr
         }
         """
 
-  Scenario: Skal finne avvikstype på mottaksregistrert journalpost
+  Scenario: Skal finne avviket ENDRE_FAGOMRADE på mottaksregistrert journalpost
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal listen med avvikstyper inneholde 'ENDRE_FAGOMRADE'
 

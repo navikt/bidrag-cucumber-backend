@@ -15,7 +15,7 @@ Egenskap: avvik bidrag-dokument: endre inn til utgående på mottaksregistrert j
         }
         """
 
-  Scenario: Skal finne avvikstype på mottaksregistrert journalpost
+  Scenario: Skal finne avviket INNG_TIL_UTG_DOKUMENT på mottaksregistrert journalpost
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal listen med avvikstyper inneholde 'INNG_TIL_UTG_DOKUMENT'
 
