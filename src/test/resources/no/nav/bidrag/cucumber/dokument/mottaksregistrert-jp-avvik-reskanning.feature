@@ -17,7 +17,7 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
         }
         """
 
-  Scenario: Skal finne avvikstype på mottaksregistrert journalpost
+  Scenario: Skal finne avviket BESTILL_RESKANNING på mottaksregistrert journalpost
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
     Så skal listen med avvikstyper inneholde 'BESTILL_RESKANNING'
 
@@ -32,4 +32,4 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
     Så skal http status være '201'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
     Så skal http status være '200'
-    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'S'
+    Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AR'
