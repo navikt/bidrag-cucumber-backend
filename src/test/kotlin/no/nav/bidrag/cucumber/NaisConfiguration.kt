@@ -89,13 +89,13 @@ internal class NaisConfiguration {
     private fun fetchIngress(ingresses: List<String?>): String? {
 
         for (ingress in ingresses) {
-            if (ingress?.contains(Regex("preprod.local"))!!) {
+            if (ingress?.contains(Regex("dev.adeo"))!!) {
                 return ingress
             }
         }
 
         for (ingress in ingresses) {
-            if (ingress?.contains(Regex("dev.adeo"))!!) {
+            if (ingress?.contains(Regex("preprod.local"))!!) {
                 return ingress
             }
         }
