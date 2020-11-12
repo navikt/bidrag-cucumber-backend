@@ -19,8 +19,8 @@ internal class NaisConfiguration {
                 Pair("bidragSak", "bidrag-sak"),
                 Pair("bidragSjablon", "bidrag-sjablon")
         )
-        private val namespaceJsonFilePathPerAppName: MutableMap<String, String> = HashMap()
 
+        private val namespaceJsonFilePathPerAppName: MutableMap<String, String> = HashMap()
     }
 
     private val fetchResourceFromFasit: MutableSet<String> = HashSet()
@@ -72,21 +72,16 @@ internal class NaisConfiguration {
                 ?: throw IllegalStateException("no path for $applicationName in $namespaceJsonFilePathPerAppName")
 
         val jsonFileAsMap = readWithGson(nameSpaceJsonFile)
-        var ingress = jsonFileAsMap["ingress_preprod"]
 
-        if (ingress == null) {
-            for (json in jsonFileAsMap) {
-                println(json)
-            }
-
-            @Suppress("UNCHECKED_CAST") val ingresses = jsonFileAsMap["ingresses"] as List<String>
-            ingress = fetchIngress(ingresses)
+        for (json in jsonFileAsMap) {
+            println(json)
         }
 
-        return "$ingress".replace("//", "/").replace("https:/", "https://")
+        @Suppress("UNCHECKED_CAST") val ingresses = jsonFileAsMap["ingresses"] as List<String>
+        return fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
     }
 
-    private fun fetchIngress(ingresses: List<String?>): String? {
+    private fun fetchIngress(ingresses: List<String?>): String {
 
         for (ingress in ingresses) {
             if (ingress?.contains(Regex("dev.adeo"))!!) {
