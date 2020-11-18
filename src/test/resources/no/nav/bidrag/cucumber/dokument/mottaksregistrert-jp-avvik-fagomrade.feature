@@ -25,8 +25,10 @@ Egenskap: Avvikshendelse ENDRE_FAGOMRADE på journalposter som er mottaksregistr
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
         """
         {
-        "avvikType":"ENDRE_FAGOMRADE",
-        "beskrivelse":"FAR"
+          "avvikType":"ENDRE_FAGOMRADE",
+          "detaljer": {
+            "fagomrade":"FAR"
+          }
         }
         """
     Så skal http status være '200'
