@@ -24,6 +24,12 @@ class AvvikEgenskaper {
         avvikData.beskrivelse = beskrivelse
     }
 
+    @Gitt("detaljer {string} = {string}")
+    @Og("som har detaljer {string} = {string}")
+    fun detaljer(key: String, value: String) {
+        avvikData.leggTil(key, value)
+    }
+
     @Og("saksnummer {string} for avviksbehandling av {string}")
     fun `saksnummer for avviksbehandling`(saksnummer: String, avvikstype: String) {
         avvikData = AvvikData(saksnummer = saksnummer)

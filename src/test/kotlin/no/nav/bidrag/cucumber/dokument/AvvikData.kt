@@ -3,6 +3,7 @@ package no.nav.bidrag.cucumber.dokument
 import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import no.nav.bidrag.cucumber.X_ENHET_HEADER
 import org.springframework.http.HttpHeaders
+import java.util.stream.Collectors
 
 data class AvvikData(
         var beskrivelse: String? = null,
@@ -27,19 +28,21 @@ data class AvvikData(
         }
 
         if (detaljer.isNotEmpty()) {
-            jsonDetaljer = ""","detaljer":{"${hentKey()}":"${hentValue()}"$jsonSak}"""
+            jsonDetaljer = ""","detaljer":{${lagRaderAvDetaljer()}}"""
         }
 
         if (saksnummer != null) {
             jsonSak = ""","saksnummer":"$saksnummer" """
-
         }
 
         return """{"avvikType":"$avvikstype","enhetsnummer":"$enhet"$jsonBeskrivelse$jsonDetaljer$jsonSak}"""
     }
 
-    private fun hentKey() = detaljer.keys.iterator().next()
-    private fun hentValue() = detaljer.values.iterator().next()
+    private fun lagRaderAvDetaljer(): String {
+        return detaljer.keys.stream()
+                .map { key -> """"$key":"${detaljer[key]}"""" }
+                .collect(Collectors.joining(","))
+    }
 
     fun leggTilEnhetsnummer(httpHeaders: HttpHeaders): HttpHeaders {
         httpHeaders[X_ENHET_HEADER] = enhet
