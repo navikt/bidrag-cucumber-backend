@@ -25,6 +25,7 @@ class AvvikEgenskaper {
     }
 
     @Gitt("detaljer {string} = {string}")
+    @Og("som har detaljer {string} = {string}")
     fun detaljer(key: String, value: String) {
         avvikData.leggTil(key, value)
     }
