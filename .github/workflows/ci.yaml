@@ -64,7 +64,7 @@ jobs:
           LAST_COMMIT=$(git log -1 --oneline)
           BUMP_MESSAGE="Bumped to new version"
 
-          if [[ "$LAST_COMMIT" == *"$BUMP_MESSAGE"*]]; then
+          if [[ "$LAST_COMMIT" == *"$BUMP_MESSAGE"* ]]; then
             $BUMP_DEV_VERSION=false
           fi
 
