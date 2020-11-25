@@ -35,7 +35,7 @@ data class AvvikData(
             jsonSak = ""","saksnummer":"$saksnummer" """
         }
 
-        return """{"avvikType":"$jsonBeskrivelse$jsonDetaljer$jsonSak}"""
+        return """{"avvikType":"$avvikstype"$jsonBeskrivelse$jsonDetaljer$jsonSak}"""
     }
 
     private fun lagRaderAvDetaljer(): String {
