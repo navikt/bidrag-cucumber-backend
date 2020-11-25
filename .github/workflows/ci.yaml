@@ -60,44 +60,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          export AUTHOR=$(git show ${{ github.sha }} | grep Author)
-          echo "author: $AUTHOR"
+          BUMP_DEV_VERSION=true
+          LAST_COMMIT=$(git log -1 --oneline)
+          BUMP_MESSAGE="Bumped to new version"
 
-          export COUNT_BUMPER=$(echo "$AUTHOR" | grep -c bumper || echo 0)
-          echo "count : $COUNT_BUMPER"
+          if [[ "$LAST_COMMIT" == *"$BUMP_MESSAGE"*]]; then
+            $BUMP_DEV_VERSION=false
+          fi
 
-          # if [[ $COUNT_BUMPER -ne 0 ]]; then
-          #   export COMMIT=true
-          # elif
-          #   export COMMIT=false
-          # fi
-
-          # echo "commit: $COMMIT"
-
-          # echo do_commit=$COMMIT >> $GITHUB_ENV
-          echo do_commit=true >> $GITHUB_ENV
-
-      - run: env
+          echo BUMP_DEV_VERSION=$BUMP_DEV_VERSION >> $GITHUB_ENV
       - uses: actions/cache@v1
-        if: env.do_commit == 'true'
+        if: env.BUMP_DEV_VERSION == 'true'
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - uses: navikt/bidrag-maven/setup@v4
-        if: env.do_commit == 'true'
       - run: mvn release:update-versions
-        if: env.do_commit == 'true'
+        if: env.BUMP_DEV_VERSION == 'true'
       - run: |
           BUMPED_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo ::set-output name=version::${BUMPED_VERSION}
         id: snapshot
-        if: env.do_commit == 'true'
       - uses: navikt/bidrag-git/commit@v3
-        if: env.do_commit == 'true'
+        if: env.BUMP_DEV_VERSION == 'true'
         with:
-          author: bumper
           commit_message: "Bumped to new version: ${{ steps.snapshot.outputs.version }}"
           pattern: "pom.xml"
         env:
