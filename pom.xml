@@ -12,12 +12,12 @@
     <apache-httpcomponenents.version>4.5.13</apache-httpcomponenents.version>
     <bidrag-commons.version>0.4.2</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
-    <cucumber.version>6.8.2</cucumber.version>
+    <cucumber.version>6.9.0</cucumber.version>
     <mimepull.version>1.9.13</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
     <!-- dependency management by spring-boot -->
-    <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
+    <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
 
     <!-- build -->
     <kotlin.version>1.4.10</kotlin.version>
