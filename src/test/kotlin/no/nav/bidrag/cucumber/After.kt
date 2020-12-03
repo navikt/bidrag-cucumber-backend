@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 class After {
     @After("@bidrag-dokument,@bidrag-dokument-journalpost")
     fun deleteCreatedTestdata() {
-        val restTjenesteTestdata = RestTjenesteTestdata("bidragDokumentTestdata")
+        val restTjenesteTestdata = RestTjenesteTestdata()
         restTjenesteTestdata.slettOpprettedeData()
     }
 }
