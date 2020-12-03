@@ -7,8 +7,9 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 
-class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
+class RestTjenesteTestdata : RestTjeneste(TESTDATA_ALIAS) {
     companion object {
+        private const val TESTDATA_ALIAS = "bidragDokumentTestdata"
         private val LOGGER = LoggerFactory.getLogger(RestTjenesteTestdata::class.java)
         private var idsInTestdataResponse: Map<String, Any>? = null
     }
@@ -40,5 +41,11 @@ class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
     private fun exchangeDelete(endpointUrl: String) {
         val httpEntity = httpEntity(endpointUrl)
         exchange(httpEntity, endpointUrl, HttpMethod.DELETE)
+    }
+
+    fun sjekk(alias: String) {
+        if (alias != TESTDATA_ALIAS) {
+            throw IllegalStateException("RestTjeneste for testdata er ulike: $alias vs $TESTDATA_ALIAS")
+        }
     }
 }
