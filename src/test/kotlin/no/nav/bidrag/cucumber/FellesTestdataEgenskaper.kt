@@ -21,7 +21,8 @@ class FellesTestdataEgenskaper {
 
     @Gitt("resttjenesten {string} for manipulering av testdata")
     fun resttjenesten(alias: String) {
-        restTjenesteTestdata = RestTjenesteTestdata(alias)
+        restTjenesteTestdata = RestTjenesteTestdata()
+        restTjenesteTestdata.sjekk(alias)
     }
 
     @Og("endre journalpost med id {string} til:")
@@ -42,7 +43,7 @@ class FellesTestdataEgenskaper {
 
     @Og("opprettet journalpost har enhet {string}")
     fun `opprettet journalpost har enhet`(enhet: String) {
-        assertThat(journalpostIdPerKey["jouranlforendeEnhet"]).isEqualTo(enhet);
+        assertThat(journalpostIdPerKey["jouranlforendeEnhet"]).isEqualTo(enhet)
     }
 
     @Gitt("at jeg oppretter journalpost for {string}:")
@@ -64,5 +65,14 @@ class FellesTestdataEgenskaper {
             val opprettetJpMap = restTjenesteTestdata.hentResponseSomMap()
             journalpostIdPerKey[avvikData.testdataNokkel] = opprettetJpMap["journalpostId"] as String
         }
+    }
+
+    @Og("hendelsen {string} skal være publisert for opprettet data med nokkel {string}")
+    fun `hendelsen skal vare publisert for opprettet data`(hendelse: String, nokkel: String) {
+        val journalpostId = journalpostIdPerKey[nokkel]
+        val response = restTjenesteTestdata.exchangeGet("/hendelser/$journalpostId")
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(response.body).containsSequence(hendelse)
     }
 }
