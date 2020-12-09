@@ -78,7 +78,15 @@ internal class NaisConfiguration {
         }
 
         @Suppress("UNCHECKED_CAST") val ingresses = jsonFileAsMap["ingresses"] as List<String>
-        return fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+        var ingress = fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+
+        if (!ingress.endsWith('/')) {
+            ingress = "$ingress/"
+        }
+
+        LOGGER.info("Bruker ingress url: $ingress")
+
+        return ingress
     }
 
     private fun fetchIngress(ingresses: List<String?>): String {
