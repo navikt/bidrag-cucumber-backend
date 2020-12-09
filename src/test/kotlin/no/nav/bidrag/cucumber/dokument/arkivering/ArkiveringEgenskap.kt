@@ -1,4 +1,4 @@
-package no.nav.bidrag.cucumber.arkivering
+package no.nav.bidrag.cucumber.dokument.arkivering
 
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
