@@ -29,9 +29,9 @@ internal class CacheRestTemplateMedBaseUrl {
         val applicationUrl: String
 
         if (!applicationHostUrl.endsWith('/') && !applicationName.startsWith('/')) {
-            applicationUrl = "$applicationHostUrl/$applicationName"
+            applicationUrl = "$applicationHostUrl/$applicationName/"
         } else {
-            applicationUrl =  "$applicationHostUrl$applicationName"
+            applicationUrl =  "$applicationHostUrl$applicationName/"
         }
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
