@@ -100,8 +100,13 @@ open class RestTjeneste(
         exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
     }
 
-    fun exchangePost(endpointUrl: String, journalpostJson: String, enhet: String?) {
-        val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
+    fun exchangePost(endpointUrl: String, json: String, enhet: String?) {
+        val jsonEntity = httpEntity(endpointUrl, enhet, json)
+        exchange(jsonEntity, endpointUrl, HttpMethod.POST)
+    }
+
+    fun exchangePost(endpointUrl: String, json: String) {
+        val jsonEntity = httpEntity(endpointUrl = endpointUrl, json = json, enhet = null)
         exchange(jsonEntity, endpointUrl, HttpMethod.POST)
     }
 
@@ -118,12 +123,12 @@ open class RestTjeneste(
         return HttpEntity(headers)
     }
 
-    private fun httpEntity(endpointUrl: String, enhet: String?, journalpostJson: String): HttpEntity<String> {
+    private fun httpEntity(endpointUrl: String, enhet: String?, json: String): HttpEntity<String> {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationIdAndEnhet(enhet)
         headers.contentType = MediaType.APPLICATION_JSON
 
-        return HttpEntity(journalpostJson, headers)
+        return HttpEntity(json, headers)
     }
 
     internal fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
