@@ -7,7 +7,7 @@ Egenskap: bidrag-beregn-barnebidrag-rest
   kommunisere med (via REST).
 
   Bakgrunn: Rest-tjeneste.
-    Gitt nais applikasjon 'bidrag-beregn-barnebidrag-rest'
+    Gitt resttjenesten 'bidragBeregnBarnebidragRest'
 
   Scenario: Sjekk at health endpoint er operativt
     Når jeg kaller helsetjenesten
