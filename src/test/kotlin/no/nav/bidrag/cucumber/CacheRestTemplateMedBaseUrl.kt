@@ -42,7 +42,13 @@ internal class CacheRestTemplateMedBaseUrl {
 
         LOGGER.info("Bruker '$applicationHostUrl' sammen med '$applicationContextPath' for å bestemme host url")
 
-        val applicationUrl = applicationHostUrl + applicationContextPath
+        val applicationUrl: String
+
+        if (!applicationHostUrl.endsWith('/') && !applicationContextPath.startsWith('/')) {
+            applicationUrl = "$applicationHostUrl/$applicationContextPath"
+        } else {
+            applicationUrl =  "$applicationHostUrl$applicationContextPath"
+        }
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
