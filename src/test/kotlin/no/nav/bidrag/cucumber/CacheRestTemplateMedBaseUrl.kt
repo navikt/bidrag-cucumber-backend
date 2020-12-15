@@ -25,9 +25,16 @@ internal class CacheRestTemplateMedBaseUrl {
             return restTjenesteTilApplikasjon.getValue(applicationName)
         }
 
-        val appliationUrl = naisConfiguration.hentApplicationHostUrl(applicationName) + applicationName + '/'
+        val applicationHostUrl = naisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationUrl: String
 
-        return hentEllerKonfigurerApplikasjonForUrl(applicationName, appliationUrl)
+        if (!applicationHostUrl.endsWith('/') && !applicationName.startsWith('/')) {
+            applicationUrl = "$applicationHostUrl/$applicationName"
+        } else {
+            applicationUrl =  "$applicationHostUrl$applicationName"
+        }
+
+        return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
