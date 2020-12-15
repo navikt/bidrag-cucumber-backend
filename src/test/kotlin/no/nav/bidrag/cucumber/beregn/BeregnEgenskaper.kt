@@ -4,12 +4,13 @@ import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
+import java.io.File
 
 class BeregnEgenskaper {
 
     @Når("jeg bruker endpoint {string} med json fra fil")
     fun `nar jeg bruker endpoint med json fra fil`(endpoint: String) {
-        val json = todoLesFraFil()
+        val json = lesFraFil()
         FellesEgenskaper.restTjeneste.exchangePost(endpoint, json)
     }
 
@@ -19,7 +20,8 @@ class BeregnEgenskaper {
             .containsSequence("resultatKode")
     }
 
-    private fun todoLesFraFil(): String {
-        return "todo"
+    private fun lesFraFil(): String {
+        val filnavn = "src/test/resources/no/nav/bidrag/cucumber/beregn/barnebidrag/barnebidrag_eksempel1.txt"
+        return File(filnavn).readText(Charsets.UTF_8)
     }
 }
