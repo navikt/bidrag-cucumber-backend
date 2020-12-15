@@ -20,6 +20,6 @@ class BeregnEgenskaper {
     }
 
     private fun todoLesFraFil(): String {
-
+        return "todo"
     }
 }
