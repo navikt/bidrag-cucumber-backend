@@ -9,15 +9,10 @@ import java.io.File
 
 class BeregnEgenskaper {
 
-    @Når("jeg bruker endpoint {string} med json fra fil")
-    fun `nar jeg bruker endpoint med json fra fil`(endpoint: String) {
-        val json = lesFraFil()
+    @Når("jeg bruker endpoint {string} med json fra {string}")
+    fun `nar jeg bruker endpoint med json fra fil`(endpoint: String, jsonFilePath: String) {
+        val json = File(jsonFilePath).readText(Charsets.UTF_8)
         FellesEgenskaper.restTjeneste.exchangePost(endpoint, json)
-    }
-
-    private fun lesFraFil(): String {
-        val filnavn = "src/test/resources/no/nav/bidrag/cucumber/beregn/barnebidrag/barnebidrag_eksempel1.txt"
-        return File(filnavn).readText(Charsets.UTF_8)
     }
 
     @Og("responsen skal inneholde beløpet {int} under stien {string}")
