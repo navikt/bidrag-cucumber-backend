@@ -17,8 +17,7 @@ internal class NaisConfiguration {
                 Pair("bidragOrganisasjon", "bidrag-organisasjon"),
                 Pair("bidragPerson", "bidrag-person"),
                 Pair("bidragSak", "bidrag-sak"),
-                Pair("bidragSjablon", "bidrag-sjablon"),
-                Pair("bidragBeregnBarnebidragRest", "bidrag-beregn-barnebidrag-rest")
+                Pair("bidragSjablon", "bidrag-sjablon")
         )
 
         private val namespaceJsonFilePathPerAppName: MutableMap<String, String> = HashMap()
