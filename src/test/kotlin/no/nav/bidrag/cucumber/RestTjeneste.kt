@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
+private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
 
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
@@ -20,10 +21,6 @@ open class RestTjeneste(
         private val rest: RestTemplateMedBaseUrl,
         private val sikkerhet: Sikkerhet = Sikkerhet()
 ) {
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
-    }
-
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
 
@@ -100,8 +97,13 @@ open class RestTjeneste(
         exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
     }
 
-    fun exchangePost(endpointUrl: String, journalpostJson: String, enhet: String?) {
-        val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
+    fun exchangePost(endpointUrl: String, json: String, enhet: String?) {
+        val jsonEntity = httpEntity(endpointUrl, enhet, json)
+        exchange(jsonEntity, endpointUrl, HttpMethod.POST)
+    }
+
+    fun exchangePost(endpointUrl: String, json: String) {
+        val jsonEntity = httpEntity(endpointUrl = endpointUrl, json = json, enhet = null)
         exchange(jsonEntity, endpointUrl, HttpMethod.POST)
     }
 
@@ -118,21 +120,21 @@ open class RestTjeneste(
         return HttpEntity(headers)
     }
 
-    private fun httpEntity(endpointUrl: String, enhet: String?, journalpostJson: String): HttpEntity<String> {
+    private fun httpEntity(endpointUrl: String, enhet: String?, json: String): HttpEntity<String> {
         this.debugFullUrl = rest.baseUrl + endpointUrl
         val headers = initHttpHeadersWithCorrelationIdAndEnhet(enhet)
         headers.contentType = MediaType.APPLICATION_JSON
 
-        return HttpEntity(journalpostJson, headers)
+        return HttpEntity(json, headers)
     }
 
     internal fun exchange(jsonEntity: HttpEntity<String>, endpointUrl: String, httpMethod: HttpMethod) {
         try {
-            LOGGER.info("$httpMethod: $jsonEntity")
+            LOGGER.info("$httpMethod: $endpointUrl")
             responseEntity = rest.template.exchange(endpointUrl, httpMethod, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            LOGGER.error("$httpMethod FEILET: ${this.debugFullUrl}: $e")
-            responseEntity = ResponseEntity.status(e.statusCode).body<Any>(e.message) as ResponseEntity<String>
+            LOGGER.error("$httpMethod FEILET: $debugFullUrl: $e")
+            responseEntity = ResponseEntity.status(e.statusCode).body<Any>("${e.javaClass.simpleName}: ${e.message}") as ResponseEntity<String>
             throw e
         }
     }
@@ -143,7 +145,7 @@ open class RestTjeneste(
         responseEntity = try {
             rest.template.postForEntity(endpointUrl, jsonEntity, String::class.java)
         } catch (e: HttpStatusCodeException) {
-            LOGGER.error("POST FEILET: ${this.debugFullUrl}: $e")
+            LOGGER.error("POST FEILET: $debugFullUrl: $e")
             ResponseEntity(e.statusCode)
         }
     }

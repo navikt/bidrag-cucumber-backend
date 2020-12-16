@@ -13,6 +13,7 @@
     <bidrag-commons.version>0.4.2</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>6.9.1</cucumber.version>
+    <json-path.version>2.5.0</json-path.version>
     <mimepull.version>1.9.13</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
@@ -100,6 +101,13 @@
       <artifactId>oidc-test-support</artifactId>
       <version>${oidc-spring-support.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- json path -->
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>${json-path.version}</version>
     </dependency>
 
     <!-- one logging framework to rule them all -->

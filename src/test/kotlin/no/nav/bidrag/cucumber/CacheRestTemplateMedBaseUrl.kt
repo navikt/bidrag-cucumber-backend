@@ -4,9 +4,12 @@ import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import java.security.cert.X509Certificate
+
+private val LOGGER = LoggerFactory.getLogger(CacheRestTemplateMedBaseUrl::class.java)
 
 internal class CacheRestTemplateMedBaseUrl {
     companion object {
@@ -22,9 +25,16 @@ internal class CacheRestTemplateMedBaseUrl {
             return restTjenesteTilApplikasjon.getValue(applicationName)
         }
 
-        val appliationUrl = naisConfiguration.hentApplicationHostUrl(applicationName) + applicationName + '/'
+        val applicationHostUrl = naisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationUrl: String
 
-        return hentEllerKonfigurerApplikasjonForUrl(applicationName, appliationUrl)
+        if (!applicationHostUrl.endsWith('/') && !applicationName.startsWith('/')) {
+            applicationUrl = "$applicationHostUrl/$applicationName/"
+        } else {
+            applicationUrl =  "$applicationHostUrl$applicationName/"
+        }
+
+        return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
@@ -34,7 +44,18 @@ internal class CacheRestTemplateMedBaseUrl {
             return restTjenesteTilApplikasjon.getValue(applicationName)
         }
 
-        val applicationUrl = naisConfiguration.hentApplicationHostUrl(applicationName) + bestemApplicationContextPath(applicationContext)
+        val applicationHostUrl = naisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationContextPath = bestemApplicationContextPath(applicationContext)
+
+        LOGGER.info("Bruker '$applicationHostUrl' sammen med '$applicationContextPath' for å bestemme host url")
+
+        val applicationUrl: String
+
+        if (!applicationHostUrl.endsWith('/') && !applicationContextPath.startsWith('/')) {
+            applicationUrl = "$applicationHostUrl/$applicationContextPath"
+        } else {
+            applicationUrl =  "$applicationHostUrl$applicationContextPath"
+        }
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
