@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber.beregn
 
+import com.jayway.jsonpath.JsonPath
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.FellesEgenskaper
@@ -14,14 +15,24 @@ class BeregnEgenskaper {
         FellesEgenskaper.restTjeneste.exchangePost(endpoint, json)
     }
 
-    @Og("jeg skal få et beregningsresultat")
-    fun `jeg skal fa et beregningsresultat`() {
-        assertThat(FellesEgenskaper.restTjeneste.hentResponse())
-            .containsSequence("resultatKode")
-    }
-
     private fun lesFraFil(): String {
         val filnavn = "src/test/resources/no/nav/bidrag/cucumber/beregn/barnebidrag/barnebidrag_eksempel1.txt"
         return File(filnavn).readText(Charsets.UTF_8)
+    }
+
+    @Og("responsen skal inneholde beløpet {int} under stien {string}")
+    fun `responsen skal inneholde belop pa sti`(belop: Double, sti: String) {
+        val documentContext = JsonPath.parse(FellesEgenskaper.restTjeneste.hentResponse())
+        val x = documentContext.read<Double>(sti)
+
+        assertThat(x).isEqualTo(belop)
+    }
+
+    @Og("responsen skal inneholde en streng {string} under stien {string}")
+    fun `responsen skal inneholde streng pa sti`(streng: String, sti: String) {
+        val documentContext = JsonPath.parse(FellesEgenskaper.restTjeneste.hentResponse())
+        val x = documentContext.read<String>(sti)
+
+        assertThat(x).isEqualTo(streng)
     }
 }

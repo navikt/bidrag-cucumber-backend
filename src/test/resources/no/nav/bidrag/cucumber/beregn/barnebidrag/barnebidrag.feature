@@ -18,4 +18,5 @@ Egenskap: bidrag-beregn-barnebidrag-rest
   Scenario:
     Når jeg bruker endpoint '/beregn/barnebidrag' med json fra fil
     Så skal http status være '200'
-    Og jeg skal få et beregningsresultat
+    Og responsen skal inneholde beløpet 3490 under stien '$.beregnBarnebidragResultat.resultatPeriodeListe[0].resultatBeregningListe[0].resultatBelop'
+    Og responsen skal inneholde en streng 'KOSTNADSBEREGNET_BIDRAG' under stien '$.beregnBarnebidragResultat.resultatPeriodeListe[0].resultatBeregningListe[0].resultatKode'
