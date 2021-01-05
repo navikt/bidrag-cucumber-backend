@@ -8,7 +8,7 @@ Egenskap: bidrag-sjablon
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
-    Gitt resttjenesten 'bidragSjablon'
+    Gitt nais applikasjon 'bidrag-sjablon'
 
   Scenario: Sjekk at health endpoint er operativt
     Når jeg kaller helsetjenesten
