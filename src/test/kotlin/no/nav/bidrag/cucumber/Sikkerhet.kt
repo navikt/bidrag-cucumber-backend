@@ -17,15 +17,17 @@ class Sikkerhet {
         private const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
         private const val OPEN_ID_FASIT = "OPEN ID FASIT"
         private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+
+        private val ISSO_VALUES: MutableMap<String, Any> = HashMap()
         private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
 
         private lateinit var onlineToken: String
-        private val finalValueCache: MutableMap<String, Any> = HashMap()
+        val SECURITY_PER_APPLIKASJON: MutableMap<String, Security> = HashMap()
     }
 
     private val fasit = Fasit()
 
-    internal fun fetchIdToken(): String {
+    internal fun fetchIssoToken(): String {
         if (Environment.offline) {
             val testTokenGeneratorResource = TestTokenGeneratorResource()
             return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
@@ -46,14 +48,14 @@ class Sikkerhet {
     }
 
     fun fetchOnlineIdToken(namespace: String): String {
-        finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(namespace)
-        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(finalValueCache[OPEN_ID_FASIT] as Fasit.FasitRessurs)
-        finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
-        val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
+        ISSO_VALUES[OPEN_ID_FASIT] = ISSO_VALUES[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(namespace)
+        ISSO_VALUES[OPEN_AM_PASSWORD] = ISSO_VALUES[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(ISSO_VALUES[OPEN_ID_FASIT] as Fasit.FasitRessurs)
+        ISSO_VALUES[TEST_USER_AUTH_TOKEN] = ISSO_VALUES[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
+        val codeFraLocationHeader = hentCodeFraLocationHeader(ISSO_VALUES[TEST_USER_AUTH_TOKEN] as String)
 
         LOGGER.info("Fetched id token for ${Environment.testUser()}")
 
-        return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
+        return "Bearer " + hentIdToken(codeFraLocationHeader, ISSO_VALUES[OPEN_AM_PASSWORD] as String)
     }
 
     private fun hentOpenIdConnectFasitRessurs(namespace: String): Fasit.FasitRessurs {
@@ -138,11 +140,11 @@ class Sikkerhet {
         return accessTokenMap["id_token"] as String? ?: throw IllegalStateException("fant ikke id_token i json")
     }
 
-    private fun initHttpEntity(vararg headers: Map.Entry<String, String>): HttpEntity<*>? {
+    private fun initHttpEntity(vararg headers: Map.Entry<String, String>): HttpEntity<*> {
         return initHttpEntity(null, *headers)
     }
 
-    private fun initHttpEntity(data: String?, vararg headers: Map.Entry<String, String>): HttpEntity<*>? {
+    private fun initHttpEntity(data: String?, vararg headers: Map.Entry<String, String>): HttpEntity<*> {
         val linkedMultiValueMap = LinkedMultiValueMap<String, String>()
         headers.forEach { linkedMultiValueMap.add(it.key, it.value) }
         val httpHeaders = HttpHeaders(linkedMultiValueMap)
@@ -161,4 +163,8 @@ class Sikkerhet {
 
         return String(encodedCredentials, StandardCharsets.UTF_8)
     }
+}
+
+enum class Security {
+    AZURE, ISSO
 }

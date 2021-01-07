@@ -20,16 +20,17 @@ internal class Environment {
 
         internal val offline by lazy {
             Fasit.hentFasitRessursSomJson(
-                    Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
+                Fasit.buildUriString(URL_FASIT, "type=restservice", "alias=BidragDokument", "environment=q0")
             ).offline
         }
 
         internal val miljo by lazy {
-            System.getProperty(ENVIRONMENT) ?: throw IllegalStateException("Fant ikke miljø for kjøring")
+            System.getProperty(ENVIRONMENT) ?: System.getenv()[ENVIRONMENT] ?: throw IllegalStateException("Fant ikke miljø for kjøring")
         }
 
         internal val naisProjectFolder: String by lazy {
-            System.getProperty(PROJECT_NAIS_FOLDER) ?: throw IllegalStateException("Det er ikke oppgitt ei mappe for nais prosjekt")
+            System.getProperty(PROJECT_NAIS_FOLDER) ?: System.getenv()[PROJECT_NAIS_FOLDER]
+            ?: throw IllegalStateException("Det er ikke oppgitt ei mappe for nais prosjekt")
         }
 
         private val naisApplications: Set<String> by lazy {
@@ -77,7 +78,7 @@ internal class Environment {
 
         fun testUser() = System.getProperty(CREDENTIALS_TEST_USER) ?: throw IllegalStateException("Fant ikke testbruker (ala z123456)")
         fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH)
-                ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
+            ?: throw IllegalStateException("Fant ikke passord til ${testUser()}")
 
         fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke nav-bruker (ala [x]123456)")
         fun userAuthentication() = System.getProperty(CREDENTIALS_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til ${user()}")

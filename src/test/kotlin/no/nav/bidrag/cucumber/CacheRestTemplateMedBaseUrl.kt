@@ -77,7 +77,10 @@ internal class CacheRestTemplateMedBaseUrl {
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
+        when(Sikkerhet.SECURITY_PER_APPLIKASJON[NaisConfiguration.determineAppklicationName(applicationOrAlias)]) {
+            Security.ISSO -> httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIssoToken() }
+            Security.AZURE -> throw NotImplementedError("TODO: Add header generator for azure")
+        }
 
         restTjenesteTilApplikasjon[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 

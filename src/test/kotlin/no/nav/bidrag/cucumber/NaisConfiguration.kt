@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
+import org.yaml.snakeyaml.Yaml
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -21,6 +22,20 @@ internal class NaisConfiguration {
         )
 
         private val namespaceJsonFilePathPerAppName: MutableMap<String, String> = HashMap()
+
+        internal fun determineAppklicationName(applicationNameOrAlias: String): String {
+            if (ALIAS_TO_NAIS_APPLICATION.containsKey(applicationNameOrAlias)) {
+                return ALIAS_TO_NAIS_APPLICATION.getValue(applicationNameOrAlias)
+            }
+
+            if (Environment.isApplicationPresentInNaisProjectFolder(applicationNameOrAlias)) {
+                return applicationNameOrAlias
+            }
+
+            val message = "Unable to determine application name for '$applicationNameOrAlias'"
+            LOGGER.error(message)
+            throw IllegalStateException(message)
+        }
     }
 
     private val fetchResourceFromFasit: MutableSet<String> = HashSet()
@@ -48,9 +63,35 @@ internal class NaisConfiguration {
 
         if (canReadNaisJson) {
             namespaceJsonFilePathPerAppName[applicationName] = jsonFile.absolutePath
+            Sikkerhet.SECURITY_PER_APPLIKASJON.computeIfAbsent(applicationName) { hentAzureSomSecurityToken(jsonFile.parent) ?: Security.ISSO }
         } else {
             fetchResourceFromFasit.add(applicationName)
         }
+    }
+
+    private fun hentAzureSomSecurityToken(naisFolder: String): Security? {
+        val naisYamlReader = File(naisFolder, "nais.yaml").bufferedReader()
+        val pureYaml = mutableListOf<String>()
+        naisYamlReader.useLines { lines -> lines.forEach { if (!it.contains("{{")) pureYaml.add(it) } }
+        val yamlMap = Yaml().load<Map<String, Any>>(pureYaml.joinToString("\n"))
+
+        return if (isEnabled(yamlMap, mutableListOf("spec", "azure", "application", "enabled"))) Security.AZURE else null
+    }
+
+    private fun isEnabled(map: Map<String, Any>, keys: MutableList<String>): Boolean {
+        println("${keys[0]}=${map[keys[0]]}")
+
+        if (map.containsKey(keys[0])) {
+            if (keys.size == 1) return map.getValue(keys[0]) as Boolean
+            else {
+                @Suppress("UNCHECKED_CAST")
+                val childMap = map[keys[0]] as Map<String, Any>
+                keys.removeAt(0)
+                return isEnabled(childMap, keys)
+            }
+        }
+
+        return false
     }
 
     private fun fetchJsonByEnvironmentOrNamespace(applicationName: String): File {
@@ -104,19 +145,5 @@ internal class NaisConfiguration {
 
         @Suppress("UNCHECKED_CAST")
         return gson.fromJson(bufferedReader, Map::class.java) as Map<String, Any>
-    }
-
-    private fun determineAppklicationName(applicationNameOrAlias: String): String {
-        if (ALIAS_TO_NAIS_APPLICATION.containsKey(applicationNameOrAlias)) {
-            return ALIAS_TO_NAIS_APPLICATION.getValue(applicationNameOrAlias)
-        }
-
-        if (Environment.isApplicationPresentInNaisProjectFolder(applicationNameOrAlias)) {
-            return applicationNameOrAlias
-        }
-
-        val message = "Unable to determine application name for '$applicationNameOrAlias'"
-        LOGGER.error(message)
-        throw IllegalStateException(message)
     }
 }
