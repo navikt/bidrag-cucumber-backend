@@ -18,17 +18,13 @@ class BeregnEgenskaper {
   @Og("responsen skal inneholde beløpet {string} under stien {string}")
   fun `responsen skal inneholde belop pa sti`(belop: String, sti: String) {
     val documentContext = JsonPath.parse(FellesEgenskaper.restTjeneste.hentResponse())
-    val resultatBelop = documentContext.read<Double>(sti)
+    var resultatBelop = documentContext.read<Any>(sti).toString()
 
-    assertThat(resultatBelop).isEqualTo(belop.toDouble())
-  }
+    if (resultatBelop.endsWith(".0")) {
+      resultatBelop = resultatBelop.removeSuffix(".0")
+    }
 
-  @Og("responsen skal inneholde heltallsbeløpet {string} under stien {string}")
-  fun `responsen skal inneholde heltallsbelop pa sti`(belop: String, sti: String) {
-    val documentContext = JsonPath.parse(FellesEgenskaper.restTjeneste.hentResponse())
-    val resultatBelop = documentContext.read<Int>(sti)
-
-    assertThat(resultatBelop).isEqualTo(belop.toInt())
+    assertThat(resultatBelop).isEqualTo(belop)
   }
 
   @Og("responsen skal inneholde resultatkoden {string} under stien {string}")
