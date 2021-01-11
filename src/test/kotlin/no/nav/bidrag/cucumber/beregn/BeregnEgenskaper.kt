@@ -18,7 +18,11 @@ class BeregnEgenskaper {
   @Og("responsen skal inneholde beløpet {string} under stien {string}")
   fun `responsen skal inneholde belop pa sti`(belop: String, sti: String) {
     val documentContext = JsonPath.parse(FellesEgenskaper.restTjeneste.hentResponse())
-    val resultatBelop = documentContext.read<Any>(sti).toString()
+    var resultatBelop = documentContext.read<Any>(sti).toString()
+
+    if (resultatBelop.endsWith(".0")) {
+      resultatBelop = resultatBelop.removeSuffix(".0")
+    }
 
     assertThat(resultatBelop).isEqualTo(belop)
   }
