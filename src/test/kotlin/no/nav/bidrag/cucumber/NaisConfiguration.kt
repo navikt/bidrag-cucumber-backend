@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
+import org.yaml.snakeyaml.Yaml
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -10,25 +11,23 @@ internal class NaisConfiguration {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(NaisConfiguration::class.java)
         private val ALIAS_TO_NAIS_APPLICATION: Map<String, String> = mapOf(
-                Pair("bidragDokument", "bidrag-dokument"),
-                Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
-                Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
-                Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
-                Pair("bidragOrganisasjon", "bidrag-organisasjon"),
-                Pair("bidragPerson", "bidrag-person"),
-                Pair("bidragSak", "bidrag-sak"),
-                Pair("bidragSjablon", "bidrag-sjablon")
+            Pair("bidragDokument", "bidrag-dokument"),
+            Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
+            Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
+            Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
+            Pair("bidragOrganisasjon", "bidrag-organisasjon"),
+            Pair("bidragPerson", "bidrag-person"),
+            Pair("bidragSak", "bidrag-sak"),
+            Pair("bidragSjablon", "bidrag-sjablon")
         )
 
-        private val namespaceJsonFilePathPerAppName: MutableMap<String, String> = HashMap()
+        private val envFilePathPerAppName: MutableMap<String, String> = HashMap()
     }
-
-    private val fetchResourceFromFasit: MutableSet<String> = HashSet()
 
     fun readNaisConfiguration(applicationOrAlias: String): String {
         val applicationName = determineAppklicationName(applicationOrAlias)
 
-        if (!namespaceJsonFilePathPerAppName.containsKey(applicationName)) {
+        if (!envFilePathPerAppName.containsKey(applicationName)) {
             fetchNaisConfiguration(applicationName)
         }
 
@@ -38,47 +37,65 @@ internal class NaisConfiguration {
     private fun fetchNaisConfiguration(applicationName: String) {
         val applfolder = File("${Environment.naisProjectFolder}/$applicationName")
         val naisFolder = File("${Environment.naisProjectFolder}/$applicationName/nais")
-        val jsonFile = fetchJsonByEnvironmentOrNamespace(applicationName)
+        val envFile = fetchEnvFileByEnvironment(applicationName)
 
         LOGGER.info("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
         LOGGER.info("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
-        LOGGER.info("> jsonFile   exists: ${jsonFile.exists()}, path: $jsonFile")
+        LOGGER.info("> envFile    exists: ${envFile.exists()}, path: $envFile")
 
-        val canReadNaisJson = applfolder.exists() && naisFolder.exists() && jsonFile.exists()
+        val canReadNaisEnvironment = applfolder.exists() && naisFolder.exists() && envFile.exists()
 
-        if (canReadNaisJson) {
-            namespaceJsonFilePathPerAppName[applicationName] = jsonFile.absolutePath
-        } else {
-            fetchResourceFromFasit.add(applicationName)
+        if (canReadNaisEnvironment) {
+            envFilePathPerAppName[applicationName] = envFile.absolutePath
         }
     }
 
-    private fun fetchJsonByEnvironmentOrNamespace(applicationName: String): File {
+    private fun fetchEnvFileByEnvironment(applicationName: String): File {
         val miljoJson = File("${Environment.naisProjectFolder}/$applicationName/nais/${Environment.miljo}.json")
 
         if (miljoJson.exists()) {
             return miljoJson
-        } else {
-            LOGGER.warn("Unable to find ${Environment.miljo}.json, using ${Environment.namespace}.json")
         }
 
-        return File("${Environment.naisProjectFolder}/$applicationName/nais/${Environment.namespace}.json")
+        val miljoYaml = File("${Environment.naisProjectFolder}/$applicationName/nais/${Environment.miljo}.yaml")
+
+        if (miljoYaml.exists()) {
+            return miljoYaml
+        }
+
+        throw IllegalStateException(" Unable to find ${Environment.naisProjectFolder}/$applicationName/nais/${Environment.namespace}.? (json or yaml)")
     }
 
     internal fun hentApplicationHostUrl(applicationNameOrAlias: String): String {
 
         val applicationName = determineAppklicationName(applicationNameOrAlias)
-        val nameSpaceJsonFile = namespaceJsonFilePathPerAppName[applicationName]
-                ?: throw IllegalStateException("no path for $applicationName in $namespaceJsonFilePathPerAppName")
+        val nameSpaceEnvPath = envFilePathPerAppName[applicationName]
+            ?: throw IllegalStateException("no path for $applicationName in $envFilePathPerAppName")
 
-        val jsonFileAsMap = readWithGson(nameSpaceJsonFile)
+        val ingresses = if (nameSpaceEnvPath.endsWith(".yaml")) {
+            fetchIngressesFromYaml(nameSpaceEnvPath)
+        } else {
+            fetchIngressesFromJson(nameSpaceEnvPath)
+        }
+
+        return fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+    }
+
+    private fun fetchIngressesFromYaml(nameSpaceEnvPath: String): List<String> {
+        val yamlReader = File(nameSpaceEnvPath).bufferedReader()
+        val yamlMap = Yaml().load<Map<String, List<String>>>(yamlReader)
+
+        return yamlMap.getValue("ingresses")
+    }
+
+    private fun fetchIngressesFromJson(nameSpaceEnvPath: String): List<String> {
+        val jsonFileAsMap = readWithGson(nameSpaceEnvPath)
 
         for (json in jsonFileAsMap) {
             println(json)
         }
 
-        @Suppress("UNCHECKED_CAST") val ingresses = jsonFileAsMap["ingresses"] as List<String>
-        return fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+        @Suppress("UNCHECKED_CAST") return jsonFileAsMap["ingresses"] as List<String>
     }
 
     private fun fetchIngress(ingresses: List<String?>): String {
