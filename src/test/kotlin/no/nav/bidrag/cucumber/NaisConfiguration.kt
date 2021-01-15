@@ -61,8 +61,7 @@ internal class NaisConfiguration {
 
         if (canReadNaisEnvironment) {
             envFilePathPerAppName[applicationName] = envFile.absolutePath
-            namespaceJsonFilePathPerAppName[applicationName] = jsonFile.absolutePath
-            Sikkerhet.SECURITY_PER_APPLIKASJON.computeIfAbsent(applicationName) { hentAzureSomSecurityToken(jsonFile.parent) ?: Security.ISSO }
+            Sikkerhet.SECURITY_PER_APPLIKASJON.computeIfAbsent(applicationName) { hentAzureSomSecurityToken(envFile.parent) ?: Security.ISSO }
         }
     }
 

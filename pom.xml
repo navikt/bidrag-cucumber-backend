@@ -10,7 +10,7 @@
   <properties>
     <!-- dependencies -->
     <apache-httpcomponenents.version>4.5.13</apache-httpcomponenents.version>
-    <bidrag-commons.version>0.4.3</bidrag-commons.version>
+    <bidrag-commons.version>0.5.0</bidrag-commons.version>
     <clucumber.version>2.3.1</clucumber.version>
     <cucumber.version>6.9.1</cucumber.version>
     <json-path.version>2.5.0</json-path.version>
