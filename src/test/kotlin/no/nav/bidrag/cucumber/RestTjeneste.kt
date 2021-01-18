@@ -17,16 +17,19 @@ private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
 
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
-        private val alias: String,
-        private val rest: RestTemplateMedBaseUrl,
-        private val sikkerhet: Sikkerhet = Sikkerhet()
+    private val alias: String,
+    private val rest: RestTemplateMedBaseUrl,
+    private val sikkerhet: Sikkerhet = Sikkerhet()
 ) {
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
 
-    constructor(applicationOrAlias: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias))
-    constructor(alias: String, fasitRessurs: Fasit.FasitRessurs) : this(alias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(alias, fasitRessurs))
-    constructor(applicationOrAlias: String, applicationContext: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl().hentEllerKonfigurer(applicationOrAlias, applicationContext))
+    constructor(applicationOrAlias: String) : this(applicationOrAlias, CacheRestTemplateMedBaseUrl.hentEllerKonfigurer(applicationOrAlias))
+    constructor(alias: String, fasitRessurs: Fasit.FasitRessurs) : this(alias, CacheRestTemplateMedBaseUrl.hentEllerKonfigurer(alias, fasitRessurs))
+    constructor(applicationOrAlias: String, applicationContext: String) : this(
+        applicationOrAlias,
+        CacheRestTemplateMedBaseUrl.hentEllerKonfigurer(applicationOrAlias, applicationContext)
+    )
 
     fun hentEndpointUrl() = debugFullUrl
     fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
@@ -57,8 +60,8 @@ open class RestTjeneste(
         }
 
         ScenarioManager.log(
-                if (responseEntity.body != null) "response with json and status ${responseEntity.statusCode}"
-                else "no response body with status ${responseEntity.statusCode}"
+            if (responseEntity.body != null) "response with json and status ${responseEntity.statusCode}"
+            else "no response body with status ${responseEntity.statusCode}"
         )
 
         return responseEntity
@@ -74,8 +77,8 @@ open class RestTjeneste(
         headers.add(X_ENHET_HEADER, enhet ?: "4802")
 
         ScenarioManager.log(
-                ScenarioManager.createCorrelationIdLinkTitle(),
-                ScenarioManager.createQueryLinkForCorrelationId()
+            ScenarioManager.createCorrelationIdLinkTitle(),
+            ScenarioManager.createQueryLinkForCorrelationId()
         )
 
         return headers
