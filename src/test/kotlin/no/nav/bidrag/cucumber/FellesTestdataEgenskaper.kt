@@ -21,8 +21,7 @@ class FellesTestdataEgenskaper {
 
     @Gitt("resttjenesten {string} for manipulering av testdata")
     fun resttjenesten(alias: String) {
-        restTjenesteTestdata = RestTjenesteTestdata()
-        restTjenesteTestdata.sjekk(alias)
+        restTjenesteTestdata = RestTjenesteTestdata(alias)
     }
 
     @Og("endre journalpost med id {string} til:")

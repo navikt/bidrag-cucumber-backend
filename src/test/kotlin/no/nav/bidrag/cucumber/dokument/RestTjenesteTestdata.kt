@@ -7,18 +7,16 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 
-class RestTjenesteTestdata : RestTjeneste(TESTDATA_ALIAS) {
+class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
     companion object {
-        private const val TESTDATA_ALIAS = "bidragDokumentTestdata"
         private val LOGGER = LoggerFactory.getLogger(RestTjenesteTestdata::class.java)
-        private var idsInTestdataResponse: Map<String, Any>? = null
+        private var slettTidligereTestdata = true
     }
 
     fun opprettJournalpost(journalpostJson: String) {
-        if (idsInTestdataResponse == null) {
-            exchangeGet("journal/max/ids")
-            idsInTestdataResponse = hentResponseSomMap()
-            ScenarioManager.log(">>>> $idsInTestdataResponse <<<<")
+        if (slettTidligereTestdata) {
+            slettOpprettedeData()
+            slettTidligereTestdata = false
         }
 
         val correlationIdWithContentType = initHttpHeadersWithCorrelationIdAndEnhet()
@@ -27,25 +25,11 @@ class RestTjenesteTestdata : RestTjeneste(TESTDATA_ALIAS) {
         post("/journalpost", HttpEntity(journalpostJson, correlationIdWithContentType))
     }
 
-    fun slettOpprettedeData() {
-        if (idsInTestdataResponse != null) {
-            val fraJpId = idsInTestdataResponse?.get("maxJournalpostId")
-            val fraJsakId = idsInTestdataResponse?.get("maxJournalsakId")
-            val endpointUrl = "journal/delete/fra-jp-id/$fraJpId/fra-jsak-id/$fraJsakId"
+    private fun slettOpprettedeData() {
+            val endpointUrl = "journal/slett/testdata"
             ScenarioManager.useScenarioForLogging = false
-            exchangeDelete(endpointUrl)
+            val httpEntity = httpEntity(endpointUrl)
+            exchange(httpEntity, endpointUrl, HttpMethod.DELETE)
             LOGGER.info("slettet testdata (ikke mottaksregistrert: $endpointUrl")
-        }
-    }
-
-    private fun exchangeDelete(endpointUrl: String) {
-        val httpEntity = httpEntity(endpointUrl)
-        exchange(httpEntity, endpointUrl, HttpMethod.DELETE)
-    }
-
-    fun sjekk(alias: String) {
-        if (alias != TESTDATA_ALIAS) {
-            throw IllegalStateException("RestTjeneste for testdata er ulike: $alias vs $TESTDATA_ALIAS")
-        }
     }
 }
