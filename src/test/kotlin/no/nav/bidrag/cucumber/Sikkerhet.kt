@@ -78,7 +78,7 @@ class Sikkerhet {
 
         LOGGER.info("Finding OpenAM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
 
-        return Environment().initRestTemplate(openIdConnectFasitRessurs.passordUrl())
+        return Environment.initRestTemplate(openIdConnectFasitRessurs.passordUrl())
                 .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
                 .body ?: throw IllegalStateException("fant ikke passord for bruker på open am")
     }
@@ -138,11 +138,11 @@ class Sikkerhet {
         return accessTokenMap["id_token"] as String? ?: throw IllegalStateException("fant ikke id_token i json")
     }
 
-    private fun initHttpEntity(vararg headers: Map.Entry<String, String>): HttpEntity<*>? {
+    private fun initHttpEntity(vararg headers: Map.Entry<String, String>): HttpEntity<*> {
         return initHttpEntity(null, *headers)
     }
 
-    private fun initHttpEntity(data: String?, vararg headers: Map.Entry<String, String>): HttpEntity<*>? {
+    private fun initHttpEntity(data: String?, vararg headers: Map.Entry<String, String>): HttpEntity<*> {
         val linkedMultiValueMap = LinkedMultiValueMap<String, String>()
         headers.forEach { linkedMultiValueMap.add(it.key, it.value) }
         val httpHeaders = HttpHeaders(linkedMultiValueMap)
