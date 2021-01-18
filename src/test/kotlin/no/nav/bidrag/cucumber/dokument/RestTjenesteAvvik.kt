@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber.dokument
 
+import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
 import no.nav.bidrag.cucumber.RestTjeneste
 import no.nav.bidrag.cucumber.ScenarioManager
 import org.springframework.http.HttpEntity
@@ -40,5 +41,14 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
                         .removeSuffix("]")
                         .split(",")
         )
+    }
+
+    fun opprettAvvik(avvikData: AvvikData, nokkel: String) {
+        if (FellesTestdataEgenskaper.journalpostIdPerKey.containsKey(nokkel)) {
+            avvikData.erForJournalpostId(FellesTestdataEgenskaper.journalpostIdPerKey.getValue(nokkel))
+            opprettAvvikForAvvikstype(avvikData)
+        } else {
+            throw IllegalStateException("Har ikke opprettet journalpost for nokkel: $nokkel")
+        }
     }
 }
