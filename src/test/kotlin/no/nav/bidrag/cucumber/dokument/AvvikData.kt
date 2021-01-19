@@ -7,7 +7,7 @@ import java.util.stream.Collectors
 
 data class AvvikData(
         var beskrivelse: String? = null,
-        private var journalpostId: String? = null,
+        var journalpostId: String? = null,
         val saksnummer: String?,
         private val detaljer: MutableMap<String, String> = HashMap()
 ) {
@@ -49,10 +49,12 @@ data class AvvikData(
         return httpHeaders
     }
 
-    fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!))
+    fun erForJournalpostId(journalpostId: String) = journalpostId.contains(Regex(FellesTestdataEgenskaper.journalpostIdPerKey.getValue(avvikstype)))
     fun lagEndepunktUrl() = "/journal/$journalpostId/avvik"
     fun lagEndepunktUrlForAvvikstype() = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik"
+    fun lagEndepunktUrlForNokkel(nokkel: String) = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]}/avvik"
     fun lagEndepunktUrlForHentAvvik() = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]}/avvik?saksnummer=$saksnummer"
+    fun lagEndepunktUrlForHentAvvikFor(nokkel: String) = "/journal/${FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]}/avvik?saksnummer=$saksnummer"
     fun lagEndepunktUrlForOppgaveSok() = "?journalpostId=${hentJournalpostIdUtenPrefix()}&statuskategori=AAPEN"
 
     fun hentJournalpostId() = FellesTestdataEgenskaper.journalpostIdPerKey[avvikstype]!!
@@ -63,4 +65,5 @@ data class AvvikData(
     fun leggTil(key: String, value: String) {
         detaljer[key] = value
     }
+
 }

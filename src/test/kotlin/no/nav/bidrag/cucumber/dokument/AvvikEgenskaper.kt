@@ -37,6 +37,12 @@ class AvvikEgenskaper {
         FellesTestdataEgenskaper.useAsKey(avvikstype)
     }
 
+    @Og("saksnummer {string} for avviksbehandling for nøkkel {string}")
+    fun `saksnummer for avviksbehandling for nokkel`(saksnummer: String, nokkel: String) {
+        avvikData = AvvikData(saksnummer = saksnummer)
+        FellesTestdataEgenskaper.useAsKey(nokkel)
+    }
+
     @Og("avviksdato som brukes er saksnummer {string} og journalpostId {string}")
     fun `avviksdato som brukes er`(saksnummer: String, journalpostId: String) {
         avvikData = AvvikData(saksnummer = saksnummer, journalpostId = journalpostId)
@@ -57,6 +63,11 @@ class AvvikEgenskaper {
         restTjenesteAvvik().opprettAvvik(avvikData)
     }
 
+    @Når("jeg oppretter avvik på opprettet journalpost med nøkkel {string}")
+    fun `jeg oppretter avvik pa opprettet journalpost`(nokkel: String) {
+        restTjenesteAvvik().opprettAvvik(avvikData, nokkel)
+    }
+
     @Når("jeg ber om gyldige avviksvalg for journalpost")
     fun `jeg ber om gyldige avviksvalg for journalpost`() {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrl())
@@ -66,6 +77,11 @@ class AvvikEgenskaper {
     @Og("når jeg ber om gyldige avviksvalg for opprettet journalpost")
     fun `jeg ber om gyldige avviksvalg for opprettet journalpost`() {
         restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForHentAvvik())
+    }
+
+    @Når("jeg ber om gyldige avviksvalg for opprettet journalpost med nøkkel {string}")
+    fun `jeg ber om gyldige avviksvalg for opprettet journalpost med nokkel`(nokkel: String) {
+        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForHentAvvikFor(nokkel))
     }
 
     @Og("listen med avvikstyper skal kun inneholde:")

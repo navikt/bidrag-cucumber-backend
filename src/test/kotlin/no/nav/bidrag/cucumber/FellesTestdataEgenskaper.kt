@@ -24,11 +24,6 @@ class FellesTestdataEgenskaper {
         restTjenesteTestdata = RestTjenesteTestdata(alias)
     }
 
-    @Og("endre journalpost med id {string} til:")
-    fun `endre journalpost med id til`(journalpostId: String, json: String) {
-        restTjenesteTestdata.exchangePut("/journalpost/$journalpostId", json)
-    }
-
     @Og("opprett journalpost når den ikke finnes for nøkkel:")
     fun `opprett journalpost`(jpJson: String) {
         if (!journalpostIdPerKey.containsKey(key)) {
