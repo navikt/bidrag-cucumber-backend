@@ -26,7 +26,7 @@ class RestTjenesteTestdata(alias: String) : RestTjeneste(alias) {
     }
 
     private fun slettOpprettedeData() {
-            val endpointUrl = "journal/slett/testdata"
+            val endpointUrl = "/journal/slett/testdata"
             ScenarioManager.useScenarioForLogging = false
             val httpEntity = httpEntity(endpointUrl)
             exchange(httpEntity, endpointUrl, HttpMethod.DELETE)
