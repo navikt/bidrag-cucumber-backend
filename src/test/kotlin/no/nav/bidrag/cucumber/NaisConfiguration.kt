@@ -7,22 +7,21 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
-internal class NaisConfiguration {
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(NaisConfiguration::class.java)
-        private val ALIAS_TO_NAIS_APPLICATION: Map<String, String> = mapOf(
-            Pair("bidragDokument", "bidrag-dokument"),
-            Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
-            Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
-            Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
-            Pair("bidragOrganisasjon", "bidrag-organisasjon"),
-            Pair("bidragPerson", "bidrag-person"),
-            Pair("bidragSak", "bidrag-sak"),
-            Pair("bidragSjablon", "bidrag-sjablon")
-        )
+private val LOGGER = LoggerFactory.getLogger(NaisConfiguration::class.java)
+private val ALIAS_TO_NAIS_APPLICATION: Map<String, String> = mapOf(
+    Pair("bidragDokument", "bidrag-dokument"),
+    Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
+    Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
+    Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
+    Pair("bidragOrganisasjon", "bidrag-organisasjon"),
+    Pair("bidragPerson", "bidrag-person"),
+    Pair("bidragSak", "bidrag-sak"),
+    Pair("bidragSjablon", "bidrag-sjablon")
+)
 
-        private val envFilePathPerAppName: MutableMap<String, String> = HashMap()
-    }
+internal object NaisConfiguration {
+
+    private val envFilePathPerAppName: MutableMap<String, String> = HashMap()
 
     fun readNaisConfiguration(applicationOrAlias: String): String {
         val applicationName = determineAppklicationName(applicationOrAlias)

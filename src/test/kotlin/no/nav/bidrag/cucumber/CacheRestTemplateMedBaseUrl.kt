@@ -10,54 +10,46 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import java.security.cert.X509Certificate
 
 private val LOGGER = LoggerFactory.getLogger(CacheRestTemplateMedBaseUrl::class.java)
+private val REST_TJENESTE_TIL_APPLIKASJON: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
 
-internal class CacheRestTemplateMedBaseUrl {
-    companion object {
-        private val restTjenesteTilApplikasjon: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
-        private val environment = Environment()
-        private val naisConfiguration = NaisConfiguration()
-    }
+internal object CacheRestTemplateMedBaseUrl {
 
     fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
-        val applicationName = naisConfiguration.readNaisConfiguration(applicationOrAlias)
+        val applicationName = NaisConfiguration.readNaisConfiguration(applicationOrAlias)
 
-        if (restTjenesteTilApplikasjon.containsKey(applicationName)) {
-            return restTjenesteTilApplikasjon.getValue(applicationName)
+        if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
+            return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
         }
 
-        val applicationHostUrl = naisConfiguration.hentApplicationHostUrl(applicationName)
-        val applicationUrl: String
-
-        if (!applicationHostUrl.endsWith('/') && !applicationName.startsWith('/')) {
-            applicationUrl = "$applicationHostUrl/$applicationName/"
-        } else {
-            applicationUrl =  "$applicationHostUrl$applicationName/"
-        }
+        val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationName)
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
-        val applicationName = naisConfiguration.readNaisConfiguration(applicationOrAlias)
+        val applicationName = NaisConfiguration.readNaisConfiguration(applicationOrAlias)
 
-        if (restTjenesteTilApplikasjon.containsKey(applicationName)) {
-            return restTjenesteTilApplikasjon.getValue(applicationName)
+        if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
+            return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
         }
 
-        val applicationHostUrl = naisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
         val applicationContextPath = bestemApplicationContextPath(applicationContext)
 
         LOGGER.info("Bruker '$applicationHostUrl' sammen med '$applicationContextPath' for å bestemme host url")
 
-        val applicationUrl: String
-
-        if (!applicationHostUrl.endsWith('/') && !applicationContextPath.startsWith('/')) {
-            applicationUrl = "$applicationHostUrl/$applicationContextPath"
-        } else {
-            applicationUrl =  "$applicationHostUrl$applicationContextPath"
-        }
+        val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationContextPath)
 
         return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
+    }
+
+    private fun joinUrlAndContextWithoutDoubleSlash(applicationHostUrl: String, applicationContextPath: String): String {
+        return if (!applicationHostUrl.endsWith('/') && !applicationContextPath.startsWith('/')) {
+            "$applicationHostUrl/$applicationContextPath"
+        } else {
+            "$applicationHostUrl$applicationContextPath"
+        }
     }
 
     fun hentEllerKonfigurer(alias: String, fasitRessurs: Fasit.FasitRessurs): RestTjeneste.RestTemplateMedBaseUrl {
@@ -75,26 +67,26 @@ internal class CacheRestTemplateMedBaseUrl {
     private fun hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
 
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
-        val httpHeaderRestTemplate = environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
+        val httpHeaderRestTemplate = Environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
-        restTjenesteTilApplikasjon[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
+        REST_TJENESTE_TIL_APPLIKASJON[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 
-        return restTjenesteTilApplikasjon[applicationOrAlias]!!
+        return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationOrAlias)
     }
 
     private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
         val acceptingTrustStrategy = { _: Array<X509Certificate>, _: String -> true }
         val sslContext = SSLContexts.custom()
-                .loadTrustMaterial(null, acceptingTrustStrategy)
-                .build()
+            .loadTrustMaterial(null, acceptingTrustStrategy)
+            .build()
 
         val csf = SSLConnectionSocketFactory(sslContext)
 
         val httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .build()
+            .setSSLSocketFactory(csf)
+            .build()
 
         val requestFactory = HttpComponentsClientHttpRequestFactory()
 
