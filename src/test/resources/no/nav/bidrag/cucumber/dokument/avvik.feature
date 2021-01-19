@@ -1,5 +1,6 @@
 # language: no
 @bidrag-dokument
+@avviksbehandling
 Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
 
   Tester REST API for avvik i bidrag-dokument.
@@ -20,6 +21,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
                 "dokumentType": "I",
                 "journalstatus": "J",
                 "originalBestilt": "false",
+                "saksnummer": "0000003",
                 "skannetDato": "2019-08-21"
             }
             """
@@ -69,13 +71,9 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
-  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra BID til BID
+  Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
-    Og som har detaljer 'fagomrade' = 'BID'
+    Og som har detaljer 'fagomrade' = 'FAR'
+    Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '400'
-
-  Scenario: Sjekk at man kan feilføre sak
-    Gitt avvikstype 'FEILFORE_SAK'
-    Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
-    Så skal http status være '200'

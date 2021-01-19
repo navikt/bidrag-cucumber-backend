@@ -80,8 +80,8 @@ class AvvikEgenskaper {
     }
 
     @Når("jeg ber om gyldige avviksvalg for opprettet journalpost med nøkkel {string}")
-    fun `jeg ber om gyldige avviksvalg for opprettet journalpost med nokkel`() {
-        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForHentAvvik())
+    fun `jeg ber om gyldige avviksvalg for opprettet journalpost med nokkel`(nokkel: String) {
+        restTjenesteAvvik().exchangeGet(avvikData.lagEndepunktUrlForHentAvvikFor(nokkel))
     }
 
     @Og("listen med avvikstyper skal kun inneholde:")
