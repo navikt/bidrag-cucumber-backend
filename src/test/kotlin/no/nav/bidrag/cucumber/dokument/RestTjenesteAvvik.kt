@@ -20,6 +20,10 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
         post(avvikData.lagEndepunktUrlForAvvikstype(), initEntityMedHeaders(avvikData))
     }
 
+    private fun opprettAvvikForAvvikstypeOgNokkel(avvikData: AvvikData, nokkel: String) {
+        post(avvikData.lagEndepunktUrlForNokkel(nokkel), initEntityMedHeaders(avvikData))
+    }
+
     private fun initEntityMedHeaders(avvikData: AvvikData): HttpEntity<String> {
         val headers = avvikData.leggTilEnhetsnummer(initHttpHeadersWithCorrelationIdAndEnhet())
         headers.contentType = MediaType.APPLICATION_JSON
@@ -45,8 +49,8 @@ class RestTjenesteAvvik(alias: String) : RestTjeneste(alias) {
 
     fun opprettAvvik(avvikData: AvvikData, nokkel: String) {
         if (FellesTestdataEgenskaper.journalpostIdPerKey.containsKey(nokkel)) {
-            avvikData.erForJournalpostId(FellesTestdataEgenskaper.journalpostIdPerKey.getValue(nokkel))
-            opprettAvvikForAvvikstype(avvikData)
+            avvikData.journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey.getValue(nokkel)
+            opprettAvvikForAvvikstypeOgNokkel(avvikData, nokkel)
         } else {
             throw IllegalStateException("Har ikke opprettet journalpost for nokkel: $nokkel")
         }
