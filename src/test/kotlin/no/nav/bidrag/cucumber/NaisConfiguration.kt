@@ -1,6 +1,7 @@
 package no.nav.bidrag.cucumber
 
 import com.google.gson.Gson
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
 import java.io.File
@@ -20,17 +21,17 @@ internal object NaisConfiguration {
         Pair("bidragSjablon", "bidrag-sjablon")
     )
 
-    fun readNaisConfiguration(applicationOrAlias: String): String {
+    fun read(applicationOrAlias: String): String {
         val applicationName = determineAppklicationName(applicationOrAlias)
 
         if (!ENVIRONMENT_FOR_APPLICATION.containsKey(applicationName)) {
-            readConfiguration(applicationName)
+            readNaisConfiguration(applicationName)
         }
 
         return applicationName
     }
 
-    private fun readConfiguration(applicationName: String) {
+    private fun readNaisConfiguration(applicationName: String) {
         val integrationInput = Environment.fetchIntegrationInput()
         val applfolder = File("${integrationInput.naisProjectFolder}/$applicationName")
         val naisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
@@ -43,7 +44,9 @@ internal object NaisConfiguration {
         val canReadNaisEnvironment = applfolder.exists() && naisFolder.exists() && envFile.exists()
 
         if (canReadNaisEnvironment) {
-            ENVIRONMENT_FOR_APPLICATION[applicationName] = EnvironmentFile(envFile)
+            val environmentFile = EnvironmentFile(applicationName, envFile)
+            ENVIRONMENT_FOR_APPLICATION[applicationName] = environmentFile
+            Sikkerhet.settOpp(environmentFile)
         }
     }
 
@@ -131,9 +134,13 @@ internal object NaisConfiguration {
         throw IllegalStateException(message)
     }
 
-    private data class EnvironmentFile(
+    internal data class EnvironmentFile(
+        val applicationName: String,
         val naisEnvironmentFile: File
     ) {
+        val parentFile: File
+            get() = naisEnvironmentFile.parentFile
+
         fun endsWith(suffix: String): Boolean {
             return naisEnvironmentFile.absolutePath.endsWith(suffix)
         }
