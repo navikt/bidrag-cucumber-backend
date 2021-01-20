@@ -102,20 +102,19 @@ internal object NaisConfiguration {
     }
 
     private fun fetchIngress(ingresses: List<String?>): String {
+        return fetchIngress(ingresses, "dev.adeo")
+            ?: fetchIngress(ingresses, "preprod.local")
+            ?: throw IllegalStateException("Kunne ikke fastslå ingress til tjeneste!")
+    }
 
+    private fun fetchIngress(ingresses: List<String?>, hostName: String): String? {
         for (ingress in ingresses) {
-            if (ingress?.contains(Regex("dev.adeo"))!!) {
+            if (ingress?.contains(Regex(hostName))!!) {
                 return ingress
             }
         }
 
-        for (ingress in ingresses) {
-            if (ingress?.contains(Regex("preprod.local"))!!) {
-                return ingress
-            }
-        }
-
-        throw IllegalStateException("Kunne ikke fastslå ingress til tjeneste!")
+        return null
     }
 
     private fun determineAppklicationName(applicationNameOrAlias: String): String {
