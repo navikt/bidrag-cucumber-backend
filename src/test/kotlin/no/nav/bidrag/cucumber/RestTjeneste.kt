@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
-
-private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
+import org.springframework.web.util.UriTemplateHandler
+import java.net.URI
 
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
@@ -30,6 +30,20 @@ open class RestTjeneste(
         applicationOrAlias,
         CacheRestTemplateMedBaseUrl.hentEllerKonfigurer(applicationOrAlias, applicationContext)
     )
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(RestTjeneste::class.java)
+
+        internal fun initRestTemplate(url: String): RestTemplate {
+            return setBaseUrlPa(RestTemplate(), url)
+        }
+
+        internal fun <T : RestTemplate> setBaseUrlPa(restTemplate: T, url: String): T {
+            restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(url)
+
+            return restTemplate
+        }
+    }
 
     fun hentEndpointUrl() = debugFullUrl
     fun hentHttpHeaders(): HttpHeaders = responseEntity.headers
@@ -168,6 +182,36 @@ open class RestTjeneste(
         properties.forEach { if (!objects.containsKey(it)) manglendeProps.add(it) }
 
         return manglendeProps
+    }
+
+    private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
+        override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
+            if (uriVariables.isNotEmpty()) {
+                val queryString = StringBuilder()
+                uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
+
+                return URI.create(baseUrl + uriTemplate + queryString)
+            }
+
+            return URI.create(baseUrl + uriTemplate)
+        }
+
+        override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
+            if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
+                val queryString = StringBuilder("&")
+                uriVariables.forEach {
+                    if (it != null && queryString.length == 1) {
+                        queryString.append("$it")
+                    } else if (it != null) {
+                        queryString.append("?$it")
+                    }
+                }
+
+                return URI.create(baseUrl + uriTemplate + queryString)
+            }
+
+            return URI.create(baseUrl + uriTemplate)
+        }
     }
 
     class RestTemplateMedBaseUrl(val template: RestTemplate, val baseUrl: String)
