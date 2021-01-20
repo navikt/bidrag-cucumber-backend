@@ -3,37 +3,34 @@ package no.nav.bidrag.cucumber
 import com.google.gson.Gson
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileReader
-
-private val LOGGER = LoggerFactory.getLogger(NaisConfiguration::class.java)
-private val ALIAS_TO_NAIS_APPLICATION: Map<String, String> = mapOf(
-    Pair("bidragDokument", "bidrag-dokument"),
-    Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
-    Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
-    Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
-    Pair("bidragOrganisasjon", "bidrag-organisasjon"),
-    Pair("bidragPerson", "bidrag-person"),
-    Pair("bidragSak", "bidrag-sak"),
-    Pair("bidragSjablon", "bidrag-sjablon")
-)
 
 internal object NaisConfiguration {
 
-    private val envFilePathPerAppName: MutableMap<String, String> = HashMap()
+    private val LOGGER = LoggerFactory.getLogger(NaisConfiguration::class.java)
+    private val ENVIRONMENT_FOR_APPLICATION: MutableMap<String, EnvironmentFile> = HashMap()
+    private val ALIAS_TO_NAIS_APPLICATION: Map<String, String> = mapOf(
+        Pair("bidragDokument", "bidrag-dokument"),
+        Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
+        Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
+        Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
+        Pair("bidragOrganisasjon", "bidrag-organisasjon"),
+        Pair("bidragPerson", "bidrag-person"),
+        Pair("bidragSak", "bidrag-sak"),
+        Pair("bidragSjablon", "bidrag-sjablon")
+    )
 
     fun readNaisConfiguration(applicationOrAlias: String): String {
         val applicationName = determineAppklicationName(applicationOrAlias)
 
-        if (!envFilePathPerAppName.containsKey(applicationName)) {
-            fetchNaisConfiguration(applicationName)
+        if (!ENVIRONMENT_FOR_APPLICATION.containsKey(applicationName)) {
+            readConfiguration(applicationName)
         }
 
         return applicationName
     }
 
-    private fun fetchNaisConfiguration(applicationName: String) {
+    private fun readConfiguration(applicationName: String) {
         val integrationInput = Environment.fetchIntegrationInput()
         val applfolder = File("${integrationInput.naisProjectFolder}/$applicationName")
         val naisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
@@ -46,7 +43,7 @@ internal object NaisConfiguration {
         val canReadNaisEnvironment = applfolder.exists() && naisFolder.exists() && envFile.exists()
 
         if (canReadNaisEnvironment) {
-            envFilePathPerAppName[applicationName] = envFile.absolutePath
+            ENVIRONMENT_FOR_APPLICATION[applicationName] = EnvironmentFile(envFile)
         }
     }
 
@@ -63,33 +60,39 @@ internal object NaisConfiguration {
             return miljoYaml
         }
 
-        throw IllegalStateException(" Unable to find ${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.? (json or yaml)")
+        throw IllegalStateException("Unable to find ${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.? (json or yaml)")
     }
 
     internal fun hentApplicationHostUrl(applicationNameOrAlias: String): String {
 
         val applicationName = determineAppklicationName(applicationNameOrAlias)
-        val nameSpaceEnvPath = envFilePathPerAppName[applicationName]
-            ?: throw IllegalStateException("no path for $applicationName in $envFilePathPerAppName")
+        val environmentFile = ENVIRONMENT_FOR_APPLICATION[applicationName]
+            ?: throw IllegalStateException("no path for $applicationName in $ENVIRONMENT_FOR_APPLICATION")
 
-        val ingresses = if (nameSpaceEnvPath.endsWith(".yaml")) {
-            fetchIngressesFromYaml(nameSpaceEnvPath)
+        val ingresses = if (environmentFile.endsWith(".yaml")) {
+            fetchIngressesFromYaml(environmentFile)
         } else {
-            fetchIngressesFromJson(nameSpaceEnvPath)
+            fetchIngressesFromJson(environmentFile)
         }
 
-        return fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+        var ingress = fetchIngress(ingresses).replace("//", "/").replace("https:/", "https://")
+
+        if (ingress.endsWith("/")) {
+            ingress = ingress.removeSuffix("/")
+        }
+
+        return ingress
     }
 
-    private fun fetchIngressesFromYaml(nameSpaceEnvPath: String): List<String> {
-        val yamlReader = File(nameSpaceEnvPath).bufferedReader()
+    private fun fetchIngressesFromYaml(environmentFile: EnvironmentFile): List<String> {
+        val yamlReader = environmentFile.bufferedReader()
         val yamlMap = Yaml().load<Map<String, List<String>>>(yamlReader)
 
         return yamlMap.getValue("ingresses")
     }
 
-    private fun fetchIngressesFromJson(nameSpaceEnvPath: String): List<String> {
-        val jsonFileAsMap = readWithGson(nameSpaceEnvPath)
+    private fun fetchIngressesFromJson(environmentFile: EnvironmentFile): List<String> {
+        val jsonFileAsMap = environmentFile.readWithGson()
 
         for (json in jsonFileAsMap) {
             println(json)
@@ -115,14 +118,6 @@ internal object NaisConfiguration {
         throw IllegalStateException("Kunne ikke fastslå ingress til tjeneste!")
     }
 
-    private fun readWithGson(jsonPath: String): Map<String, Any> {
-        val bufferedReader = BufferedReader(FileReader(jsonPath))
-        val gson = Gson()
-
-        @Suppress("UNCHECKED_CAST")
-        return gson.fromJson(bufferedReader, Map::class.java) as Map<String, Any>
-    }
-
     private fun determineAppklicationName(applicationNameOrAlias: String): String {
         if (ALIAS_TO_NAIS_APPLICATION.containsKey(applicationNameOrAlias)) {
             return ALIAS_TO_NAIS_APPLICATION.getValue(applicationNameOrAlias)
@@ -135,5 +130,22 @@ internal object NaisConfiguration {
         val message = "Unable to determine application name for '$applicationNameOrAlias'"
         LOGGER.error(message)
         throw IllegalStateException(message)
+    }
+
+    private data class EnvironmentFile(
+        val naisEnvironmentFile: File
+    ) {
+        fun endsWith(suffix: String): Boolean {
+            return naisEnvironmentFile.absolutePath.endsWith(suffix)
+        }
+
+        fun bufferedReader() = naisEnvironmentFile.bufferedReader(Charsets.UTF_8)
+        fun readWithGson(): Map<String, Any> {
+            val bufferedReader = bufferedReader()
+            val gson = Gson()
+
+            @Suppress("UNCHECKED_CAST")
+            return gson.fromJson(bufferedReader, Map::class.java) as Map<String, Any>
+        }
     }
 }
