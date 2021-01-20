@@ -18,6 +18,6 @@ class SikkerhetEgenskap {
 
     @Så("kan vi hente id token")
     fun `sa kan vi hente id token`() {
-        assertThat(Sikkerhet().fetchOnlineIdToken(namespace)).isNotEmpty()
+        assertThat(Sikkerhet.fetchOnlineIdToken(namespace)).isNotEmpty
     }
 }

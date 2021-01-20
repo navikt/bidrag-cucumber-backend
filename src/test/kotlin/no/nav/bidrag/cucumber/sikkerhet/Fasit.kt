@@ -6,32 +6,30 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
-class Fasit {
+object Fasit {
 
-    companion object {
-        private var fasitTemplate = RestTemplate()
+    private var fasitTemplate = RestTemplate()
 
-        internal fun buildUriString(url: String, vararg queries: String): String {
-            val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
-            queries.forEach { resourceUrl.query(it) }
+    internal fun buildUriString(url: String, vararg queries: String): String {
+        val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
+        queries.forEach { resourceUrl.query(it) }
 
-            return resourceUrl.toUriString()
+        return resourceUrl.toUriString()
+    }
+
+    internal fun hentRessurs(vararg queries: String): FasitRessurs {
+        val resourceUrl = buildUriString(URL_FASIT, *queries)
+        return hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
+    }
+
+    private fun hentFasitRessursSomJson(resourceUrl: String): FasitJson {
+        val fasitJson = try {
+            fasitTemplate.getForObject(resourceUrl, String::class.java)
+        } catch (e: ResourceAccessException) {
+            return FasitJson(offline = true)
         }
 
-        internal fun hentFasitRessursSomJson(resourceUrl: String): FasitJson {
-            val fasitJson = try {
-                fasitTemplate.getForObject(resourceUrl, String::class.java)
-            } catch (e: ResourceAccessException) {
-                return FasitJson(offline = true)
-            }
-
-            return FasitJson(fasitJson, false)
-        }
-
-        internal fun hentFasitRessurs(vararg queries: String): FasitRessurs {
-            val resourceUrl = buildUriString(URL_FASIT, *queries)
-            return Fasit().hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
-        }
+        return FasitJson(fasitJson, false)
     }
 
     internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitRessurs {
@@ -53,13 +51,13 @@ class Fasit {
     }
 
     data class FasitRessurs(
-            internal val alias: String,
-            private val type: String,
-            private val ressurser: MutableMap<String, String?> = HashMap()
+        internal val alias: String,
+        private val type: String,
+        private val ressurser: MutableMap<String, String?> = HashMap()
     ) {
         constructor(jsonMap: Map<String, *>) : this(
-                alias = jsonMap["alias"] as String,
-                type = jsonMap["type"] as String
+            alias = jsonMap["alias"] as String,
+            type = jsonMap["type"] as String
         ) {
             @Suppress("UNCHECKED_CAST") val properties = jsonMap["properties"] as Map<String, String>
             ressurser["url"] = properties["url"]
