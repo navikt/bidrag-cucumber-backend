@@ -8,6 +8,7 @@ internal const val CREDENTIALS_TEST_USER_AUTH = "TEST_AUTH"
 internal const val CREDENTIALS_USERNAME = "USERNAME"
 internal const val CREDENTIALS_USER_AUTH = "USER_AUTH"
 internal const val ENVIRONMENT = "ENVIRONMENT"
+internal const val INTEGRATION_INPUT: String = "INTEGRATION_INPUT"
 internal const val PROJECT_NAIS_FOLDER = "PROJECT_NAIS_FOLDER"
 
 // constants for code

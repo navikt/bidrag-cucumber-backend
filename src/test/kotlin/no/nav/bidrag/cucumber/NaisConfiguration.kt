@@ -34,9 +34,10 @@ internal object NaisConfiguration {
     }
 
     private fun fetchNaisConfiguration(applicationName: String) {
-        val applfolder = File("${Environment.naisProjectFolder}/$applicationName")
-        val naisFolder = File("${Environment.naisProjectFolder}/$applicationName/nais")
-        val envFile = fetchEnvFileByEnvironment(applicationName)
+        val integrationInput = Environment.fetchIntegrationInput()
+        val applfolder = File("${integrationInput.naisProjectFolder}/$applicationName")
+        val naisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
+        val envFile = fetchEnvFileByEnvironment(applicationName, integrationInput)
 
         LOGGER.info("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
         LOGGER.info("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
@@ -49,20 +50,20 @@ internal object NaisConfiguration {
         }
     }
 
-    private fun fetchEnvFileByEnvironment(applicationName: String): File {
-        val miljoJson = File("${Environment.naisProjectFolder}/$applicationName/nais/${Environment.miljo}.json")
+    private fun fetchEnvFileByEnvironment(applicationName: String, integrationInput: IntegrationInput): File {
+        val miljoJson = File("${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.json")
 
         if (miljoJson.exists()) {
             return miljoJson
         }
 
-        val miljoYaml = File("${Environment.naisProjectFolder}/$applicationName/nais/${Environment.miljo}.yaml")
+        val miljoYaml = File("${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.yaml")
 
         if (miljoYaml.exists()) {
             return miljoYaml
         }
 
-        throw IllegalStateException(" Unable to find ${Environment.naisProjectFolder}/$applicationName/nais/${Environment.namespace}.? (json or yaml)")
+        throw IllegalStateException(" Unable to find ${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.? (json or yaml)")
     }
 
     internal fun hentApplicationHostUrl(applicationNameOrAlias: String): String {

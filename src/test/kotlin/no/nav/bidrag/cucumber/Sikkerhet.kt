@@ -1,7 +1,6 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.security.oidc.test.support.jersey.TestTokenGeneratorResource
 import org.apache.tomcat.util.codec.binary.Base64
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
@@ -26,11 +25,6 @@ class Sikkerhet {
     private val fasit = Fasit()
 
     internal fun fetchIdToken(): String {
-        if (Environment.offline) {
-            val testTokenGeneratorResource = TestTokenGeneratorResource()
-            return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
-        }
-
         try {
             onlineToken = fetchOnlineIdToken()
             return onlineToken
@@ -51,7 +45,7 @@ class Sikkerhet {
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
-        LOGGER.info("Fetched id token for ${Environment.testUser()}")
+        LOGGER.info("Fetched id token for ${Environment.fetchIntegrationInput().userTest}")
 
         return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
@@ -59,7 +53,7 @@ class Sikkerhet {
     private fun hentOpenIdConnectFasitRessurs(namespace: String): Fasit.FasitRessurs {
         val openIdConnect = "OpenIdConnect"
         val fasitRessursUrl = Fasit.buildUriString(
-                URL_FASIT, "type=$openIdConnect", "environment=$namespace", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
+            URL_FASIT, "type=$openIdConnect", "environment=$namespace", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
         val openIdConnectFasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
@@ -70,32 +64,32 @@ class Sikkerhet {
     }
 
     private fun hentOpenAmPwd(openIdConnectFasitRessurs: Fasit.FasitRessurs): String {
-        val user = Environment.user()
+        val user = Environment.fetchIntegrationInput().userNav
         val auth = "$user:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
-                header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
+            header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
 
         LOGGER.info("Finding OpenAM password for $user from ${openIdConnectFasitRessurs.passordUrl()}")
 
-        return Environment.initRestTemplate(openIdConnectFasitRessurs.passordUrl())
-                .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke passord for bruker på open am")
+        return RestTjeneste.initRestTemplate(openIdConnectFasitRessurs.passordUrl())
+            .exchange("/", HttpMethod.GET, httpEntityWithAuthorizationHeader, String::class.java)
+            .body ?: throw IllegalStateException("fant ikke passord for bruker på open am")
     }
 
     private fun hentTokenIdForTestbruker(): String {
-        val testUser = Environment.testUser()
+        val testUser = Environment.fetchIntegrationInput().userTest
         val httpEntityWithHeaders = initHttpEntity(
-                header(HttpHeaders.CACHE_CONTROL, "no-cache"),
-                header(HttpHeaders.CONTENT_TYPE, "application/json"),
-                header(X_OPENAM_USER_HEADER, testUser),
-                header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
+            header(HttpHeaders.CACHE_CONTROL, "no-cache"),
+            header(HttpHeaders.CONTENT_TYPE, "application/json"),
+            header(X_OPENAM_USER_HEADER, testUser),
+            header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
         )
 
         LOGGER.info("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")
 
         val authJson = RestTemplate().exchange(URL_ISSO, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.namespace}")
+            .body ?: throw IllegalStateException("fant ikke json for $testUser in ${Environment.namespace}")
 
         val authMap = ObjectMapper().readValue(authJson, Map::class.java)
 
@@ -106,10 +100,10 @@ class Sikkerhet {
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
         val httpEntityWithHeaders = initHttpEntity(
-                "client_id=bidrag-ui-${Environment.namespace}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
-                header(HttpHeaders.CACHE_CONTROL, "no-cache"),
-                header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded"),
-                header(HttpHeaders.COOKIE, "nav-isso=$tokenIdForAuthenticatedTestUser")
+            "client_id=bidrag-ui-${Environment.namespace}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
+            header(HttpHeaders.CACHE_CONTROL, "no-cache"),
+            header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded"),
+            header(HttpHeaders.COOKIE, "nav-isso=$tokenIdForAuthenticatedTestUser")
         )
 
         val uri = RestTemplate().postForLocation(URL_ISSO_AUTHORIZE, httpEntityWithHeaders) ?: throw IllegalStateException("fant ikke location uri")
@@ -124,14 +118,14 @@ class Sikkerhet {
     private fun hentIdToken(codeFraLocationHeader: String, passordOpenAm: String): String {
         val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.namespace}:$passordOpenAm"
         val httpEntityWithHeaders = initHttpEntity(
-                "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=$URL_ISSO_REDIRECT",
-                header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(openApAuth.toByteArray(Charsets.UTF_8)))),
-                header(HttpHeaders.CACHE_CONTROL, "no-cache"),
-                header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+            "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=$URL_ISSO_REDIRECT",
+            header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(openApAuth.toByteArray(Charsets.UTF_8)))),
+            header(HttpHeaders.CACHE_CONTROL, "no-cache"),
+            header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
         )
 
         val accessTokenJson = RestTemplate().exchange(URL_ISSO_ACCESS_TOKEN, HttpMethod.POST, httpEntityWithHeaders, String::class.java)
-                .body ?: throw IllegalStateException("fant ikke json med id token")
+            .body ?: throw IllegalStateException("fant ikke json med id token")
 
         val accessTokenMap = ObjectMapper().readValue(accessTokenJson, Map::class.java)
 

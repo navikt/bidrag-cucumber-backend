@@ -9,10 +9,10 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import java.security.cert.X509Certificate
 
-private val LOGGER = LoggerFactory.getLogger(CacheRestTemplateMedBaseUrl::class.java)
-private val REST_TJENESTE_TIL_APPLIKASJON: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
-
 internal object CacheRestTemplateMedBaseUrl {
+
+    private val LOGGER = LoggerFactory.getLogger(CacheRestTemplateMedBaseUrl::class.java)
+    private val REST_TJENESTE_TIL_APPLIKASJON: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
 
     fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
         val applicationName = NaisConfiguration.readNaisConfiguration(applicationOrAlias)
@@ -67,7 +67,7 @@ internal object CacheRestTemplateMedBaseUrl {
     private fun hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
 
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
-        val httpHeaderRestTemplate = Environment.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
+        val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
         httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
 
