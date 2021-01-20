@@ -5,6 +5,7 @@ import no.nav.bidrag.cucumber.ALIAS_BIDRAG_UI
 import no.nav.bidrag.cucumber.ALIAS_OIDC
 import no.nav.bidrag.cucumber.Environment
 import no.nav.bidrag.cucumber.FASIT_ZONE
+import no.nav.bidrag.cucumber.NaisConfiguration
 import no.nav.bidrag.cucumber.RestTjeneste
 import no.nav.bidrag.cucumber.URL_FASIT
 import no.nav.bidrag.cucumber.URL_ISSO
@@ -20,6 +21,8 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
+import org.yaml.snakeyaml.Yaml
+import java.io.File
 import java.nio.charset.StandardCharsets
 
 object Sikkerhet {
@@ -29,6 +32,7 @@ object Sikkerhet {
     private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
     private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
     private val SECURED_CACHE: MutableMap<String, Any> = HashMap()
+    private val SECURITY_FOR_APPLICATION: MutableMap<String, Security> = HashMap()
 
     internal fun fetchIdToken(): String {
         try {
@@ -155,5 +159,48 @@ object Sikkerhet {
         val encodedCredentials: ByteArray = java.util.Base64.getEncoder().encode(credentials.toByteArray())
 
         return String(encodedCredentials, StandardCharsets.UTF_8)
+    }
+
+    internal fun settOpp(environmentFile: NaisConfiguration.EnvironmentFile) {
+        var security = if (harAzureSomSikkerhet(environmentFile.parentFile)) Security.AZURE else Security.ISSO
+
+        if (skalEndreTilIsso(environmentFile.applicationName)) {
+            security = Security.ISSO
+        }
+
+        SECURITY_FOR_APPLICATION[environmentFile.applicationName] = security
+    }
+
+    private fun harAzureSomSikkerhet(naisFolder: File): Boolean {
+        val lines = File(naisFolder, "nais.yaml").readLines(Charsets.UTF_8)
+        val pureYaml = mutableListOf<String>()
+        lines.forEach { if (!it.contains("{{")) pureYaml.add(it) }
+        val yamlMap = Yaml().load<Map<String, Any>>(pureYaml.joinToString("\n"))
+
+        return isEnabled(yamlMap, mutableListOf("spec", "azure", "application", "enabled"))
+    }
+
+    private fun isEnabled(map: Map<String, Any>, keys: MutableList<String>): Boolean {
+        LOGGER.info("> key=value  to use: ${keys[0]}=${map[keys[0]]}")
+
+        if (map.containsKey(keys[0])) {
+            return if (keys.size == 1) {
+                map.getValue(keys[0]) as Boolean
+            } else {
+                @Suppress("UNCHECKED_CAST")
+                val childMap = map[keys[0]] as Map<String, Any>
+                keys.removeAt(0)
+                isEnabled(childMap, keys)
+            }
+        }
+
+        return false
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun skalEndreTilIsso(applicationName: String) = true // foreløpig ikke noe gyldig azure token
+
+    private enum class Security {
+        AZURE, ISSO
     }
 }
