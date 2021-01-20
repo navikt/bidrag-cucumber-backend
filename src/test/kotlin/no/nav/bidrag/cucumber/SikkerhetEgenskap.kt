@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.assertj.core.api.Assertions.assertThat
 
 class SikkerhetEgenskap {

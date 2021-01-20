@@ -1,6 +1,18 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.sikkerhet
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.cucumber.ALIAS_BIDRAG_UI
+import no.nav.bidrag.cucumber.ALIAS_OIDC
+import no.nav.bidrag.cucumber.Environment
+import no.nav.bidrag.cucumber.FASIT_ZONE
+import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.URL_FASIT
+import no.nav.bidrag.cucumber.URL_ISSO
+import no.nav.bidrag.cucumber.URL_ISSO_ACCESS_TOKEN
+import no.nav.bidrag.cucumber.URL_ISSO_AUTHORIZE
+import no.nav.bidrag.cucumber.URL_ISSO_REDIRECT
+import no.nav.bidrag.cucumber.X_OPENAM_PASSW_HEADER
+import no.nav.bidrag.cucumber.X_OPENAM_USER_HEADER
 import org.apache.tomcat.util.codec.binary.Base64
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity

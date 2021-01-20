@@ -1,6 +1,7 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.sikkerhet
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.cucumber.URL_FASIT
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
