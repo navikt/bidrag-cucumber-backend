@@ -1,9 +1,9 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.backend
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
-import no.nav.bidrag.cucumber.dokument.AvvikDataMottaksregistrertJp
-import no.nav.bidrag.cucumber.dokument.RestTjenesteTestdata
+import no.nav.bidrag.cucumber.backend.dokument.AvvikDataMottaksregistrertJp
+import no.nav.bidrag.cucumber.backend.dokument.RestTjenesteTestdata
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 

@@ -1,8 +1,8 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper.Companion.restTjeneste
 import org.assertj.core.api.SoftAssertions
 
 class SakEgenskaper {

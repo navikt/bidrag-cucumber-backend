@@ -1,4 +1,4 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.backend
 
 import io.cucumber.java.Before
 import io.cucumber.java.Scenario
@@ -6,6 +6,8 @@ import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.ScenarioManager
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.springframework.http.HttpStatus

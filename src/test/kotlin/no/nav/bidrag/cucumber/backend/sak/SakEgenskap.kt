@@ -1,10 +1,10 @@
-package no.nav.bidrag.cucumber.sak
+package no.nav.bidrag.cucumber.backend.sak
 
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import no.nav.bidrag.cucumber.CREDENTIALS_PIP_AUTH
 import no.nav.bidrag.cucumber.CREDENTIALS_PIP_USER
-import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper
 
 class SakEgenskap {
 

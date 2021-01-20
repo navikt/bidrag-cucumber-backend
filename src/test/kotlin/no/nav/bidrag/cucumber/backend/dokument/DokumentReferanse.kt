@@ -1,4 +1,4 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
 data class DokumentReferanse ( var dokumentReferanse: String ) {
     fun hentMedErstattetSpesialtegn() = dokumentReferanse

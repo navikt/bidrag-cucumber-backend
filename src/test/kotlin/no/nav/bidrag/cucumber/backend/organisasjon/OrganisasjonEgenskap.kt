@@ -1,8 +1,8 @@
-package no.nav.bidrag.cucumber.organisasjon
+package no.nav.bidrag.cucumber.backend.organisasjon
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
-import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper.Companion.restTjeneste
 import no.nav.bidrag.cucumber.RestTjeneste
 
 class OrganisasjonEgenskap {

@@ -1,9 +1,9 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
-import no.nav.bidrag.cucumber.FellesEgenskaper
-import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesTestdataEgenskaper
 
 class JournalpostEgenskaperPathUtenSak {
     @Gitt("at jeg henter journalpost med path {string}")

@@ -1,7 +1,7 @@
-package no.nav.bidrag.cucumber.person
+package no.nav.bidrag.cucumber.backend.person
 
 import io.cucumber.java.no.Når
-import no.nav.bidrag.cucumber.FellesEgenskaper.Companion.restTjeneste
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper.Companion.restTjeneste
 
 class PersonEgenskap {
 

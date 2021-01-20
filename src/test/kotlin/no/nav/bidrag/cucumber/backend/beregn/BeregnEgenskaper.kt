@@ -1,9 +1,9 @@
-package no.nav.bidrag.cucumber.beregn
+package no.nav.bidrag.cucumber.backend.beregn
 
 import com.jayway.jsonpath.JsonPath
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
-import no.nav.bidrag.cucumber.FellesEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import java.io.File
 

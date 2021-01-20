@@ -1,4 +1,4 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
 import no.nav.bidrag.cucumber.RestTjeneste
 import no.nav.bidrag.cucumber.ScenarioManager
