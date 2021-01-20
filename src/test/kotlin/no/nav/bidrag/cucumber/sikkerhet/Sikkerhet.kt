@@ -1,6 +1,18 @@
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.sikkerhet
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.cucumber.ALIAS_BIDRAG_UI
+import no.nav.bidrag.cucumber.ALIAS_OIDC
+import no.nav.bidrag.cucumber.Environment
+import no.nav.bidrag.cucumber.FASIT_ZONE
+import no.nav.bidrag.cucumber.RestTjeneste
+import no.nav.bidrag.cucumber.URL_FASIT
+import no.nav.bidrag.cucumber.URL_ISSO
+import no.nav.bidrag.cucumber.URL_ISSO_ACCESS_TOKEN
+import no.nav.bidrag.cucumber.URL_ISSO_AUTHORIZE
+import no.nav.bidrag.cucumber.URL_ISSO_REDIRECT
+import no.nav.bidrag.cucumber.X_OPENAM_PASSW_HEADER
+import no.nav.bidrag.cucumber.X_OPENAM_USER_HEADER
 import org.apache.tomcat.util.codec.binary.Base64
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
@@ -10,24 +22,17 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import java.nio.charset.StandardCharsets
 
-class Sikkerhet {
+object Sikkerhet {
 
-    companion object {
-        private const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
-        private const val OPEN_ID_FASIT = "OPEN ID FASIT"
-        private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
-        private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
-
-        private lateinit var onlineToken: String
-        private val finalValueCache: MutableMap<String, Any> = HashMap()
-    }
-
-    private val fasit = Fasit()
+    private const val OPEN_AM_PASSWORD = "OPEN AM PASSWORD"
+    private const val OPEN_ID_FASIT = "OPEN ID FASIT"
+    private const val TEST_USER_AUTH_TOKEN = "TEST TOKEN AUTH TOKEN"
+    private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
+    private val SECURED_CACHE: MutableMap<String, Any> = HashMap()
 
     internal fun fetchIdToken(): String {
         try {
-            onlineToken = fetchOnlineIdToken()
-            return onlineToken
+            return fetchOnlineIdToken(Environment.namespace)
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.first { it.fileName != null && it.fileName!!.endsWith("kt") }}"
             LOGGER.error("Feil ved henting av online id token, $exception")
@@ -35,19 +40,15 @@ class Sikkerhet {
         }
     }
 
-    private fun fetchOnlineIdToken(): String {
-        return fetchOnlineIdToken(Environment.namespace)
-    }
-
-    fun fetchOnlineIdToken(namespace: String): String {
-        finalValueCache[OPEN_ID_FASIT] = finalValueCache[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(namespace)
-        finalValueCache[OPEN_AM_PASSWORD] = finalValueCache[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(finalValueCache[OPEN_ID_FASIT] as Fasit.FasitRessurs)
-        finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
-        val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
+    internal fun fetchOnlineIdToken(namespace: String): String {
+        SECURED_CACHE[OPEN_ID_FASIT] = SECURED_CACHE[OPEN_ID_FASIT] ?: hentOpenIdConnectFasitRessurs(namespace)
+        SECURED_CACHE[OPEN_AM_PASSWORD] = SECURED_CACHE[OPEN_AM_PASSWORD] ?: hentOpenAmPwd(SECURED_CACHE[OPEN_ID_FASIT] as Fasit.FasitRessurs)
+        SECURED_CACHE[TEST_USER_AUTH_TOKEN] = SECURED_CACHE[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
+        val codeFraLocationHeader = hentCodeFraLocationHeader(SECURED_CACHE[TEST_USER_AUTH_TOKEN] as String)
 
         LOGGER.info("Fetched id token for ${Environment.fetchIntegrationInput().userTest}")
 
-        return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
+        return "Bearer " + hentIdToken(codeFraLocationHeader, SECURED_CACHE[OPEN_AM_PASSWORD] as String)
     }
 
     private fun hentOpenIdConnectFasitRessurs(namespace: String): Fasit.FasitRessurs {
@@ -56,7 +57,7 @@ class Sikkerhet {
             URL_FASIT, "type=$openIdConnect", "environment=$namespace", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        val openIdConnectFasitRessurs = fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+        val openIdConnectFasitRessurs = Fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
 
         LOGGER.info("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
 

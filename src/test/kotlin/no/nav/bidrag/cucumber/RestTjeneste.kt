@@ -2,6 +2,8 @@ package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.CorrelationId
+import no.nav.bidrag.cucumber.sikkerhet.Fasit
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -18,8 +20,7 @@ import java.net.URI
 @Suppress("UNCHECKED_CAST")
 open class RestTjeneste(
     private val alias: String,
-    private val rest: RestTemplateMedBaseUrl,
-    private val sikkerhet: Sikkerhet = Sikkerhet()
+    private val rest: RestTemplateMedBaseUrl
 ) {
     private lateinit var debugFullUrl: String
     protected lateinit var responseEntity: ResponseEntity<String>
@@ -62,7 +63,7 @@ open class RestTjeneste(
         val header = initHttpHeadersWithCorrelationIdAndEnhet()
 
         if (username != null) {
-            header.add(HttpHeaders.AUTHORIZATION, "Basic " + sikkerhet.base64EncodeCredentials(username, password))
+            header.add(HttpHeaders.AUTHORIZATION, "Basic " + Sikkerhet.base64EncodeCredentials(username, password))
         }
 
         ScenarioManager.log("GET ${this.debugFullUrl}")

@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Så
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.assertj.core.api.Assertions.assertThat
 
 class SikkerhetEgenskap {
@@ -17,6 +18,6 @@ class SikkerhetEgenskap {
 
     @Så("kan vi hente id token")
     fun `sa kan vi hente id token`() {
-        assertThat(Sikkerhet().fetchOnlineIdToken(namespace)).isNotEmpty()
+        assertThat(Sikkerhet.fetchOnlineIdToken(namespace)).isNotEmpty
     }
 }
