@@ -1,7 +1,6 @@
 package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.security.oidc.test.support.jersey.TestTokenGeneratorResource
 import org.apache.tomcat.util.codec.binary.Base64
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
@@ -26,11 +25,6 @@ class Sikkerhet {
     private val fasit = Fasit()
 
     internal fun fetchIdToken(): String {
-        if (Environment.offline) {
-            val testTokenGeneratorResource = TestTokenGeneratorResource()
-            return "Bearer " + testTokenGeneratorResource.issueToken("localhost-idtoken")
-        }
-
         try {
             onlineToken = fetchOnlineIdToken()
             return onlineToken
@@ -51,7 +45,7 @@ class Sikkerhet {
         finalValueCache[TEST_USER_AUTH_TOKEN] = finalValueCache[TEST_USER_AUTH_TOKEN] ?: hentTokenIdForTestbruker()
         val codeFraLocationHeader = hentCodeFraLocationHeader(finalValueCache[TEST_USER_AUTH_TOKEN] as String)
 
-        LOGGER.info("Fetched id token for ${Environment.testUser()}")
+        LOGGER.info("Fetched id token for ${Environment.fetchIntegrationInput().userTest}")
 
         return "Bearer " + hentIdToken(codeFraLocationHeader, finalValueCache[OPEN_AM_PASSWORD] as String)
     }
@@ -70,7 +64,7 @@ class Sikkerhet {
     }
 
     private fun hentOpenAmPwd(openIdConnectFasitRessurs: Fasit.FasitRessurs): String {
-        val user = Environment.user()
+        val user = Environment.fetchIntegrationInput().userNav
         val auth = "$user:${Environment.userAuthentication()}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
             header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
@@ -84,7 +78,7 @@ class Sikkerhet {
     }
 
     private fun hentTokenIdForTestbruker(): String {
-        val testUser = Environment.testUser()
+        val testUser = Environment.fetchIntegrationInput().userTest
         val httpEntityWithHeaders = initHttpEntity(
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/json"),
