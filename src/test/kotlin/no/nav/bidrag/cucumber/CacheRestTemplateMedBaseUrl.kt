@@ -1,6 +1,8 @@
 package no.nav.bidrag.cucumber
 
 import no.nav.bidrag.commons.web.HttpHeaderRestTemplate
+import no.nav.bidrag.cucumber.sikkerhet.Fasit
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
@@ -69,7 +71,7 @@ internal object CacheRestTemplateMedBaseUrl {
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchIdToken() }
 
         REST_TJENESTE_TIL_APPLIKASJON[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 
