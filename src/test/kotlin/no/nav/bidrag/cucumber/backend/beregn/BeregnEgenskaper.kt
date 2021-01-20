@@ -9,9 +9,15 @@ import java.io.File
 
 class BeregnEgenskaper {
 
+  companion object {
+    private const val BEREGN_PATH = "src/test/resources/no/nav/bidrag/cucumber/backend/beregn"
+
+    fun projectPath(relativePath: String) = "$BEREGN_PATH/$relativePath"
+  }
+
   @Når("jeg bruker endpoint {string} med json fra {string}")
   fun `nar jeg bruker endpoint med json fra fil`(endpoint: String, jsonFilePath: String) {
-    val json = File(jsonFilePath).readText(Charsets.UTF_8)
+    val json = File(projectPath(jsonFilePath)).readText(Charsets.UTF_8)
     FellesEgenskaper.restTjeneste.exchangePost(endpoint, json)
   }
 

@@ -16,7 +16,7 @@ Egenskap: bidrag-beregn-barnebidrag-rest
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario:
-    Når jeg bruker endpoint '/beregn/barnebidrag' med json fra 'src/test/resources/no/nav/bidrag/cucumber/beregn/barnebidrag/barnebidrag_eksempel1.json'
+    Når jeg bruker endpoint '/beregn/barnebidrag' med json fra 'barnebidrag/barnebidrag_eksempel1.json'
     Så skal http status være '200'
     Og responsen skal inneholde beløpet '3490' under stien '$.beregnBarnebidragResultat.resultatPeriodeListe[0].resultatBeregningListe[0].resultatBelop'
     Og responsen skal inneholde resultatkoden 'KOSTNADSBEREGNET_BIDRAG' under stien '$.beregnBarnebidragResultat.resultatPeriodeListe[0].resultatBeregningListe[0].resultatKode'
