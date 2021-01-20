@@ -17,7 +17,7 @@ internal object CacheRestTemplateMedBaseUrl {
     private val REST_TJENESTE_TIL_APPLIKASJON: MutableMap<String, RestTjeneste.RestTemplateMedBaseUrl> = HashMap()
 
     fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
-        val applicationName = NaisConfiguration.readNaisConfiguration(applicationOrAlias)
+        val applicationName = NaisConfiguration.read(applicationOrAlias)
 
         if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
             return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
@@ -30,7 +30,7 @@ internal object CacheRestTemplateMedBaseUrl {
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
-        val applicationName = NaisConfiguration.readNaisConfiguration(applicationOrAlias)
+        val applicationName = NaisConfiguration.read(applicationOrAlias)
 
         if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
             return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
