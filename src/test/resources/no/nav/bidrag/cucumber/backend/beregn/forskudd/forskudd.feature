@@ -16,7 +16,7 @@ Egenskap: bidrag-beregn-forskudd-rest
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario:
-    Når jeg bruker endpoint '/beregn/forskudd' med json fra 'src/test/resources/no/nav/bidrag/cucumber/beregn/forskudd/forskudd_eksempel1.json'
+    Når jeg bruker endpoint '/beregn/forskudd' med json fra 'forskudd/forskudd_eksempel1.json'
     Så skal http status være '200'
     Og responsen skal inneholde beløpet '1530' under stien '$.resultatPeriodeListe[0].resultatBeregning.resultatBelop'
     Og responsen skal inneholde resultatkoden 'FORHOYET_FORSKUDD_100_PROSENT' under stien '$.resultatPeriodeListe[0].resultatBeregning.resultatKode'

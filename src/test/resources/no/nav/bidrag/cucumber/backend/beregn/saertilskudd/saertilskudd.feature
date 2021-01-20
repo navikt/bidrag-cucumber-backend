@@ -16,7 +16,7 @@ Egenskap: bidrag-beregn-saertilskudd-rest
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario:
-    Når jeg bruker endpoint '/beregn/saertilskudd' med json fra 'src/test/resources/no/nav/bidrag/cucumber/beregn/saertilskudd/saertilskudd_eksempel1.json'
+    Når jeg bruker endpoint '/beregn/saertilskudd' med json fra 'saertilskudd/saertilskudd_eksempel1.json'
     Så skal http status være '200'
     Og responsen skal inneholde beløpet '4242' under stien '$.beregnSaertilskuddResultat.resultatPeriodeListe[0].resultatBeregning.resultatBelop'
     Og responsen skal inneholde resultatkoden 'SAERTILSKUDD_INNVILGET' under stien '$.beregnSaertilskuddResultat.resultatPeriodeListe[0].resultatBeregning.resultatKode'
