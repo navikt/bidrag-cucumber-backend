@@ -1,10 +1,7 @@
 package no.nav.bidrag.cucumber
 
 import org.slf4j.LoggerFactory
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.util.UriTemplateHandler
 import java.io.File
-import java.net.URI
 
 internal object Environment {
 
@@ -80,44 +77,4 @@ internal object Environment {
 
     fun user() = System.getProperty(CREDENTIALS_USERNAME) ?: throw IllegalStateException("Fant ikke nav-bruker (ala [x]123456)")
     fun userAuthentication() = System.getProperty(CREDENTIALS_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til ${user()}")
-
-    internal fun initRestTemplate(url: String): RestTemplate {
-        return setBaseUrlPa(RestTemplate(), url)
-    }
-
-    internal fun <T : RestTemplate> setBaseUrlPa(restTemplate: T, url: String): T {
-        restTemplate.uriTemplateHandler = BaseUrlTemplateHandler(url)
-
-        return restTemplate
-    }
-}
-
-private class BaseUrlTemplateHandler(val baseUrl: String) : UriTemplateHandler {
-    override fun expand(uriTemplate: String, uriVariables: MutableMap<String, *>): URI {
-        if (uriVariables.isNotEmpty()) {
-            val queryString = StringBuilder()
-            uriVariables.forEach { if (queryString.length == 1) queryString.append("$it") else queryString.append("?$it") }
-
-            return URI.create(baseUrl + uriTemplate + queryString)
-        }
-
-        return URI.create(baseUrl + uriTemplate)
-    }
-
-    override fun expand(uriTemplate: String, vararg uriVariables: Any?): URI {
-        if (uriVariables.isNotEmpty() && (uriVariables.size != 1 && uriVariables.first() != null)) {
-            val queryString = StringBuilder("&")
-            uriVariables.forEach {
-                if (it != null && queryString.length == 1) {
-                    queryString.append("$it")
-                } else if (it != null) {
-                    queryString.append("?$it")
-                }
-            }
-
-            return URI.create(baseUrl + uriTemplate + queryString)
-        }
-
-        return URI.create(baseUrl + uriTemplate)
-    }
 }
