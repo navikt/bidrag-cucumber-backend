@@ -2,6 +2,8 @@ package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.CorrelationId
+import no.nav.bidrag.cucumber.sikkerhet.Fasit
+import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
