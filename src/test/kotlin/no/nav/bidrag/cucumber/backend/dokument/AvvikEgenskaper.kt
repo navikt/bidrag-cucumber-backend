@@ -1,11 +1,11 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Når
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.FellesEgenskaper
-import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesTestdataEgenskaper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 

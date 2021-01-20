@@ -1,11 +1,10 @@
-package no.nav.bidrag.cucumber.dokument.journalpost
+package no.nav.bidrag.cucumber.backend.dokument.journalpost
 
 import io.cucumber.java.no.Gitt
 import io.cucumber.java.no.Og
 import io.cucumber.java.no.Så
-import no.nav.bidrag.cucumber.dokument.AvvikDataMottaksregistrertJp
-import no.nav.bidrag.cucumber.dokument.AvvikEgenskaper
-import no.nav.bidrag.cucumber.dokument.AvvikEgenskaperForMottaksregistrertJp
+import no.nav.bidrag.cucumber.backend.dokument.AvvikEgenskaper
+import no.nav.bidrag.cucumber.backend.dokument.AvvikEgenskaperForMottaksregistrertJp
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 

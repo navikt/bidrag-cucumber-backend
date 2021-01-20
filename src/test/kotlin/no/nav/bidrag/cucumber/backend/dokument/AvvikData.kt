@@ -1,6 +1,6 @@
-package no.nav.bidrag.cucumber.dokument
+package no.nav.bidrag.cucumber.backend.dokument
 
-import no.nav.bidrag.cucumber.FellesTestdataEgenskaper
+import no.nav.bidrag.cucumber.backend.FellesTestdataEgenskaper
 import no.nav.bidrag.cucumber.X_ENHET_HEADER
 import org.springframework.http.HttpHeaders
 import java.util.stream.Collectors
