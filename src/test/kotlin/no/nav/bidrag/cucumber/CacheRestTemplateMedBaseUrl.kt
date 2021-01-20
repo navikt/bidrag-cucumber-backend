@@ -71,7 +71,7 @@ internal object CacheRestTemplateMedBaseUrl {
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet().fetchIdToken() }
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchIdToken() }
 
         REST_TJENESTE_TIL_APPLIKASJON[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 

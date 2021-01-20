@@ -24,7 +24,7 @@ class BindersEgenskaper {
     fun `dokument url skal vaere gyldig`() {
         val response = restTjeneste.hentResponseSomMap()
         val url = response["dokumentUrl"] as String
-        val brevserverResource = Fasit.hentFasitRessurs("alias=brevserverUrl", "type=baseurl", "environment=${Environment.namespace}")
+        val brevserverResource = Fasit.hentRessurs("alias=brevserverUrl", "type=baseurl", "environment=${Environment.namespace}")
 
         assertAll(
                 { assertThat(url).`as`("url proptocol").startsWith("mbdok://BI12@brevklient") },
