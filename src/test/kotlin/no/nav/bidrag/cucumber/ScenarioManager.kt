@@ -14,7 +14,7 @@ open class ScenarioManager {
 
         fun use(scenario: Scenario) {
             this.scenario = scenario
-            correlationIdForScenario = Environment.createCorrelationIdValue()
+            correlationIdForScenario = "cucumber-${java.lang.Long.toHexString(System.currentTimeMillis())}"
         }
 
         fun log(message: String) {

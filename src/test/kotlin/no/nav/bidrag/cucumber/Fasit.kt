@@ -39,7 +39,7 @@ class Fasit {
         val listeOverRessurser: List<FasitRessurs> = listeFraFasit.map { FasitRessurs(it) }
         val fasitRessurs = listeOverRessurser.find { it.alias == alias }
 
-        return fasitRessurs ?: throw IllegalStateException("Unable to find '$alias' from $URL_FASIT (${offlineStatus(type)}))")
+        return fasitRessurs ?: throw IllegalStateException("Unable to find '$alias' from $URL_FASIT")
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -50,8 +50,6 @@ class Fasit {
         else
             ObjectMapper().readValue(fasitJson.json, List::class.java) as List<Map<String, Any>>
     }
-
-    private fun offlineStatus(type: String) = if (Environment.offline) "check fasit.offline.$type.json" else "connected to fasit.adeo.no"
 
     data class FasitRessurs(
             internal val alias: String,
