@@ -66,16 +66,16 @@ internal object CacheRestTemplateMedBaseUrl {
         }
     }
 
-    private fun hentEllerKonfigurerApplikasjonForUrl(applicationOrAlias: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
+    private fun hentEllerKonfigurerApplikasjonForUrl(applicationName: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
 
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchIdToken() }
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
 
-        REST_TJENESTE_TIL_APPLIKASJON[applicationOrAlias] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
+        REST_TJENESTE_TIL_APPLIKASJON[applicationName] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
 
-        return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationOrAlias)
+        return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
     }
 
     private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
