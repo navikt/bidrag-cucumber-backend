@@ -12,9 +12,13 @@ object Sikkerhet {
     private val LOGGER = LoggerFactory.getLogger(Sikkerhet::class.java)
     private val SECURITY_FOR_APPLICATION: MutableMap<String, Security> = HashMap()
 
-    internal fun fetchIdToken(): String {
+    internal fun fetchToken(applicationName: String): String {
         try {
-            return IssoTokenManager.fetchOnlineIdToken(Environment.namespace)
+            return when (SECURITY_FOR_APPLICATION[applicationName]) {
+                Security.ISSO -> IssoTokenManager.fetchOnlineIdToken(Environment.namespace)
+                Security.AZURE -> AzureTokenManager.fetchToken(applicationName)
+                else -> IssoTokenManager.fetchOnlineIdToken(Environment.namespace)
+            }
         } catch (e: RuntimeException) {
             val exception = "${e.javaClass.name}: ${e.message} - ${e.stackTrace.first { it.fileName != null && it.fileName!!.endsWith("kt") }}"
             LOGGER.error("Feil ved henting av token, $exception")
