@@ -94,12 +94,6 @@ _**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak
 `bidrag-cucumber-backend` kan også kjøres lokalt, men bare hvis man har kontakt med applikasjonen via terminal. Dvs. enten fra "Nord-Korea" eller fra
 en naisdevice.
 
-#### Kjøring med filtrering av cucumber tag
-```
-mvn clean test 
-  -Dcucumber.filter.tags="<cucumber tag som vil kjøres>"
-```
-
 ### Test rapportering
 Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:
 
