@@ -2,13 +2,15 @@ package no.nav.bidrag.cucumber.sikkerhet
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.cucumber.URL_FASIT
+import org.junit.platform.commons.logging.LoggerFactory
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 object Fasit {
 
-    private var fasitTemplate = RestTemplate()
+    private val LOGGER = LoggerFactory.getLogger(Fasit::class.java)
+    private val FASIT_REST_TEMPLATE = RestTemplate()
 
     internal fun buildUriString(url: String, vararg queries: String): String {
         val resourceUrl = UriComponentsBuilder.fromHttpUrl(url)
@@ -19,22 +21,23 @@ object Fasit {
 
     internal fun hentRessurs(vararg queries: String): FasitRessurs {
         val resourceUrl = buildUriString(URL_FASIT, *queries)
-        return hentFasitRessurs(resourceUrl, queries.first().substringAfter("="), queries[1].substringAfter("="))
+        return hentFasitRessurs(resourceUrl, queries.first().substringAfter("="))
     }
 
     private fun hentFasitRessursSomJson(resourceUrl: String): FasitJson {
-        val fasitJson = try {
-            fasitTemplate.getForObject(resourceUrl, String::class.java)
+        val fasitJson: String? = try {
+            FASIT_REST_TEMPLATE.getForObject(resourceUrl, String::class.java)
         } catch (e: ResourceAccessException) {
-            return FasitJson(offline = true)
+            LOGGER.error(e) { "Unable to getForObject($resourceUrl, ${String::class.java})" }
+            null
         }
 
-        return FasitJson(fasitJson, false)
+        return if (fasitJson != null) FasitJson(fasitJson) else throw IllegalStateException("Unable to find resource with $resourceUrl")
     }
 
-    internal fun hentFasitRessurs(resourceUrl: String, alias: String, type: String): FasitRessurs {
+    internal fun hentFasitRessurs(resourceUrl: String, alias: String): FasitRessurs {
         val fasitJson = hentFasitRessursSomJson(resourceUrl)
-        val listeFraFasit: List<Map<String, *>> = mapFasitJsonTilListeAvRessurser(fasitJson, type)
+        val listeFraFasit: List<Map<String, *>> = mapFasitJsonTilListeAvRessurser(fasitJson)
         val listeOverRessurser: List<FasitRessurs> = listeFraFasit.map { FasitRessurs(it) }
         val fasitRessurs = listeOverRessurser.find { it.alias == alias }
 
@@ -42,13 +45,7 @@ object Fasit {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun mapFasitJsonTilListeAvRessurser(fasitJson: FasitJson, type: String): List<Map<String, Any>> {
-        return if (fasitJson.offline)
-            ObjectMapper().readValue(Fasit::class.java.getResource("fasit.offline.$type.json").readText(Charsets.UTF_8), List::class.java)
-                    as List<Map<String, Any>>
-        else
-            ObjectMapper().readValue(fasitJson.json, List::class.java) as List<Map<String, Any>>
-    }
+    private fun mapFasitJsonTilListeAvRessurser(fasitJson: FasitJson) = ObjectMapper().readValue(fasitJson.json, List::class.java) as List<Map<String, Any>>
 
     data class FasitRessurs(
         internal val alias: String,
@@ -79,5 +76,5 @@ object Fasit {
         fun passordUrl() = ressurser["passord.url"] ?: "ingen url for $alias"
     }
 
-    internal data class FasitJson(var json: String? = null, val offline: Boolean)
+    internal data class FasitJson(var json: String)
 }

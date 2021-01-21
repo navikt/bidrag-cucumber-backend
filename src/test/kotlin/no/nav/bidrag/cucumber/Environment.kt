@@ -1,5 +1,6 @@
 package no.nav.bidrag.cucumber
 
+import no.nav.bidrag.cucumber.input.IntegrationInput
 import java.io.File
 
 internal object Environment {
