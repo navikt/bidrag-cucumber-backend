@@ -91,18 +91,10 @@ mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<
 _**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak
 
 #### Kjøring lokalt
-`bidrag-cucumber-backend` kan også kjøres lokalt, men mange av gherkin-feature-filene er ikke desikgnet med tanke
-på kjøring med localhost.
+`bidrag-cucumber-backend` kan også kjøres lokalt, men bare hvis man har kontakt med applikasjonen via terminal. Dvs. enten fra "Nord-Korea" eller fra
+en naisdevice.
 
-Det kan dog være aktuelt å kjøre enkelte tester for å utføre lokal testing. Følgende må gjøres:
-* *applikasjonen er opprinnelig konfigurert i Fasit*
-  * aliaset som sjekkes via fasit må være tilgjengelig "offline" i `src/test/resources/fasit.offline.rest.json`
-  * fila må være konfigurert opp til å kunne hente ut en `RestTemplate` med base url (context path)
-  * nais applikasjon som testes må være startet lokalt (samt dens avhengigheter)
-* *applikasjonen er laget for å hente ut konfigurasjon fra `vault.adeo.no`*
-  * nais applikasjon som testes må være startet lokalt (samt dens avhengigheter)
-  * den må ha satt opp konfigurasjon for å hente rest-tjeneste basert på applikasjonsnavn i `constants.kt`
-
+#### Kjøring med filtrering av cucumber tag
 ```
 mvn clean test 
   -Dcucumber.filter.tags="<cucumber tag som vil kjøres>"
