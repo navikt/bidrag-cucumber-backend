@@ -42,12 +42,11 @@ internal object IssoTokenManager {
     }
 
     private fun hentOpenIdConnectFasitRessurs(namespace: String): Fasit.FasitRessurs {
-        val openIdConnect = "OpenIdConnect"
         val fasitRessursUrl = Fasit.buildUriString(
-            URL_FASIT, "type=$openIdConnect", "environment=$namespace", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
+            URL_FASIT, "type=OpenIdConnect", "environment=$namespace", "alias=$ALIAS_OIDC", "zone=$FASIT_ZONE", "usage=false"
         )
 
-        val openIdConnectFasitRessurs = Fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC, openIdConnect)
+        val openIdConnectFasitRessurs = Fasit.hentFasitRessurs(fasitRessursUrl, ALIAS_OIDC)
 
         LOGGER.info("Hentet openIdConnectFasitRessurs: $openIdConnectFasitRessurs")
 
