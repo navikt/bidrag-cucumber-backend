@@ -1,6 +1,7 @@
 package no.nav.bidrag.cucumber
 
 import com.google.gson.Gson
+import no.nav.bidrag.cucumber.input.IntegrationInput
 import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.Yaml
