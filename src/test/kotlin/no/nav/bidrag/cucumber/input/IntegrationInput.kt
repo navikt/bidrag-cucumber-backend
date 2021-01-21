@@ -1,8 +1,9 @@
 @file:Suppress("unused")
 
-package no.nav.bidrag.cucumber
+package no.nav.bidrag.cucumber.input
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.cucumber.INTEGRATION_INPUT
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -44,10 +45,3 @@ class IntegrationInput(
     }
 }
 
-class AzureInput(
-    var authorityEndpoint: String = "https://login.microsoftonline.com",
-    var clientId: String = "<not set>",
-    var clientSecret: String = "<not set>",
-    var name: String = "<not set>",
-    var tenant: String = "<not set>"
-)
