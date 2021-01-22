@@ -3,7 +3,6 @@
 package no.nav.bidrag.cucumber.input
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.bidrag.cucumber.INTEGRATION_INPUT
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -12,8 +11,6 @@ class IntegrationInput(
     var environment: String = "<not set>",
     var naisProjectFolder: String = "<not set>",
     var taggedTest: String? = null,
-    var userNav: String = "<not set>",
-    var userNavAuth: String = "<not set>",
     var userTest: String = "<not set>",
     var userTestAuth: String = "<not set>"
 ) {
@@ -21,14 +18,9 @@ class IntegrationInput(
 
         private val LOGGER = LoggerFactory.getLogger(IntegrationInput::class.java)
 
-        fun fromJson(): IntegrationInput {
-            val filePath = System.getProperty(INTEGRATION_INPUT) ?: System.getenv(INTEGRATION_INPUT)
+        fun read(jsonPath: String) = readFile(jsonPath) ?: throw IllegalStateException("Fant ikke json i angitt json-path: $jsonPath")
 
-            return readJsonFile(filePath ?: throw IllegalStateException("Fant ikke angitt json-path: $filePath"))
-                ?: throw IllegalStateException("Unable to find IntegrationInput: $filePath")
-        }
-
-        private fun readJsonFile(filePath: String): IntegrationInput? {
+        private fun readFile(filePath: String): IntegrationInput? {
             LOGGER.info("Will try to read environment file from $filePath")
             val json = File(filePath).inputStream().readBytes().toString(Charsets.UTF_8)
             return ObjectMapper().readValue(json, IntegrationInput::class.java)
@@ -36,7 +28,21 @@ class IntegrationInput(
     }
 
     fun fetchAzureInput(applicationName: String): AzureInput {
-        return azureInputs.find { it.name == applicationName } ?: throw IllegalStateException("Fant ikke azureInputs for $applicationName")
+        val environmentName = fetchApplicationNameForEnvironment(applicationName)
+        LOGGER.info("Henter $environmentName fra azureInputs")
+        return azureInputs.find { it.name == environmentName } ?: throw IllegalStateException("Fant ikke '$environmentName' blant $azureInputs")
+    }
+
+    internal fun fetchApplicationNameForEnvironment(applicationName: String): String {
+        if (environment == "main") {
+            return applicationName
+        }
+
+        if (applicationName.endsWith("-feature")) {
+            return applicationName
+        }
+
+        return "$applicationName-feature"
     }
 
     fun fetchTenantUsername(): String {
@@ -44,4 +50,3 @@ class IntegrationInput(
         return "F_$testUserUpperCase.E_$testUserUpperCase@trygdeetaten.no"
     }
 }
-
