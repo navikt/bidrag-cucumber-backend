@@ -37,7 +37,7 @@ internal object Environment {
         return IntegrationInput(
             environment = EnvironmentToBeRemoved.miljo,
             naisProjectFolder = EnvironmentToBeRemoved.naisProjectFolder,
-            userTest = EnvironmentToBeRemoved.testUser(),
+            userTest = EnvironmentToBeRemoved.testUser,
             userTestAuth = testAuthentication()
         )
     }
