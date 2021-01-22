@@ -126,7 +126,7 @@ internal object NaisConfiguration {
             return ALIAS_TO_NAIS_APPLICATION.getValue(applicationNameOrAlias)
         }
 
-        if (Environment.isApplicationPresentInNaisProjectFolder(applicationNameOrAlias)) {
+        if (Environment.naisApplications.contains(applicationNameOrAlias)) {
             return applicationNameOrAlias
         }
 

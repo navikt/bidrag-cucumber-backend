@@ -14,3 +14,10 @@ Egenskap: bidrag-cucumber: sikkerhet
   Scenario: Sjekk at vi kan hente et id_token i 'q4'
     Gitt jeg bruker namespace: 'q4'
     Så kan vi hente isso token
+
+  @bidrag-sak
+  @ignored
+  @azure-token
+  Scenario: Sjekk at azure token blir hentet
+    Gitt jeg bruker applikasjonen: 'bidrag-sak'
+    Så kan vi hente azure token
