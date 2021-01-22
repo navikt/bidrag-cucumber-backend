@@ -56,7 +56,7 @@ internal object IssoTokenManager {
 
     private fun hentOpenAmPwd(openIdConnectFasitRessurs: Fasit.FasitRessurs): String {
         val user = EnvironmentToBeRemoved.user
-        val auth = "$user:${EnvironmentToBeRemoved.userAuthentication()}"
+        val auth = "$user:${EnvironmentToBeRemoved.userAuthentication}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
             header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
