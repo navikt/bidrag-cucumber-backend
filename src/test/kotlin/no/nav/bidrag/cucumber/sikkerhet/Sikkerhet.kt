@@ -71,7 +71,11 @@ object Sikkerhet {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun skalEndreTilIsso(applicationName: String) = true // foreløpig ikke noe gyldig azure token
+    private fun skalEndreTilIsso(applicationName: String) = true
+//    !setOf(
+//        "bidrag-sak",
+//        "bidrag-sak-feature"
+//    ).contains(applicationName)
 
     private enum class Security {
         AZURE, ISSO

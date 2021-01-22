@@ -16,7 +16,7 @@ internal object AzureTokenManager {
     fun fetchToken(applicationName: String): String {
         val integrationInput = Environment.fetchIntegrationInput()
         val azureInput = integrationInput.fetchAzureInput(applicationName)
-        val azureAdUrl = "${azureInput.authorityEndpoint}/${azureInput.tenant}/oauth2/v2.0/token"
+        val azureAdUrl = "${azureInput.authorityEndpoint}/${azureInput.tennant}/oauth2/v2.0/token"
         val httpHeaders = HttpHeaders()
         val restTemplate = RestTemplate()
 
@@ -38,7 +38,7 @@ internal object AzureTokenManager {
         val token = restTemplate.postForEntity(azureAdUrl, request, AzureToken::class.java).body
             ?: throw IllegalStateException("Klarte ikke å hente token fra $azureAdUrl")
 
-        LOGGER.info("Fetched id token for ${integrationInput.userTest}")
+        LOGGER.info("Fetched azure token for ${integrationInput.fetchTenantUsername()}")
 
         return "Bearer ${token.token}"
     }
