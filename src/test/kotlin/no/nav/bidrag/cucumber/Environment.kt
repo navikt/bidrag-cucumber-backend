@@ -15,7 +15,7 @@ internal object Environment {
         if (fetchIntegrationInput().environment == "main") "q0" else "q1"
     }
 
-    fun testAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til test bruker")
+    fun fetchTestAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til test bruker")
     fun fetchIntegrationInput() = integrationInput ?: readNonCahcedIntegrationInput()
 
     private fun readNonCahcedIntegrationInput(): IntegrationInput {
@@ -38,7 +38,7 @@ internal object Environment {
             environment = EnvironmentToBeRemoved.miljo,
             naisProjectFolder = EnvironmentToBeRemoved.naisProjectFolder,
             userTest = EnvironmentToBeRemoved.testUser,
-            userTestAuth = testAuthentication()
+            userTestAuth = fetchTestAuthentication()
         )
     }
 

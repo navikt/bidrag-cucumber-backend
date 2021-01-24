@@ -16,7 +16,7 @@ internal object AzureTokenManager {
     fun fetchToken(applicationName: String): String {
         val integrationInput = Environment.fetchIntegrationInput()
         val azureInput = integrationInput.fetchAzureInput(applicationName)
-        val azureAdUrl = "${azureInput.authorityEndpoint}/${azureInput.tennant}/oauth2/v2.0/token"
+        val azureAdUrl = "${azureInput.authorityEndpoint}/${azureInput.tenant}/oauth2/v2.0/token"
         val httpHeaders = HttpHeaders()
         val restTemplate = RestTemplate()
 
@@ -28,7 +28,7 @@ internal object AzureTokenManager {
         map.add("grant_type", "password")
         map.add("scope", "openid ${azureInput.clientId}/.default")
         map.add("username", integrationInput.fetchTenantUsername())
-        map.add("password", integrationInput.userTestAuth)
+        map.add("password", Environment.fetchTestAuthentication())
 
         LOGGER.info("> url    : $azureAdUrl")
         LOGGER.info("> headers: $httpHeaders")
