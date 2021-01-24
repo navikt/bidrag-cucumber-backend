@@ -74,7 +74,7 @@ internal object IssoTokenManager {
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/json"),
             header(X_OPENAM_USER_HEADER, testUser),
-            header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
+            header(X_OPENAM_PASSW_HEADER, Environment.fetchTestAuthentication())
         )
 
         LOGGER.info("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")

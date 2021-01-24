@@ -5,5 +5,5 @@ class AzureInput(
     var clientId: String = "<not set>",
     var clientSecret: String = "<not set>",
     var name: String = "<not set>",
-    var tennant: String = "<not set>"
+    var tenant: String = "<not set>"
 )
