@@ -10,7 +10,6 @@ class IntegrationInput(
     var azureInputs: List<AzureInput> = emptyList(),
     var environment: String = "<not set>",
     var naisProjectFolder: String = "<not set>",
-    var taggedTest: String? = null,
     var userTest: String = "<not set>",
     var userTestAuth: String = "<not set>"
 ) {

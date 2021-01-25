@@ -15,17 +15,13 @@ internal object Environment {
         if (fetchIntegrationInput().environment == "main") "q0" else "q1"
     }
 
-    fun fetchTestAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til test bruker")
-    fun fetchIntegrationInput() = integrationInput ?: readNonCahcedIntegrationInput()
+    fun fetchTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til test bruker")
+    fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
 
-    private fun readNonCahcedIntegrationInput(): IntegrationInput {
-        if (integrationInput == null) {
-            val jsonPath = System.getProperty(INTEGRATION_INPUT) ?: System.getenv(INTEGRATION_INPUT) ?: return initFromEnvironmentAboutToBeRemoved()
-
-            LOGGER.info("Leser IngegrationInput fra $jsonPath")
-
-            integrationInput = IntegrationInput.read(jsonPath)
-        }
+    private fun readAndCahcedIntegrationInput(): IntegrationInput {
+        val jsonPath = System.getProperty(INTEGRATION_INPUT) ?: System.getenv(INTEGRATION_INPUT) ?: return initFromEnvironmentAboutToBeRemoved()
+        LOGGER.info("Leser IngegrationInput fra $jsonPath")
+        integrationInput = IntegrationInput.read(jsonPath)
 
         return this.integrationInput!!
     }
@@ -38,7 +34,7 @@ internal object Environment {
             environment = EnvironmentToBeRemoved.miljo,
             naisProjectFolder = EnvironmentToBeRemoved.naisProjectFolder,
             userTest = EnvironmentToBeRemoved.testUser,
-            userTestAuth = fetchTestAuthentication()
+            userTestAuth = fetchTestUserAuthentication()
         )
     }
 
