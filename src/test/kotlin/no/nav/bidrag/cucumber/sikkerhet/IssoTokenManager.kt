@@ -5,6 +5,7 @@ import io.cucumber.gherkin.Parser
 import no.nav.bidrag.cucumber.ALIAS_BIDRAG_UI
 import no.nav.bidrag.cucumber.ALIAS_OIDC
 import no.nav.bidrag.cucumber.Environment
+import no.nav.bidrag.cucumber.EnvironmentToBeRemoved
 import no.nav.bidrag.cucumber.FASIT_ZONE
 import no.nav.bidrag.cucumber.RestTjeneste
 import no.nav.bidrag.cucumber.URL_FASIT
@@ -54,8 +55,8 @@ internal object IssoTokenManager {
     }
 
     private fun hentOpenAmPwd(openIdConnectFasitRessurs: Fasit.FasitRessurs): String {
-        val user = Environment.fetchIntegrationInput().userNav
-        val auth = "$user:${Environment.userAuthentication()}"
+        val user = EnvironmentToBeRemoved.user
+        val auth = "$user:${EnvironmentToBeRemoved.userAuthentication}"
         val httpEntityWithAuthorizationHeader = initHttpEntity(
             header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(auth.toByteArray(Charsets.UTF_8))))
         )
@@ -73,7 +74,7 @@ internal object IssoTokenManager {
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/json"),
             header(X_OPENAM_USER_HEADER, testUser),
-            header(X_OPENAM_PASSW_HEADER, Environment.testAuthentication())
+            header(X_OPENAM_PASSW_HEADER, Environment.fetchTestUserAuthentication())
         )
 
         LOGGER.info("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")

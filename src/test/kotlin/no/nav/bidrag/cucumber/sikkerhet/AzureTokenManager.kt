@@ -28,7 +28,7 @@ internal object AzureTokenManager {
         map.add("grant_type", "password")
         map.add("scope", "openid ${azureInput.clientId}/.default")
         map.add("username", integrationInput.fetchTenantUsername())
-        map.add("password", integrationInput.userTestAuth)
+        map.add("password", Environment.fetchTestUserAuthentication())
 
         LOGGER.info("> url    : $azureAdUrl")
         LOGGER.info("> headers: $httpHeaders")
@@ -38,7 +38,7 @@ internal object AzureTokenManager {
         val token = restTemplate.postForEntity(azureAdUrl, request, AzureToken::class.java).body
             ?: throw IllegalStateException("Klarte ikke å hente token fra $azureAdUrl")
 
-        LOGGER.info("Fetched id token for ${integrationInput.userTest}")
+        LOGGER.info("Fetched azure token for ${integrationInput.fetchTenantUsername()}")
 
         return "Bearer ${token.token}"
     }
