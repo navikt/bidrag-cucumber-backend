@@ -49,14 +49,13 @@ Cucumber støtter flere språk og for mer detaljert oversikt over funksjonalitet
 ### GitHub Workflow
 
 Cucumber testene brukes i github workflow når en push blir gjort til en branch eller main på en nais applikasjon under bidrag. Hvis en endring av en
-nais applikasjon krever endringer av cucumber testene, så kod disse endringene i en feature branch tiljørende bidrag-cucumber-backend (kall feature-
-branchen `feature`) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken som helst feature-
-branch tilhørende nais-applikasjonen.
+nais applikasjon krever endringer av cucumber testene, så kod disse endringene i en feature branch i bidrag-cucumber-backend (med samme navn som som
+branchen på applikasjonen som du tester) og denne branchen blir automatisk plukket opp av github workflow når cucumber-testene gjøres på en hvilken
+som helst feature-branch tilhørende en nais-applikasjonen.
 
-- action: bidrag-maven/cucumber-backend/@v1.0.4
-- les https://github.com/navikt/bidrag-maven/blob/main/cucumber-backend/README.md
+- action for oppsett av cucumber kjøremiljø: navikt/bidrag-integration/cucumber-clone@v4
+- action for kjøring av cucumber           : navikt/bidrag-maven/cucumber-backend@v5
  
-
 ### Kjøring
 
 Alle kotlin-cucumber-tester kjører på en jvm og bruker JUnit som plattform. Derfor kan testene bli utført i hvilken som helt editor som støtter JUnit,
