@@ -25,13 +25,6 @@ jobs:
       - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - name: wait for bidrag-dokument-testdata to deploy after restart
-        run: |
-            echo wait for bidrag-dokument-testdata to deploy after restart
-            while [ $(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $2}' | grep -v READY | grep 0/1 | wc -l) -ne 0 ]
-            do
-              echo -n "..."
-            done
       - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
           maven_command: test
