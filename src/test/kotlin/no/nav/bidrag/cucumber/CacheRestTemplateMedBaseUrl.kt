@@ -19,23 +19,37 @@ internal object CacheRestTemplateMedBaseUrl {
     fun hentEllerKonfigurer(applicationOrAlias: String): RestTjeneste.RestTemplateMedBaseUrl {
         val applicationName = NaisConfiguration.read(applicationOrAlias)
 
-        if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
-            return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
-        }
+        return REST_TJENESTE_TIL_APPLIKASJON.computeIfAbsent(applicationName) { konfigurer(applicationName) }
+    }
 
-        val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
-        val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationName)
-
-        return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
+    fun hentEllerKonfigurer(alias: String, fasitRessurs: Fasit.FasitRessurs): RestTjeneste.RestTemplateMedBaseUrl {
+        return REST_TJENESTE_TIL_APPLIKASJON.computeIfAbsent(alias) { konfigurerApplikasjonForUrl(alias, fasitRessurs.url())}
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
         val applicationName = NaisConfiguration.read(applicationOrAlias)
 
-        if (REST_TJENESTE_TIL_APPLIKASJON.containsKey(applicationName)) {
-            return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
-        }
+        return REST_TJENESTE_TIL_APPLIKASJON.computeIfAbsent(applicationName) { konfigurerApplikasjonForContext(applicationName, applicationContext) }
+    }
 
+    private fun konfigurer(applicationName: String): RestTjeneste.RestTemplateMedBaseUrl {
+        val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
+        val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationName)
+
+        return konfigurerApplikasjonForUrl(applicationName, applicationUrl)
+    }
+
+    private fun konfigurerApplikasjonForUrl(applicationName: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
+
+        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
+        val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
+
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
+
+        return RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
+    }
+
+    private fun konfigurerApplikasjonForContext(applicationName: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
         val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
         val applicationContextPath = bestemApplicationContextPath(applicationContext)
 
@@ -43,7 +57,7 @@ internal object CacheRestTemplateMedBaseUrl {
 
         val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationContextPath)
 
-        return hentEllerKonfigurerApplikasjonForUrl(applicationName, applicationUrl)
+        return konfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
 
     private fun joinUrlAndContextWithoutDoubleSlash(applicationHostUrl: String, applicationContextPath: String): String {
@@ -54,28 +68,12 @@ internal object CacheRestTemplateMedBaseUrl {
         }
     }
 
-    fun hentEllerKonfigurer(alias: String, fasitRessurs: Fasit.FasitRessurs): RestTjeneste.RestTemplateMedBaseUrl {
-        return hentEllerKonfigurerApplikasjonForUrl(alias, fasitRessurs.url())
-    }
-
     private fun bestemApplicationContextPath(applicationContext: String): String {
         return if (applicationContext == "/") {
             ""
         } else {
             "$applicationContext/"
         }
-    }
-
-    private fun hentEllerKonfigurerApplikasjonForUrl(applicationName: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
-
-        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
-        val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
-
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
-
-        REST_TJENESTE_TIL_APPLIKASJON[applicationName] = RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
-
-        return REST_TJENESTE_TIL_APPLIKASJON.getValue(applicationName)
     }
 
     private fun hentHttpRequestFactorySomIgnorererHttps(): HttpComponentsClientHttpRequestFactory {
