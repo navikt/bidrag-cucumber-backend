@@ -3,6 +3,7 @@
 package no.nav.bidrag.cucumber.input
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.bidrag.cucumber.Environment
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -11,8 +12,10 @@ class IntegrationInput(
     var environment: String = "<not set>",
     var naisProjectFolder: String = "<not set>",
     var userTest: String = "<not set>",
-    var userTestAuth: String = "<not set>"
 ) {
+    val userTestAuth: String
+        get() = Environment.fetchTestUserAuthentication()
+
     companion object {
 
         private val LOGGER = LoggerFactory.getLogger(IntegrationInput::class.java)

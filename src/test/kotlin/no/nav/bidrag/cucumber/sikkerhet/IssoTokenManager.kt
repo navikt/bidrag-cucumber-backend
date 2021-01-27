@@ -69,12 +69,13 @@ internal object IssoTokenManager {
     }
 
     private fun hentTokenIdForTestbruker(): String {
-        val testUser = Environment.fetchIntegrationInput().userTest
+        val integrationInput = Environment.fetchIntegrationInput()
+        val testUser = integrationInput.userTest
         val httpEntityWithHeaders = initHttpEntity(
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/json"),
             header(X_OPENAM_USER_HEADER, testUser),
-            header(X_OPENAM_PASSW_HEADER, Environment.fetchTestUserAuthentication())
+            header(X_OPENAM_PASSW_HEADER, integrationInput.userTestAuth)
         )
 
         LOGGER.info("Hent token id for $testUser in ${Environment.namespace} from $URL_ISSO")
