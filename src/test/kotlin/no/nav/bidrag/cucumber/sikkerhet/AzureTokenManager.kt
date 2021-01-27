@@ -28,7 +28,7 @@ internal object AzureTokenManager {
         map.add("grant_type", "password")
         map.add("scope", "openid ${azureInput.clientId}/.default")
         map.add("username", integrationInput.fetchTenantUsername())
-        map.add("password", Environment.fetchTestUserAuthentication())
+        map.add("password", integrationInput.userTestAuth)
 
         LOGGER.info("> url    : $azureAdUrl")
         LOGGER.info("> headers: $httpHeaders")
