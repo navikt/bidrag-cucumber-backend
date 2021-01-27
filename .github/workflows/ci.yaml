@@ -22,17 +22,10 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-dokument-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
-      - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
+      - uses: navikt/bidrag-integration/cucumber-clone-tags@feature/apps
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - name: wait for bidrag-dokument-testdata to deploy after restart
-        run: |
-            echo wait for bidrag-dokument-testdata to deploy after restart
-            while [ $(kubectl get pods -l app=bidrag-dokument-testdata | awk '{print $2}' | grep -v READY | grep 0/1 | wc -l) -ne 0 ]
-            do
-              echo -n "..."
-            done
-      - uses: navikt/bidrag-maven/cucumber-backend@v5
+      - uses: navikt/bidrag-maven/cucumber-backend@feature/apps
         with:
           maven_command: test
           maven_image: maven:3.6.3-openjdk-15
