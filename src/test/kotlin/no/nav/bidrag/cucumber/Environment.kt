@@ -5,18 +5,18 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 internal object Environment {
-    private var integrationInput: IntegrationInput? = null
     private val LOGGER = LoggerFactory.getLogger(Environment::class.java)
-    val naisApplications: Set<String> by lazy {
-        findNaisApplications(fetchIntegrationInput())
-    }
 
+    private var integrationInput: IntegrationInput? = null
+    val naisApplications: Set<String> by lazy { findNaisApplications(fetchIntegrationInput()) }
     val namespace: String by lazy { // brukes for å hente fasit-ressurser
         if (fetchIntegrationInput().environment == "main") "q0" else "q1"
     }
 
-    fun fetchTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException("Fant ikke passord til test bruker")
     fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
+    internal fun fetchTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException(
+        "Fant ikke passord til test bruker"
+    )
 
     private fun readAndCahcedIntegrationInput(): IntegrationInput {
         val jsonPath = System.getProperty(INTEGRATION_INPUT) ?: System.getenv(INTEGRATION_INPUT) ?: return initFromEnvironmentAboutToBeRemoved()
@@ -33,8 +33,7 @@ internal object Environment {
         return IntegrationInput(
             environment = EnvironmentToBeRemoved.miljo,
             naisProjectFolder = EnvironmentToBeRemoved.naisProjectFolder,
-            userTest = EnvironmentToBeRemoved.testUser,
-            userTestAuth = fetchTestUserAuthentication()
+            userTest = EnvironmentToBeRemoved.testUser
         )
     }
 
