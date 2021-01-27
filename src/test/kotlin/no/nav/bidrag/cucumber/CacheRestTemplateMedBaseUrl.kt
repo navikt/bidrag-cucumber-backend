@@ -39,16 +39,6 @@ internal object CacheRestTemplateMedBaseUrl {
         return konfigurerApplikasjonForUrl(applicationName, applicationUrl)
     }
 
-    private fun konfigurerApplikasjonForUrl(applicationName: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
-
-        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
-        val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
-
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
-
-        return RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
-    }
-
     private fun konfigurerApplikasjonForContext(applicationName: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
         val applicationHostUrl = NaisConfiguration.hentApplicationHostUrl(applicationName)
         val applicationContextPath = bestemApplicationContextPath(applicationContext)
@@ -58,6 +48,16 @@ internal object CacheRestTemplateMedBaseUrl {
         val applicationUrl = joinUrlAndContextWithoutDoubleSlash(applicationHostUrl, applicationContextPath)
 
         return konfigurerApplikasjonForUrl(applicationName, applicationUrl)
+    }
+
+    private fun konfigurerApplikasjonForUrl(applicationName: String, applicationUrl: String): RestTjeneste.RestTemplateMedBaseUrl {
+
+        val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
+        val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
+
+        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
+
+        return RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
     }
 
     private fun joinUrlAndContextWithoutDoubleSlash(applicationHostUrl: String, applicationContextPath: String): String {
