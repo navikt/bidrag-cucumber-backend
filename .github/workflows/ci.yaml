@@ -27,13 +27,11 @@ jobs:
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - uses: navikt/bidrag-integration/azure-input@feature/azure
-        id: integrationInputs
+        id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
-      - name: debug azure input
-        run: |
-          cd ${{ steps.integrationInputs.outputs.azure_input_path }}
-          ls -la
+      - name: debug integration input
+        run: cat ${{ steps.integration.output.integration_input_path }}
       - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
           maven_image: maven:3.6.3-openjdk-15
