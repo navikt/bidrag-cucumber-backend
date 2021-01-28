@@ -22,20 +22,18 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-dokument-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
-      - uses: navikt/bidrag-integration/cucumber-clone-tags@feature/output-apps
+      - uses: navikt/bidrag-integration/cucumber-clone-tags@feature/azure
         id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - name: get azure input
-        run: |
-      - name: create input json for integration testing
+      - uses: navikt/bidrag-integration/azure-input@feature/azure
         id: integrationInputs
+        with:
+          applications: ${{ steps.tags.outputs.cloned_apps }}
+      - name: debug azure input
         run: |
-          curl -o createAzureInput.sh https://github.com/navikt/bidrag-dev/scripts/createAzureInput.sh
-          chmod +x createAzureInput.sh
-          AZURE_INPUT_PATH=$PWD/azure
-          ./createAzureInput.sh $AZURE_INPUT_PATH ${{ steps.tags.outputs.cloned_apps }}
-          ls -al
+          cd ${{ steps.integrationInputs.outputs.azure_input_path }}
+          ls -la
       - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
           maven_image: maven:3.6.3-openjdk-15
