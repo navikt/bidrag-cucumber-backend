@@ -32,7 +32,7 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
       - name: debug integration input
         run: cat ${{ steps.integration.output.integration_input_path }}
-      - uses: navikt/bidrag-maven/cucumber-backend@feature/input
+      - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
           maven_image: maven:3.6.3-openjdk-15
           username: j104364
