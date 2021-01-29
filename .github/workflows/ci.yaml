@@ -30,13 +30,11 @@ jobs:
         id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
-      - name: debug integration input
-        run: cat ${{ steps.integration.output.integration_input_path }}
-      - uses: navikt/bidrag-maven/cucumber-backend@v5
+          test_username: z992903
+      - uses: navikt/bidrag-maven/cucumber-backend@feature/input-json
         with:
           maven_image: maven:3.6.3-openjdk-15
           username: j104364
-          test_user: z992903
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
