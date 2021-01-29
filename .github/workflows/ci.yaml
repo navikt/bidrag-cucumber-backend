@@ -27,11 +27,9 @@ jobs:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - uses: navikt/bidrag-maven/cucumber-backend@v5
         with:
-          maven_command: test
           maven_image: maven:3.6.3-openjdk-15
           username: j104364
           test_user: z992903
-          pip_user: srvbisys
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
