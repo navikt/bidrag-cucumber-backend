@@ -27,6 +27,6 @@ Egenskap: bidrag-sak
     @pip
     Scenario: Skal hente pip for sak 0000003
       Gitt resttjenesten 'bidragSak'
-      Og bruk av en produksjonsbruker med tilgang til bidrag-sak pip
+      Og bruk av en produksjonsbrukeren 'srvbisys' med tilgang til bidrag-sak pip
       Når jeg henter pip for sak '0000003'
       Så skal http status være '200'
