@@ -23,8 +23,8 @@ class IntegrationInput(
         fun read(jsonPath: String) = readFile(jsonPath) ?: throw IllegalStateException("Fant ikke json i angitt json-path: $jsonPath")
 
         private fun readFile(filePath: String): IntegrationInput? {
-            LOGGER.info("Will try to read environment file from $filePath")
             val json = File(filePath).inputStream().readBytes().toString(Charsets.UTF_8)
+            LOGGER.info("> json configuration read from $filePath")
             return ObjectMapper().readValue(json, IntegrationInput::class.java)
         }
     }
