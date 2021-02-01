@@ -38,6 +38,7 @@ object Sikkerhet {
         var security = if (harAzureSomSikkerhet(environmentFile.parentFile)) Security.AZURE else Security.ISSO
 
         if (skalEndreTilIsso(environmentFile.applicationName)) {
+            LOGGER.warn("Setter sikkerhetstoken til ISSO for ${environmentFile.applicationName}")
             security = Security.ISSO
         }
 
@@ -71,11 +72,7 @@ object Sikkerhet {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun skalEndreTilIsso(applicationName: String) = true
-//    !setOf(
-//        "bidrag-sak",
-//        "bidrag-sak-feature"
-//    ).contains(applicationName)
+    private fun skalEndreTilIsso(applicationName: String) = true // applicationName != "bidrag-sak"
 
     private enum class Security {
         AZURE, ISSO
