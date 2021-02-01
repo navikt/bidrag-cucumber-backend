@@ -32,7 +32,7 @@ internal object AzureTokenManager {
 
         LOGGER.info("> url    : $azureAdUrl")
         LOGGER.info("> headers: $httpHeaders")
-        LOGGER.info("> map    : $map")
+        LOGGER.info("> map    : ${suppressPasswords(map)}")
 
         val request = HttpEntity(map, httpHeaders)
         val token = restTemplate.postForEntity(azureAdUrl, request, AzureToken::class.java).body
@@ -41,5 +41,12 @@ internal object AzureTokenManager {
         LOGGER.info("Fetched azure token for ${integrationInput.fetchTenantUsername()}")
 
         return "Bearer ${token.token}"
+    }
+
+    private fun suppressPasswords(map: MultiValueMap<String, String>): String {
+        val suppressed = HashMap<String, String?>()
+        map.keys.forEach { key -> suppressed[key] = if (key.toUpperCase() != "PASSWORD") map.getValue(key).toString() else "[***]" }
+
+        return suppressed.toString()
     }
 }
