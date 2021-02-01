@@ -22,14 +22,19 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-dokument-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
-      - uses: navikt/bidrag-integration/cucumber-clone-tags@v4
+      - uses: navikt/bidrag-integration/cucumber-clone-tags@v5.0.0-alpha
+        id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - uses: navikt/bidrag-maven/cucumber-backend@v5
+      - uses: navikt/bidrag-integration/input-json@v5.0.0-beta
+        id: integration
+        with:
+          applications: ${{ steps.tags.outputs.cloned_apps }}
+          test_username: z992903
+      - uses: navikt/bidrag-maven/cucumber-backend@v6.0.0-alpha
         with:
           maven_image: maven:3.6.3-openjdk-15
           username: j104364
-          test_user: z992903
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
