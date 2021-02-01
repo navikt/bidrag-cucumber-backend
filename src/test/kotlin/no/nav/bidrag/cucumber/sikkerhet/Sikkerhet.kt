@@ -72,7 +72,7 @@ object Sikkerhet {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun skalEndreTilIsso(applicationName: String) = applicationName != "bidrag-sak"
+    private fun skalEndreTilIsso(applicationName: String) = true // applicationName != "bidrag-sak"
 
     private enum class Security {
         AZURE, ISSO
