@@ -12,7 +12,7 @@ Egenskap: bidrag-person
     Og responsen skal inneholde 'status' = 'UP'
 
   Scenario: Sjekk at gyldig saksbehandler-id returnerer OK (200) respons
-    Når jeg henter informasjon for ident '09077523399'
+    Når jeg henter informasjon for ident '27058426518'
     Så skal http status være '200'
 
 #  Scenario: Sjekk at gyldig aktør-id returnerer OK (200) respons
