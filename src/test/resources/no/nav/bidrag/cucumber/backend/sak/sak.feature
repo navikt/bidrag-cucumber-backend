@@ -13,20 +13,15 @@ Egenskap: bidrag-sak
     Og header 'content-type' skal være 'application/json'
     Og responsen skal inneholde 'status' = 'UP'
 
-  Scenario: Sjekk at vi får bidragssaker som involverer person angitt
+  Scenario: Sjekk at vi får NOT FOUND dersom vi ber om sak for person som ikke eksisterer i databasen
     Gitt resttjenesten 'bidragSak'
     Når jeg henter bidragssaker for person med fnr "10099447805"
-    Så skal http status være '200'
-    Og hvert element i listen skal ha følgende properties satt:
-      | roller       |
-      | eierfogd     |
-      | saksstatus   |
-      | kategori     |
-      | erParagraf19 |
+    Så skal http status være '204'
+
 
     @pip
-    Scenario: Skal hente pip for sak 0000003
+    Scenario: Skal gi 404 for sak 9999999
       Gitt resttjenesten 'bidragSak'
       Og bruk av en produksjonsbrukeren 'srvbisys' med tilgang til bidrag-sak pip
-      Når jeg henter pip for sak '0000003'
-      Så skal http status være '200'
+      Når jeg henter pip for sak '9999999'
+      Så skal http status være '404'
