@@ -10,7 +10,7 @@ internal object Environment {
     private var integrationInput: IntegrationInput? = null
     val naisApplications: Set<String> by lazy { findNaisApplications(fetchIntegrationInput()) }
     val namespace: String by lazy { // brukes for å hente fasit-ressurser
-        if (fetchIntegrationInput().environment == "main") "q0" else "q1"
+        if (fetchIntegrationInput().environment == "main") "q2" else "q1"
     }
 
     fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
