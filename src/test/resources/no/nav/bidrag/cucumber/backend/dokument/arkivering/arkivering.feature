@@ -6,7 +6,7 @@ Egenskap: bidrag-dokument-arkivering
 
   Bakgrunn: Tester hent journalpost uten sakstilknytning
     Gitt nais applikasjon 'bidrag-dokument-arkivering' med kontekst ''
-    Og resttjenesten 'bidragDokumentTestdata' for manipulering av testdata
+    Og resttjenesten 'bidrag-testdata' for manipulering av testdata
 
    Scenario: Arkivere reservert journalpost
     Gitt at jeg oppretter journalpost for 'ARKIVERING':

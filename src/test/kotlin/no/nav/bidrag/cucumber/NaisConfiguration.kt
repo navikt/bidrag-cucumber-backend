@@ -15,7 +15,6 @@ internal object NaisConfiguration {
         Pair("bidragDokument", "bidrag-dokument"),
         Pair("bidragDokumentArkiv", "bidrag-dokument-arkiv"),
         Pair("bidragDokumentJournalpost", "bidrag-dokument-journalpost"),
-        Pair("bidragDokumentTestdata", "bidrag-dokument-testdata"),
         Pair("bidragOrganisasjon", "bidrag-organisasjon"),
         Pair("bidragPerson", "bidrag-person"),
         Pair("bidragSak", "bidrag-sak"),

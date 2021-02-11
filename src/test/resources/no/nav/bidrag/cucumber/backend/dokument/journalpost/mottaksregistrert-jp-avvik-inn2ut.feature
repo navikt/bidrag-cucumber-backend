@@ -5,7 +5,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående på mottaks
 
   Bakgrunn: Gitt resttjeneste og testdata
     Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'INNG_TIL_UTG_DOKUMENT'
-    Og resttjenesten 'bidragDokumentTestdata' til å opprette journalpost når den ikke finnes for avvikstypen:
+    Og resttjenesten 'bidrag-testdata' til å opprette journalpost når den ikke finnes for avvikstypen:
         """
         {
         "avsenderNavn"   : "Cucumber Test",
