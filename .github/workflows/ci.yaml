@@ -12,15 +12,15 @@ jobs:
 
     steps:
       - run: kubectl config use-context dev-fss
-      - name: restart bidrag-dokument-testdata
+      - name: restart bidrag-testdata
         if: github.ref == 'refs/heads/main'
         run: |
-          PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-dokument-testdata | awk '{print $1}' | grep -v NAME)
+          PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
-      - name: restart bidrag-dokument-testdata-feature
+      - name: restart bidrag-testdata-feature
         if: github.ref != 'refs/heads/main'
         run: |
-          PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-dokument-testdata-feature  | awk '{print $1}' | grep -v NAME)
+          PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
       - uses: navikt/bidrag-integration/cucumber-clone-tags@v5
         id: tags

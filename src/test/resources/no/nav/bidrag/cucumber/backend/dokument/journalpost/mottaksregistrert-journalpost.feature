@@ -7,7 +7,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
 
   Bakgrunn: Tester hent journalpost uten sakstilknytning
     Gitt resttjenesten 'bidragDokumentJournalpost'
-    Og resttjenesten 'bidragDokumentTestdata' for manipulering av testdata
+    Og resttjenesten 'bidrag-testdata' for manipulering av testdata
 
   Scenario: Hent med ugyldig prefix i journalpost id
     Gitt at jeg henter journalpost med path '/journal/XXX-123'
