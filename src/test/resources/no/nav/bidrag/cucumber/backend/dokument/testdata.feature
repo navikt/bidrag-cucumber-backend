@@ -1,11 +1,11 @@
 # language: no
-@bidrag-dokument-testdata
-Egenskap: bidrag-dokument-testdata
+@bidrag-testdata
+Egenskap: bidrag-testdata
 
-  Tester REST API til endepunkt i bidrag-dokument-testdata.
+  Tester REST API til endepunkt i bidrag-testdata.
 
   Scenario: Sjekk at health endpoint er operativt
-    Gitt resttjenesten 'bidragDokumentTestdata'
+    Gitt resttjenesten 'bidrag-testdata'
     Når jeg kaller helsetjenesten
     Så skal http status være '200'
     Og responsen skal inneholde 'status' = 'UP'
