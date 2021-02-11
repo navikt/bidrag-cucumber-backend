@@ -9,7 +9,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
     Gitt resttjenesten 'bidragDokument' for avviksbehandling
     Og saksnummer '0000003' for avviksbehandling for nøkkel 'TEST_AVVIKSBEHANDLING'
     Og enhetsnummer for avvik er '4806'
-    Og resttjenesten 'bidragDokumentTestdata' for manipulering av testdata
+    Og resttjenesten 'bidrag-testdata' for manipulering av testdata
     Og opprett journalpost når den ikke finnes for nøkkel:
             """
             {
