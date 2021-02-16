@@ -97,6 +97,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
     Og hendelsen 'REGISTRER_JOURNALPOST' skal være publisert for opprettet data med nokkel 'REGISTRERING'
 
+  @ignored
   Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFOR':
         """
@@ -136,6 +137,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'J'
     Og hendelsen 'REGISTRER_JOURNALPOST' skal være publisert for opprettet data med nokkel 'JOURNALFOR'
 
+  @ignored
   Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFOR_DOK':
         """

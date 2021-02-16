@@ -30,21 +30,25 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
     Så skal http status være '200'
     Og listen med avvikstyper skal inneholde 'ENDRE_FAGOMRADE'
 
+  @ignored
   Scenario: Sjekk at jeg kan endre fagområde til FAR
     Gitt detaljer 'fagomrade' = 'FAR'
     Når jeg oppretter avvik
     Så skal http status være '200'
 
+  @ignored
   Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt detaljer 'fagomrade' = 'FAR'
     Når jeg oppretter avvik
     Så skal http status være '400'
 
+  @ignored
   Scenario: Sjekk at jeg kan endre fagområde tilbake til BID
     Gitt detaljer 'fagomrade' = 'BID'
     Når jeg oppretter avvik
     Så skal http status være '200'
 
+  @ignored
   Scenario: Sjekk at når man edrer fagområde til annet enn BID/FAR, så skal den være feilført
     Gitt detaljer 'fagomrade' = 'NYTT_FAGOMRADE'
     Når jeg oppretter avvik med bekreftelse at den er sendt scanning
