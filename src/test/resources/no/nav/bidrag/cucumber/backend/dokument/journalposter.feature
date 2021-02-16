@@ -15,6 +15,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Så skal http status være '200'
     Og responsen skal inneholde 'status' = 'UP'
 
+  @ignored
   Scenario: Sjekk at vi får en sakjournal for en sak
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID"
     Så skal http status være '200'
@@ -24,6 +25,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
       | dokumenter   |
       | dokumentDato |
 
+  @ignored
   Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
     Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
     Så skal http status være '200'
@@ -40,6 +42,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Gitt jeg henter journalpost for sak "XYZ" som har id "BID-12345667"
     Så skal http status være '404'
 
+  @ignored
   Scenario: Sjekk at journalpost kan oppdateres - James Bond
     Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
@@ -61,6 +64,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bond, James'
 
+  @ignored
   Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
     Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
@@ -82,6 +86,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
 
+  @ignored
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
     Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
@@ -104,6 +109,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
+  @ignored
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
     Gitt jeg endrer journalpost som har id 'BID-30040789':
             """

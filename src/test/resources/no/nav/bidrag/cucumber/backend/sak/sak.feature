@@ -18,10 +18,10 @@ Egenskap: bidrag-sak
     Når jeg henter bidragssaker for person med fnr "12345678910"
     Så skal http status være '204'
 
-
-    @pip
-    Scenario: Skal gi 404 for sak 9999999
-      Gitt resttjenesten 'bidragSak'
-      Og bruk av en produksjonsbrukeren 'srvbisys' med tilgang til bidrag-sak pip
-      Når jeg henter pip for sak '9999999'
-      Så skal http status være '204'
+  @ignored
+  @pip
+  Scenario: Skal gi 204 for sak 9999999
+    Gitt resttjenesten 'bidragSak'
+    Og bruk av en produksjonsbrukeren 'srvbisys' med tilgang til bidrag-sak pip
+    Når jeg henter pip for sak '9999999'
+    Så skal http status være '204'
