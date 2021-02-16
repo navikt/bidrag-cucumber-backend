@@ -5,6 +5,7 @@ Egenskap: bidrag-dokument-journalpost
     Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
         Gitt resttjenesten 'bidragDokumentJournalpost'
 
+    @ignored
     Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
@@ -16,6 +17,7 @@ Egenskap: bidrag-dokument-journalpost
             | journalfortAv |
             | innhold       |
 
+    @ignored
     Scenario: Sjekk at vi får korrekt data i 'dokumenter' for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
         Så skal http status være '200'
@@ -24,11 +26,13 @@ Egenskap: bidrag-dokument-journalpost
             | dokumentType      |
             | tittel            |
 
+    @ignored
     Scenario: Sjekk at vi får korrekt gjelderAktor for en gitt journalpostId
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-32352090"
         Så skal http status være '200'
         Og responsen skal inneholde et objekt med navn 'journalpost' som har et felt 'gjelderAktor' med feltet 'ident'
 
+    @ignored
     Scenario: Sjekk at ukjent id gir 404
         Gitt jeg henter journalpost for sak "0000003" som har id "BID-12345"
         Så skal http status være '404'
@@ -37,6 +41,7 @@ Egenskap: bidrag-dokument-journalpost
         Gitt jeg henter journalpost for sak "0000003" som har id "32352090"
         Så skal http status være '400'
 
+    @ignored
     Scenario: Sjekk at journalpost kan oppdateres - Sylfest Strutle
         Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
@@ -58,6 +63,7 @@ Egenskap: bidrag-dokument-journalpost
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Strutle, Sylfest'
 
+    @ignored
     Scenario: Sjekk at journalpost kan oppdateres - Bjarne Bær
         Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
@@ -79,6 +85,7 @@ Egenskap: bidrag-dokument-journalpost
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bær, Bjarne'
 
+    @ignored
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
         Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """
@@ -101,6 +108,7 @@ Egenskap: bidrag-dokument-journalpost
         Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
         Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
+    @ignored
     Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
         Gitt jeg endrer journalpost med id 'BID-30040789' til:
             """

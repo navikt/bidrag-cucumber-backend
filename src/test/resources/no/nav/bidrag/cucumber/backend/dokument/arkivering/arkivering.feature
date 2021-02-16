@@ -8,7 +8,8 @@ Egenskap: bidrag-dokument-arkivering
     Gitt nais applikasjon 'bidrag-dokument-arkivering' med kontekst ''
     Og resttjenesten 'bidrag-testdata' for manipulering av testdata
 
-   Scenario: Arkivere reservert journalpost
+  @ignored
+  Scenario: Arkivere reservert journalpost
     Gitt at jeg oppretter journalpost for 'ARKIVERING':
         """
         {
