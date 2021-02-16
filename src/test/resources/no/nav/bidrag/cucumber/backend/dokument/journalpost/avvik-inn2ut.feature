@@ -36,6 +36,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
     Når jeg oppretter avvik
     Så skal http status være '200'
 
+  @ignored
   Scenario: Sjekk at riktig enhet blir journalført
     Gitt jeg henter nylig opprettet journalpost av 'INNG_TIL_UTG_DOKUMENT'
     Så skal enhet være '4806'

@@ -22,6 +22,7 @@ Egenskap: Avvikshendelse BESTILL_SPLITTING på journalposter som er mottaksregis
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
     Så skal listen med avvikstyper inneholde 'BESTILL_SPLITTING'
 
+  @ignored
   Scenario: Registrere avviket som fører til at journalposten som nå er slettet
     Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
