@@ -22,6 +22,28 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
+      - uses: actions/checkout@v2
+        with:
+          ref: navikt/bidrag-scripts
+      - uses: actions/checkout@v2
+      - uses: fwilhe2/setup-kotlin@0.2.0
+      - run: kotlinc -script $GITHUB_WORKSPACE/bidrag-scripts/src/kotlin/produceCucumberShell.kts \
+               false test maven:3.6.3-openjdk-15 j104364 json/integrationInput.json bidrag-cucumber-backend/execute-cucumber.sh
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+      - run: ls -al $GITHUB_WORKSPACE/bidrag-cucumber-backend
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+      - run: |
+          CUCE_FILE=$GITHUB_WORKSPACE/bidrag-cucumber-backend/execute-cucumber.sh
+
+          if test -f "$CUCE_FILE"; then
+            sudo chmod +x "$CUCE_FILE"
+          else
+            exit 1
+          fi
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
       - uses: navikt/bidrag-integration/cucumber-clone-tags@v5
         id: tags
         env:
@@ -32,10 +54,7 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ steps.tags.outputs.cucumber_path }}
           test_username: z992903
-      - uses: navikt/bidrag-maven/cucumber-backend@v6
-        with:
-          maven_image: maven:3.6.3-openjdk-15
-          username: j104364
+      - run: ./execute-cucumber.sh
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
