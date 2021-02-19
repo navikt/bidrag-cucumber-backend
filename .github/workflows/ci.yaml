@@ -22,10 +22,8 @@ jobs:
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
-      - uses: actions/checkout@v2
-        with:
-          ref: navikt/bidrag-scripts
-      - uses: actions/checkout@v2
+      - run: git clone --depth 1 https://github.com/navikt/bidrag-scripts
+      - run: git clone https://github.com/navikt/bidrag-dokument-cucumber
       - uses: fwilhe2/setup-kotlin@0.2.0
       - run: kotlinc -script $GITHUB_WORKSPACE/bidrag-scripts/src/kotlin/produceCucumberShell.kts \
                false test maven:3.6.3-openjdk-15 j104364 json/integrationInput.json bidrag-cucumber-backend/execute-cucumber.sh
