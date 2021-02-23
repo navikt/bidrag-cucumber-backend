@@ -32,9 +32,8 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ steps.tags.outputs.cucumber_path }}
           test_username: z992903
-      - uses: navikt/bidrag-maven/cucumber-backend@v6-beta
+      - uses: navikt/bidrag-maven/cucumber-backend@v7-beta
         with:
-          maven_image: maven:3.6.3-openjdk-15
           username: j104364
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
