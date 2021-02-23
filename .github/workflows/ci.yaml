@@ -32,7 +32,7 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ steps.tags.outputs.cucumber_path }}
           test_username: z992903
-      - uses: navikt/bidrag-maven/cucumber-backend@v7-beta
+      - uses: navikt/bidrag-maven/cucumber-backend@feature/filter.tags
         with:
           username: j104364
         env:
