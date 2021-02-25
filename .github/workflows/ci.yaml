@@ -32,10 +32,15 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ steps.tags.outputs.cucumber_path }}
           test_username: z992903
-      - uses: navikt/bidrag-maven/cucumber-backend@v6
+      - uses: navikt/bidrag-scripts/generate-with-kotlin@v1
+        id: generator
         with:
-          maven_image: maven:3.6.3-openjdk-15
-          username: j104364
+          delimiter: "%"
+          delimited_arguments: "false%test%j104364%json/integrationInput.json%execute-cucumber.sh"
+          generator: generateCucumberShell.kts
+          generated_shell: execute-cucumber.sh
+      - run: cat ${{ steps.generator.outputs.path_to_generated_shell }}
+      - run: ${{ steps.generator.outputs.path_to_generated_shell }}
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
@@ -43,10 +48,8 @@ jobs:
       - name: Remove files from workspace
         run: |
           cd $RUNNER_WORKSPACE
-          echo deleting files
-          ls -al
           sudo rm -rf *
-        if: ${{ failure() || success() }}
+        if: ${{ always() }}
 
   bump_dev_version:
     runs-on: ubuntu-latest
