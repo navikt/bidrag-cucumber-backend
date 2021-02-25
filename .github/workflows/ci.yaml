@@ -32,9 +32,15 @@ jobs:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ steps.tags.outputs.cucumber_path }}
           test_username: z992903
-      - uses: navikt/bidrag-maven/cucumber-backend@feature/filter.tags
+      - uses: navikt/bidrag-scripts/generate-with-kotlin@v1
+        id: generator
         with:
-          username: j104364
+          delimiter: "%"
+          delimited_arguments: "false%test%j104364%json/integrationInput.json%execute-cucumber.sh"
+          generator: generateCucumberShell.kts
+          generated_shell: execute-cucumber.sh
+      - run: cat ${{ steps.generator.outputs.path_to_generated_shell }}
+      - run: ${{ steps.generator.outputs.path_to_generated_shell }}
         env:
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
