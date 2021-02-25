@@ -42,10 +42,8 @@ jobs:
       - name: Remove files from workspace
         run: |
           cd $RUNNER_WORKSPACE
-          echo deleting files
-          ls -al
           sudo rm -rf *
-        if: ${{ failure() || success() }}
+        if: ${{ always() }}
 
   bump_dev_version:
     runs-on: ubuntu-latest
