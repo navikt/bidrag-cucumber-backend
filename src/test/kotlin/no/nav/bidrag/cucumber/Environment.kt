@@ -20,7 +20,7 @@ internal object Environment {
 
     private fun readAndCahcedIntegrationInput(): IntegrationInput {
         val jsonPath = System.getProperty(INTEGRATION_INPUT) ?: System.getenv(INTEGRATION_INPUT) ?: return initFromEnvironmentAboutToBeRemoved()
-        LOGGER.info("Leser IngegrationInput fra $jsonPath")
+        LOGGER.info("Leser IntegrationInput fra $jsonPath")
         integrationInput = IntegrationInput.read(jsonPath)
 
         return this.integrationInput!!
