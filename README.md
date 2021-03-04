@@ -78,24 +78,50 @@ For en mer detaljert oversikt over cucumber og api'ene som støttes: <https://cu
 Det er lagt opp til at testing kan gjøres med valgt applikasjon angitt. Følgende maven kommando blir da utført:
 
 ``` 
-mvn test -Dcucumber.filter.tags=@<valgt-applikasjon> 
+export CUCUMBER_FILTER_TAGS="@<nais applikasjon> and not @ignored"
+mvn test ... 
 ``` 
-Alle parametre for en fullstendig kjøring av alle prosjekter er:
+Parametre til applikasjonen gies i hovedsak som fil i json. Unntaket er passord (inkl. nav ident)
+Eksempel på `integrationInput.json` (applikasjoner som støtter azure må ha client id, client secret og tennant som ligger på kubernetes poddene):
+``` 
+{
+  "azureInputs":[{
+    "name": "bidrag-dokument-feature",
+    "clientId": "<fra kubernetes pod>",
+    "clientSecret": "<fra kubernetes pod>",
+    "tenant": "<fra kubernetes pod>"
+  },{
+    "name": "bidrag-sak-feature",
+    "clientId": "<fra kubernetes pod>",
+    "clientSecret": "<fra kubernetes pod>",
+    "tenant": "<fra kubernetes pod>"
+  }],
+  "environment":"feature",
+  "naisProjectFolder":"apps",
+  "userTest":"z992903"
+}
+``` 
+* `environemnt` skal være main eller feature (main-branch eller en feature-branch som testes)
+* `naisProjectFolder` skal være relativ sti fra cucumber prosjektet som inneholder nais konfigurasjon til prosjekte(t/ne) som testes
+* `userTest` skal være nav test bruker som blir autentisert mot azure (og derfor ikke trenger medfølgende nav-ident)
+
+En fullstendig kjøring av alle prosjekter er derfor:
 ```
-mvn clean test -DENVIRONMENT=<miljø> -DUSERNAME=<ditt brukernavn> -DUSER_AUTH=<ditt passord>
- -DTEST_USER=<testbruker, ie: Zxxxxxx> -DTEST_AUTH=<testbrukerens passord>
- -DPIP_USER=<pip bruker som skal brukes i bidrag-sak> -DPIP_AUTH=<pip brukers passord>
- -DPROJECT_NAIS_FOLDER=<mappe for github-prosjekt som har en nais folder for ingress-konfigurasjon ([main/feature].json)>
+mvn test -e -DUSERNAME=j104364 -DINTEGRATION_INPUT=json/integrationInput.json \
+  -DUSER_AUTH=$USER_AUTHENTICATION \
+  -DTEST_AUTH=$TEST_USER_AUTHENTICATION \
+  -DPIP_AUTH=$PIP_USER_AUTHENTICATION
 ```
-_**PS!**_ *PIP_USER* blir bare brukt i en test i bidrag-sak
+_**PS!**_ *PIP_AUTH* brukes bare i en test tilhørende `bidrag-sak`
+_**PPS!**_ *USERNMAE* (som er navident) må foreløpig være del av testingen siden ikke alle applikasjoner er skrudd over til azure enda.
 
 #### Kjøring lokalt
 `bidrag-cucumber-backend` kan også kjøres lokalt, men bare hvis man har kontakt med applikasjonen via terminal. Dvs. enten fra "Nord-Korea" eller fra
-en naisdevice.
+et naisdevice.
 
 ### Test rapportering
-Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en maven-plugin:
-
+Etter at testing er gjennomført så kan man lage en rapport som blir tilgjengelig i `target/generated-report/index.html`. Dette gjøres av en
+maven-plugin:
 ```
 mvn cluecumber-report:reporting
 ```
