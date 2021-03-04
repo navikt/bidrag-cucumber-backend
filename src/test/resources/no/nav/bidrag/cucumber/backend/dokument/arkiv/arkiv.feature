@@ -16,7 +16,6 @@ Egenskap: bidrag-dokument-arkiv
     Og header 'content-type' skal være 'application/json'
     Og responsen skal inneholde 'status' = 'UP'
 
-  @ignored
   Scenario: Sjekk at kall mot SAF er OK (ikke forventet å finne noe resultat)
     Når jeg kaller endpoint '/sak/1234567/journal' med parameter 'fagomrade' = 'BID'
     Så skal http status være '204'
