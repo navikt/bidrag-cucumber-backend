@@ -35,15 +35,15 @@ internal object NaisConfiguration {
         val integrationInput = Environment.fetchIntegrationInput()
         val applfolder = File("${integrationInput.naisProjectFolder}/$applicationName")
         val naisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
+        val hiddenNaisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
         val envFile = fetchEnvFileByEnvironment(applicationName, integrationInput)
 
-        LOGGER.info("> applFolder exists: ${applfolder.exists()}, path: $applfolder")
-        LOGGER.info("> naisFolder exists: ${naisFolder.exists()}, path: $naisFolder")
-        LOGGER.info("> envFile    exists: ${envFile.exists()}, path: $envFile")
+        LOGGER.info("> applFolder       - ${exists(applfolder)} $applfolder")
+        LOGGER.info("> naisFolder       - ${exists(naisFolder)} $naisFolder")
+        LOGGER.info("> hiddenNaisFolder - ${exists(hiddenNaisFolder)} $naisFolder")
+        LOGGER.info("> envFile          - ${exists(envFile)} $envFile")
 
-        val canReadNaisEnvironment = applfolder.exists() && naisFolder.exists() && envFile.exists()
-
-        if (canReadNaisEnvironment) {
+        if (envFile.exists()) {
             val environmentFile = EnvironmentFile(applicationName, envFile)
             ENVIRONMENT_FOR_APPLICATION[applicationName] = environmentFile
             Sikkerhet.settOpp(environmentFile)
@@ -65,6 +65,8 @@ internal object NaisConfiguration {
 
         throw IllegalStateException("Unable to find ${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.? (json or yaml)")
     }
+
+    private fun exists(file: File) = if (file.exists()) "Existing path" else "Missing path"
 
     internal fun hentApplicationHostUrl(applicationNameOrAlias: String): String {
 
