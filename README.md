@@ -113,7 +113,8 @@ mvn test -e -DUSERNAME=j104364 -DINTEGRATION_INPUT=json/integrationInput.json \
   -DPIP_AUTH=$PIP_USER_AUTHENTICATION
 ```
 _**PS!**_ *PIP_AUTH* brukes bare i en test tilhørende `bidrag-sak`
-_**PPS!**_ *USERNMAE* (som er navident) må foreløpig være del av testingen siden ikke alle applikasjoner er skrudd over til azure enda.
+
+_**PPS!**_ *USERNAME* (som er navident) må foreløpig være del av testingen siden ikke alle applikasjoner er skrudd over til azure enda.
 
 #### Kjøring lokalt
 `bidrag-cucumber-backend` kan også kjøres lokalt, men bare hvis man har kontakt med applikasjonen via terminal. Dvs. enten fra "Nord-Korea" eller fra
