@@ -39,7 +39,7 @@ internal object NaisConfiguration {
 
         LOGGER.info("> applFolder       - ${exists(applfolder)} $applfolder")
         LOGGER.info("> naisFolder       - ${exists(naisFolder)} $naisFolder")
-        LOGGER.info("> hiddenNaisFolder - ${exists(hiddenNaisFolder)} $naisFolder")
+        LOGGER.info("> hiddenNaisFolder - ${exists(hiddenNaisFolder)} $hiddenNaisFolder")
 
         val file = fetchEnvFileByEnvironment(if (naisFolder.exists()) naisFolder else hiddenNaisFolder, integrationInput)
         val environmentFile = EnvironmentFile(applicationName, file)
