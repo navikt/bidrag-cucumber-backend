@@ -35,35 +35,32 @@ internal object NaisConfiguration {
         val integrationInput = Environment.fetchIntegrationInput()
         val applfolder = File("${integrationInput.naisProjectFolder}/$applicationName")
         val naisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
-        val hiddenNaisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/nais")
-        val envFile = fetchEnvFileByEnvironment(applicationName, integrationInput)
+        val hiddenNaisFolder = File("${integrationInput.naisProjectFolder}/$applicationName/.nais")
 
         LOGGER.info("> applFolder       - ${exists(applfolder)} $applfolder")
         LOGGER.info("> naisFolder       - ${exists(naisFolder)} $naisFolder")
         LOGGER.info("> hiddenNaisFolder - ${exists(hiddenNaisFolder)} $naisFolder")
-        LOGGER.info("> envFile          - ${exists(envFile)} $envFile")
 
-        if (envFile.exists()) {
-            val environmentFile = EnvironmentFile(applicationName, envFile)
-            ENVIRONMENT_FOR_APPLICATION[applicationName] = environmentFile
-            Sikkerhet.settOpp(environmentFile)
-        }
+        val file = fetchEnvFileByEnvironment(if (naisFolder.exists()) naisFolder else hiddenNaisFolder, integrationInput)
+        val environmentFile = EnvironmentFile(applicationName, file)
+        ENVIRONMENT_FOR_APPLICATION[applicationName] = environmentFile
+        Sikkerhet.settOpp(environmentFile)
     }
 
-    private fun fetchEnvFileByEnvironment(applicationName: String, integrationInput: IntegrationInput): File {
-        val miljoJson = File("${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.json")
+    private fun fetchEnvFileByEnvironment(naisFolder: File, integrationInput: IntegrationInput): File {
+        val miljoJson = File(naisFolder, "${integrationInput.environment}.json")
 
         if (miljoJson.exists()) {
             return miljoJson
         }
 
-        val miljoYaml = File("${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.yaml")
+        val miljoYaml = File(naisFolder, "${integrationInput.environment}.yaml")
 
         if (miljoYaml.exists()) {
             return miljoYaml
         }
 
-        throw IllegalStateException("Unable to find ${integrationInput.naisProjectFolder}/$applicationName/nais/${integrationInput.environment}.? (json or yaml)")
+        throw IllegalStateException("Unable to find $naisFolder/${integrationInput.environment}.? (json or yaml)")
     }
 
     private fun exists(file: File) = if (file.exists()) "Existing path" else "Missing path"
