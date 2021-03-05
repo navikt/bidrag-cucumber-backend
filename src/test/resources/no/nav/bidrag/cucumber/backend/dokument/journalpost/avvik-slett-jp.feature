@@ -33,9 +33,10 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
     Når jeg oppretter avvik
     Så skal http status være '200'
 
-  Scenario: Sjekk avviksvalg for gitt journalpost som har journalstatus slett journalpost skal være ei tom liste
+  Scenario: Sjekk avviksvalg at for gitt journalpost med journalstatus slett journalpost skal være ei tom liste
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
-    Så skal http status være '204'
+    Så skal http status være '200'
+    Og listen med avvikstyper skal være tom
 
   @ignored
   Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
