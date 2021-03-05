@@ -89,8 +89,8 @@ class AvvikEgenskaper {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
         assertAll(
-                { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
-                { assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) }
+            { assertThat(funnetAvvikstyper).`as`("$funnetAvvikstyper vs $forventedeAvvik").hasSize(forventedeAvvik.size) },
+            { assertThat(funnetAvvikstyper.contains("\"$forventedeAvvik\"")) }
         )
     }
 
@@ -112,7 +112,10 @@ class AvvikEgenskaper {
     fun `listen med avvikstyper skal vare tom`() {
         val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
 
-        assertThat(funnetAvvikstyper).isEmpty()
+        if (funnetAvvikstyper.isNotEmpty()) {
+            assertThat(funnetAvvikstyper).size().isEqualTo(1)
+            assertThat(funnetAvvikstyper).contains("")
+        }
     }
 
     @Og("avvikstypen har beskrivelse {string}")
