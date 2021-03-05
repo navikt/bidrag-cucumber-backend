@@ -108,6 +108,13 @@ class AvvikEgenskaper {
         assertThat(funnetAvvikstyper).doesNotContain("\"$avvikstype\"")
     }
 
+    @Og("listen med avvikstyper skal være tom")
+    fun `listen med avvikstyper skal vare tom`() {
+        val funnetAvvikstyper = restTjenesteAvvik().hentResponseSomListeAvStrenger()
+
+        assertThat(funnetAvvikstyper).isEmpty()
+    }
+
     @Og("avvikstypen har beskrivelse {string}")
     fun avvikstypen_har_beskrivelse(beskrivelse: String) {
         avvikData.beskrivelse = beskrivelse
