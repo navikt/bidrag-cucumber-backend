@@ -37,7 +37,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
   Scenario: Sjekk at jeg kan bestille splitting
     Gitt beskrivelsen 'splitt midt på'
     Når jeg oppretter avvik
-    Så skal http status være '201'
+    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'feilfort' = 'true'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AS'

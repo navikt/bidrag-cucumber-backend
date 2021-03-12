@@ -30,7 +30,7 @@ Egenskap: Avvikshendelse BESTILL_RESKANNING på journalposter som er mottaksregi
         "avvikType":"BESTILL_RESKANNING"
         }
         """
-    Så skal http status være '201'
+    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AR'

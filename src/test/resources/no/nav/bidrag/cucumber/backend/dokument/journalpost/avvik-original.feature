@@ -36,7 +36,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
   @ignored
   Scenario: Sjekk at man kan bestille original
     Når jeg oppretter avvik
-    Så skal http status være '201'
+    Så skal http status være '200'
 
   @ignored
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
