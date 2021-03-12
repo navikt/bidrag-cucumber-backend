@@ -16,12 +16,12 @@ Egenskap: bidrag-sak
   Scenario: Sjekk at vi får NOT FOUND dersom vi ber om sak for person som ikke eksisterer i databasen
     Gitt resttjenesten 'bidragSak'
     Når jeg henter bidragssaker for person med fnr "12345678910"
-    Så skal http status være '204'
+    Så skal http status være '404'
 
   @ignored
   @pip
-  Scenario: Skal gi 204 for sak 9999999
+  Scenario: Skal gi 200 for sak 9999999
     Gitt resttjenesten 'bidragSak'
     Og bruk av en produksjonsbrukeren 'srvbisys' med tilgang til bidrag-sak pip
     Når jeg henter pip for sak '9999999'
-    Så skal http status være '204'
+    Så skal http status være '200'
