@@ -60,7 +60,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "journaldato": "2006-05-09"
             }
             """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bond, James'
 
@@ -82,7 +82,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "journaldato": "2006-05-09"
             }
             """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
 
@@ -105,7 +105,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "dokumentDato": "2001-01-01"
             }
             """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
@@ -128,6 +128,6 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "dokumentDato": "2001-02-01"
             }
             """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-02-01'

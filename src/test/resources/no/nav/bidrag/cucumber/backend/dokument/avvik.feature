@@ -41,7 +41,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
   Scenario: Sjekk at man kan bestille original
     Gitt avvikstype 'BESTILL_ORIGINAL'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
-    Så skal http status være '201'
+    Så skal http status være '200'
 
   @ignored
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
@@ -55,7 +55,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
   Scenario: Sjekk at man kan bestille reskannning
     Gitt avvikstype 'BESTILL_RESKANNING'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
-    Så skal http status være '201'
+    Så skal http status være '200'
 
   Scenario: Sjekk at man ikke kan bestille ukjent avvik
     Gitt avvikstype 'BLAH_BLAH_LAH_123'
@@ -67,7 +67,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
     Gitt avvikstype 'BESTILL_SPLITTING'
     Og avvikstypen har beskrivelse 'Splitt på midten'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
-    Så skal http status være '201'
+    Så skal http status være '200'
 
   @ignored
   Scenario: Sjekk at man kan endre fagområde til FAR
