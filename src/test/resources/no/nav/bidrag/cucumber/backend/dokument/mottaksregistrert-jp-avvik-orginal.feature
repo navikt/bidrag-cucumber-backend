@@ -31,7 +31,7 @@ Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregist
         "avvikType":"BESTILL_ORIGINAL"
         }
         """
-    Så skal http status være '201'
+    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
     Så skal http status være '200'
 

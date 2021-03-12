@@ -35,7 +35,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
   @ignored
   Scenario: Sjekk at reskanning kan bestilles
     Når jeg oppretter avvik
-    Så skal http status være '201'
+    Så skal http status være '200'
 
   @ignored
   Scenario: Sjekk at oppgave blir laget for reskanning
@@ -46,7 +46,7 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
   @ignored
   Scenario: Sjekk at når man bestiller reskanning, så skal journalposten bli feilført
     Når jeg oppretter avvik
-    Så skal http status være '201'
+    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling
     Så skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'feilfort' = 'true'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AR'

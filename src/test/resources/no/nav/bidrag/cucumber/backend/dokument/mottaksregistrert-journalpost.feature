@@ -91,7 +91,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         ]
       }
       """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
@@ -131,7 +131,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         ]
       }
       """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og at jeg henter endret journalpost for 'JOURNALFOR' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'J'
@@ -171,7 +171,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         ]
       }
       """
-    Så skal http status være '202'
+    Så skal http status være '200'
     Og at jeg henter endret journalpost for 'JOURNALFOR_DOK' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'J'

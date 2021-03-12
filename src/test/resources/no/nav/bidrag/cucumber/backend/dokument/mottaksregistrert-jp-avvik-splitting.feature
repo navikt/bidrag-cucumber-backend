@@ -32,7 +32,7 @@ Egenskap: Avvikshendelse BESTILL_SPLITTING på journalposter som er mottaksregis
         "beskrivelse":"etter avsnitt 2"
         }
         """
-    Så skal http status være '201'
+    Så skal http status være '200'
     Og når jeg jeg henter journalpost etter avviksbehandling med url '/journal/journalpostId'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AS'
