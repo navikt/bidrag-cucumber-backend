@@ -11,14 +11,24 @@ jobs:
     name: run cucumber integration tests
 
     steps:
+      - run: |
+          if [[ $GITHUB_REF == "refs/heads/main" ]]; then
+            ENVIRONMENT=main
+          elif [[ $GITHUB_REF == "refs/heads/feature/main.environment" ]]; then
+            ENVIRONMENT=main
+          else
+            ENVIRONMENT=feature
+          fi
+
+          echo BRANCH=$ENVIRONMENT >> $GITHUB_ENV
       - run: kubectl config use-context dev-fss
       - name: restart bidrag-testdata
-        if: github.ref == 'refs/heads/main'
+        if: env.BRANCH=main
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
       - name: restart bidrag-testdata-feature
-        if: github.ref != 'refs/heads/main'
+        if: env.BRANCH=feature
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
@@ -26,7 +36,7 @@ jobs:
         id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - uses: navikt/bidrag-integration/input-json@v5
+      - uses: navikt/bidrag-integration/input-json@feature/main.environment
         id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
