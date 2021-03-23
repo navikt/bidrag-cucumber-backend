@@ -9,6 +9,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
     Gitt resttjenesten 'bidragDokument'
+    Og resttjenesten 'bidrag-testdata' for manipulering av testdata
 
   Scenario: Sjekk operativt health endpoint
     Når jeg kaller helsetjenesten
@@ -106,6 +107,13 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             }
             """
     Så skal http status være '200'
+    Og lag bidragssak '0000004' når den ikke finnes fra før:
+            """
+            {
+              "saksnummer": "0000004",
+              "enhetsnummer": "4806"
+            }
+            """
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
