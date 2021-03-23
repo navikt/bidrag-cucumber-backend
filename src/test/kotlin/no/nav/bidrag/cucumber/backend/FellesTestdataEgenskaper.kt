@@ -69,4 +69,9 @@ class FellesTestdataEgenskaper {
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.body).containsSequence(hendelse)
     }
+
+    @Og("lag bidragssak {string} når den ikke finnes fra før:")
+    fun `lag bidragssak nar den ikke finnes fra for`(saksnummer: String, bidragssak: String) {
+        restTjenesteTestdata.exchangePost("/sak/$saksnummer", bidragssak)
+    }
 }
