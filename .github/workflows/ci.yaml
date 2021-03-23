@@ -36,7 +36,7 @@ jobs:
         id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
-      - uses: navikt/bidrag-integration/input-json@feature/main.environment
+      - uses: navikt/bidrag-integration/input-json@v5
         id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
