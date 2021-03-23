@@ -23,12 +23,12 @@ jobs:
           echo BRANCH=$ENVIRONMENT >> $GITHUB_ENV
       - run: kubectl config use-context dev-fss
       - name: restart bidrag-testdata
-        if: env.BRANCH=main
+        if: env.BRANCH == 'main'
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
       - name: restart bidrag-testdata-feature
-        if: env.BRANCH=feature
+        if: env.BRANCH == 'feature'
         run: |
           PODS_TESTDATA=$(kubectl get pods -n bidrag -l app=bidrag-testdata-feature  | awk '{print $1}' | grep -v NAME)
           kubectl delete pods -n bidrag $(echo $PODS_TESTDATA | sed 's;\n; ;')
