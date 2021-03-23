@@ -87,7 +87,6 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
 
-  @ignored
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
     Gitt jeg endrer journalpost som har id 'BID-30040789':
             """
