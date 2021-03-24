@@ -10,6 +10,30 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
   Fasit environment er gitt ved environment variabler ved oppstart.
     Gitt resttjenesten 'bidragDokument'
     Og resttjenesten 'bidrag-testdata' for manipulering av testdata
+    Og opprett journalpost med nøkkel 'JOURNALPOSTER_BD' når den ikke finnes:
+        """
+        {
+        "avsenderNavn": "Cucumber Test",
+        "beskrivelse": "journalposter feature",
+        "dokumentType": "I",
+        "dokumentdato": "2019-01-01",
+        "dokumentreferanse": "1234567890",
+        "fagomrade": "BID",
+        "journalstatus": "J",
+        "gjelder": "***REMOVED***",
+        "journaldato": "2019-01-01",
+        "mottattDato": "2019-01-01",
+        "skannetDato": "2019-01-01",
+        "saksnummer": "0000003"
+        }
+        """
+    Og lag bidragssak '0000003' når den ikke finnes fra før:
+            """
+            {
+              "saksnummer": "0000003",
+              "enhetsnummer": "4806"
+            }
+            """
 
   Scenario: Sjekk operativt health endpoint
     Når jeg kaller helsetjenesten
@@ -56,14 +80,14 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "0000004"
             },
             "gjelder": "***REMOVED***",
-            "avsenderNavn": "Bond, James",
-            "beskrivelse": "Søknad, Bidrag",
+            "avsenderNavn": "Cucumber Test",
+            "beskrivelse": "Bond, James",
             "journaldato": "2006-05-09"
             }
             """
     Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Bond, James'
+    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'beskrivelse' = 'Bond, James'
 
   @ignored
   Scenario: Sjekk at journalpost kan oppdateres - Trygdekontoret
@@ -78,20 +102,19 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "0000004"
             },
             "gjelder": "***REMOVED***",
-            "avsenderNavn": "Trygdekontoret",
-            "beskrivelse": "Søknad, Bidrag",
+            "avsenderNavn": "Cucumber Test",
+            "beskrivelse": "Trygdekontoret",
             "journaldato": "2006-05-09"
             }
             """
     Så skal http status være '200'
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
-    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'avsenderNavn' = 'Trygdekontoret'
+    Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'beskrivelse' = 'Trygdekontoret'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
-    Gitt jeg endrer journalpost som har id 'BID-30040789':
+    Gitt jeg endrer journalpost for testdata med nøkkel 'JOURNALPOSTER_BD':
             """
             {
-            "journalpostId": 30040789,
             "saksnummer": {
             "erTilknyttetNySak": false,
             "saksnummer": "0000004",
@@ -99,20 +122,13 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "0000004"
             },
             "gjelder": "***REMOVED***",
-            "avsenderNavn": "Bær, Bjarne",
-            "beskrivelse": "Søknad, Bidrag",
+            "avsenderNavn": "Cucumber Test",
+            "beskrivelse": "Bær, Bjarne",
             "journaldato": "2006-05-09",
             "dokumentDato": "2001-01-01"
             }
             """
     Så skal http status være '200'
-    Og lag bidragssak '0000004' når den ikke finnes fra før:
-            """
-            {
-              "saksnummer": "0000004",
-              "enhetsnummer": "4806"
-            }
-            """
     Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
@@ -129,8 +145,8 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "0000004"
             },
             "gjelder": "***REMOVED***",
-            "avsenderNavn": "Bær, Bjarne",
-            "beskrivelse": "Søknad, Bidrag",
+            "avsenderNavn": "Cucumber Test",
+            "beskrivelse": "Bær, Bjarne",
             "journaldato": "2006-05-09",
             "dokumentDato": "2001-02-01"
             }
