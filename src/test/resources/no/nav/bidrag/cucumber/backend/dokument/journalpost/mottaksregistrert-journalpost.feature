@@ -8,6 +8,13 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
   Bakgrunn: Tester hent journalpost uten sakstilknytning
     Gitt resttjenesten 'bidragDokumentJournalpost'
     Og resttjenesten 'bidrag-testdata' for manipulering av testdata
+    Og lag bidragssak '0000004' når den ikke finnes fra før:
+      """
+        {
+          "saksnummer": "0000004",
+          "enhetsnummer": "4806"
+        }
+      """
 
   Scenario: Hent med ugyldig prefix i journalpost id
     Gitt at jeg henter journalpost med path '/journal/XXX-123'
