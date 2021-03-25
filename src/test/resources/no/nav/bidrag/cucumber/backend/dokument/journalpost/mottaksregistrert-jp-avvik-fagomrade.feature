@@ -20,7 +20,6 @@ Egenskap: Avvikshendelse ENDRE_FAGOMRADE på journalposter som er mottaksregistr
     Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
     Så skal listen med avvikstyper inneholde 'ENDRE_FAGOMRADE'
 
-  @ignored
   Scenario: Registrere avviket og sjekke endringen av journalpost
     Gitt enhet for behandling av avvik på mottaksregistrert journalpost er '4806'
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
