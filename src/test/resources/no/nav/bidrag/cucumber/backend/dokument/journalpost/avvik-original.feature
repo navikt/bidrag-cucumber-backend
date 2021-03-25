@@ -34,6 +34,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
     Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
   Scenario: Sjekk at man kan bestille original
+    Gitt detaljer 'enhetsnummer' = '4802'
     Når jeg oppretter avvik
     Så skal http status være '200'
 
