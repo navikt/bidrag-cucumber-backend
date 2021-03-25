@@ -33,18 +33,16 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
     Så skal http status være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_ORIGINAL'
 
-  @ignored
   Scenario: Sjekk at man kan bestille original
+    Gitt detaljer 'enhetsnummer' = '4802'
     Når jeg oppretter avvik
     Så skal http status være '200'
 
-  @ignored
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
     Når jeg ber om gyldige avviksvalg for opprettet journalpost
     Så skal http status være '200'
     Og listen med avvikstyper skal ikke inneholde 'BESTILL_ORIGINAL'
 
-  @ignored
   Scenario: Sjekk at oppgave blir laget for bestill original
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
