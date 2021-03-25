@@ -16,7 +16,7 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
         "dokumentType": "U",
         "journalstatus": "J",
         "fagomrade": "BID",
-        "gjelder": "29118044353",
+        "gjelder": "29118012345",
         "journaldato": "2019-01-01",
         "journalstatus": "D",
         "mottattDato": "2019-01-01",

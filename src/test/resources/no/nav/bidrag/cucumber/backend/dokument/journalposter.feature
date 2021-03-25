@@ -17,7 +17,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
         "journalstatus": "J",
-        "gjelder": "29118044353",
+        "gjelder": "29118012345",
         "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",
         "skannetDato": "2019-01-01",
@@ -73,7 +73,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "saksnummerSomSkalErstattes":
             "0000003"
             },
-            "gjelder": "29118044353",
+            "gjelder": "29118012345",
             "avsenderNavn": "Cucumber Test",
             "beskrivelse": "Bær, Bjarne",
             "journaldato": "2006-05-09",
@@ -95,7 +95,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             "saksnummerSomSkalErstattes":
             "0000003"
             },
-            "gjelder": "29118044353",
+            "gjelder": "29118012345",
             "avsenderNavn": "Cucumber Test",
             "beskrivelse": "Bær, Bjarne",
             "journaldato": "2006-05-09",
