@@ -6,8 +6,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
   URLer til tjenester hentes via fasit.adeo.no og gjøres ved å spesifisere
   alias til en RestService record i fasit for et gitt miljø.
 
-  Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
-  Fasit environment er gitt ved environment variabler ved oppstart.
+  Bakgrunn: Spesifiser resttjeneste og testdata grunnlag.
     Gitt resttjenesten 'bidragDokument'
     Og resttjenesten 'bidrag-testdata' for manipulering av testdata
     Og opprett journalpost med nøkkel 'JOURNALPOSTER_BD' når den ikke finnes:
@@ -40,7 +39,8 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Så skal http status være '200'
     Og responsen skal inneholde 'status' = 'UP'
 
-  Scenario: Sjekk at vi får en sakjournal for en sak
+  @ignored
+  Scenario: Sjekk at vi får en sakjournal for en sak - ignorert fordi sikkerhet mot saf ikke er satt opp i q2
     Gitt jeg henter journalposter for sak "0000003" som har fagområde "BID"
     Så skal http status være '200'
     Og så skal responsen være en liste
