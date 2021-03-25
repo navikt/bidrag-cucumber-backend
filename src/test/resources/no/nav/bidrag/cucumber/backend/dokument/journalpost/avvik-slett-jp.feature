@@ -38,7 +38,6 @@ Egenskap: avvik bidrag-dokument-journalpost: slett journalpost
     Så skal http status være '200'
     Og listen med avvikstyper skal være tom
 
-  @ignored
   Scenario: Sjekk at slettet journalpostid ikke lenger returneres i saksjournalen
     Når jeg henter journalposter for sak '0000003' med fagområde 'BID' for å sjekke avviksbehandling
     Så skal http status være '200'
