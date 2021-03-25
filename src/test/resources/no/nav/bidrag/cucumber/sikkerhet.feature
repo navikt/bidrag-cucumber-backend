@@ -15,6 +15,7 @@ Egenskap: bidrag-cucumber: sikkerhet
     Gitt jeg bruker namespace: 'q4'
     Så kan vi hente isso token
 
+  @ignored
   Scenario: Sjekk at vi kan hente et id_token i 'q2'
     Gitt jeg bruker namespace: 'q2'
     Så kan vi hente isso token
