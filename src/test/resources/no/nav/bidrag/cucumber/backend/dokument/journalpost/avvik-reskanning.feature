@@ -32,18 +32,15 @@ Egenskap: avvik bidrag-dokument-journalpost: reskanning
     Så skal http status være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_RESKANNING'
 
-  @ignored
   Scenario: Sjekk at reskanning kan bestilles
     Når jeg oppretter avvik
     Så skal http status være '200'
 
-  @ignored
   Scenario: Sjekk at oppgave blir laget for reskanning
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
     Og søkeresultatet skal inneholde en oppgave
 
-  @ignored
   Scenario: Sjekk at når man bestiller reskanning, så skal journalposten bli feilført
     Når jeg oppretter avvik
     Så skal http status være '200'
