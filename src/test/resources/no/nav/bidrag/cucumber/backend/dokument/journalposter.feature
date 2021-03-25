@@ -31,7 +31,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
             {
               "saksnummer": "0000003",
-              "enhetsnummer": "4806"
+              "enhetsnummer": "4802"
             }
             """
 
@@ -117,7 +117,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             {
             "saksnummer": {
             "erTilknyttetNySak": false,
-            "saksnummer": "0000004",
+            "saksnummer": "0000003",
             "saksnummerSomSkalErstattes":
             "0000004"
             },
@@ -129,7 +129,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             }
             """
     Så skal http status være '200'
-    Og jeg henter journalpost for sak "0000004" som har id "BID-30040789"
+    Og jeg henter journalpost for sak '0000003' som har id for nokkel 'JOURNALPOSTER_BD'
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
   @ignored

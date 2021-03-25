@@ -13,10 +13,10 @@ class JournalpostEgenskaper {
         restTjeneste.exchangeGet("/journal/$journalpostId?saksnummer=$saksnummer")
     }
 
-    @Gitt("jeg henter journalpost for sak {string} for nøkkel {string}")
-    fun `jeg henter journalpost for sak og nokkel`(saksnummer: String, nokkel: String) {
+    @Gitt("jeg henter journalpost for sak {string} som har id for nokkel {string}")
+    fun `jeg henter journalpost for sak og id for nokkel`(saksnummer: String, nokkel: String) {
         val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]
-        restTjeneste.exchangeGet("/journal/$journalpostId?saksnummer=$saksnummer")
+        restTjeneste.exchangeGet("/journal/BID-$journalpostId?saksnummer=$saksnummer")
     }
 
     @Og("følgende properties skal ligge i responsen:")
