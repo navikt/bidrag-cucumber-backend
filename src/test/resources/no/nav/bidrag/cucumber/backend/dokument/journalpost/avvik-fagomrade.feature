@@ -18,6 +18,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre fagomrade
         "fagomrade": "BID",
         "journalstatus": "J",
         "gjelder": "29118012345",
+        "journalforendeEnhet": "4802",
         "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",
         "skannetDato": "2019-01-01",
