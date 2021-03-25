@@ -18,7 +18,7 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill original
         "dokumentdato": "2019-01-01",
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
-        "gjelder": "***REMOVED***",
+        "gjelder": "29118012345",
         "journaldato": "2019-01-01",
         "journalstatus": "J",
         "mottattDato": "2019-01-01",

@@ -18,7 +18,7 @@ Egenskap: avvik bidrag-dokument-journalpost: endre inn til utgående
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
         "filnavn": "svada.pdf",
-        "gjelder": "***REMOVED***",
+        "gjelder": "29118012345",
         "journaldato": "2019-01-01",
         "journalstatus": "J",
         "mottattDato": "2019-01-01",
