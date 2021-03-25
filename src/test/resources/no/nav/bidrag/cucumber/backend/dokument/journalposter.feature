@@ -3,8 +3,6 @@
 Egenskap: bidrag-dokument (/sak/*/journal REST API)
 
   Tester REST API til journalpost endepunktet i bidrag-dokument.
-  URLer til tjenester hentes via fasit.adeo.no og gjøres ved å spesifisere
-  alias til en RestService record i fasit for et gitt miljø.
 
   Bakgrunn: Spesifiser resttjeneste og testdata grunnlag.
     Gitt resttjenesten 'bidragDokument'

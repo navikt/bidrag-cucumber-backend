@@ -2,12 +2,38 @@
 @bidrag-dokument-journalpost
 Egenskap: bidrag-dokument-journalpost
 
-    Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
+    Bakgrunn: Spesifiser resttjeneste og testdata grunnlag.
         Gitt resttjenesten 'bidragDokumentJournalpost'
+        Og resttjenesten 'bidrag-testdata' for manipulering av testdata
+        Og opprett journalpost med nøkkel 'JOURNALPOSTER_BDJ' når den ikke finnes:
+            """
+            {
+              "avsenderNavn": "Cucumber Test",
+              "beskrivelse": "journalposter feature",
+              "dokumentType": "I",
+              "dokumentdato": "2019-01-01",
+              "dokumentreferanse": "1234567890",
+              "fagomrade": "BID",
+              "journalfortAv": "Bond, James",
+              "journalstatus": "J",
+              "gjelder": "29118044353",
+              "innhold": "your mama",
+              "journaldato": "2019-01-01",
+              "mottattDato": "2019-01-01",
+              "skannetDato": "2019-01-01",
+              "saksnummer": "0000003"
+            }
+            """
+        Og lag bidragssak '0000003' når den ikke finnes fra før:
+            """
+            {
+              "saksnummer": "0000003",
+              "enhetsnummer": "4802"
+            }
+            """
 
-    @ignored
     Scenario: Sjekk at vi får korrekt basisinnhold journalpost for en gitt journalpostId
-        Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
+        Og jeg henter journalpost for sak '0000003' som har id for nokkel 'JOURNALPOSTER_BDJ'
         Så skal http status være '200'
         Og responsen skal inneholde et objekt med navn 'journalpost' som har feltene:
             | avsenderNavn  |
