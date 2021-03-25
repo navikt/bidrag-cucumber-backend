@@ -21,7 +21,8 @@ Egenskap: bidrag-dokument-journalpost
               "journaldato": "2019-01-01",
               "mottattDato": "2019-01-01",
               "skannetDato": "2019-01-01",
-              "saksnummer": "0000003"
+              "saksnummer": "0000003",
+              "tittel": "nothing else matters..."
             }
             """
         Og lag bidragssak '0000003' når den ikke finnes fra før:
@@ -43,9 +44,8 @@ Egenskap: bidrag-dokument-journalpost
             | journalfortAv |
             | innhold       |
 
-    @ignored
     Scenario: Sjekk at vi får korrekt data i 'dokumenter' for en gitt journalpostId
-        Gitt jeg henter journalpost for sak "0000003" som har id "BID-19650256"
+        Gitt jeg henter journalpost for sak '0000003' som har id for nokkel 'JOURNALPOSTER_BDJ'
         Så skal http status være '200'
         Og responsen skal inneholde et objekt med navn 'journalpost' som har et felt 'dokumenter' med feltene:
             | dokumentreferanse |
