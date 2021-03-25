@@ -33,7 +33,6 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
     Så skal http status være '200'
     Og listen med avvikstyper skal inneholde 'BESTILL_SPLITTING'
 
-  @ignored
   Scenario: Sjekk at jeg kan bestille splitting
     Gitt beskrivelsen 'splitt midt på'
     Når jeg oppretter avvik
@@ -42,7 +41,6 @@ Egenskap: avvik bidrag-dokument-journalpost: bestill splitting
     Så skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'feilfort' = 'true'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'AS'
 
-  @ignored
   Scenario: Sjekk at oppgave blir laget for splitting
     Gitt jeg søker etter oppgaver for journalpost
     Så skal http status for oppgavesøket være '200'
