@@ -18,7 +18,7 @@ Egenskap: avvik bidrag-dokument-journalpost: feilfore sak
         "dokumentdato": "2019-01-01",
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
-        "gjelder": "29118044353",
+        "gjelder": "29118012345",
         "journaldato": "2019-01-01",
         "mottattDato": "2019-01-01",
         "saksnummer": "0000003",
