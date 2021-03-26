@@ -12,6 +12,7 @@ Egenskap: Avvikshendelse ENDRE_FAGOMRADE på journalposter som er mottaksregistr
         "beskrivelse": "Test endre fagområde på mottaksregistrert journalpost",
         "dokumentType": "I",
         "fagomrade": "BID",
+        "journalforendeEnhet": "4806",
         "journalstatus":"M"
         }
         """
