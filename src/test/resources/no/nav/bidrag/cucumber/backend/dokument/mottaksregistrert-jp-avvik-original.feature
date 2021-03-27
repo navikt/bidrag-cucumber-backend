@@ -1,25 +1,26 @@
 # language: no
-@bidrag-dokument-journalpost
+@bidrag-dokument
 @mottaksregistrert
 Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregistrert (/journal/*/avvik REST API)
 
   Bakgrunn: Gitt resttjeneste og testdata
-    Gitt resttjenesten 'bidragDokumentJournalpost' for å registrere avvik på mottaksredigert journalpost, avvikstype 'BESTILL_ORIGINAL'
+    Gitt resttjenesten 'bidragDokument' for å registrere avvik på mottaksredigert journalpost, avvikstype 'BESTILL_ORIGINAL'
     Og resttjenesten 'bidrag-testdata' til å opprette journalpost når den ikke finnes for avvikstypen:
-        """
+      """
         {
-        "avsenderNavn"   : "Cucumber Test",
-        "batchNavn"      : "En batch",
-        "beskrivelse"    : "Test bestill reskanning på mottaksregistrert journalpost",
-        "dokumentType"   : "I",
-        "journalstatus"  : "M",
-        "originalBestilt": "false",
-        "skannetDato"    : "2019-01-01"
+          "avsenderNavn"       : "Cucumber Test",
+          "batchNavn"          : "En batch",
+          "beskrivelse"        : "Test bestill reskanning på mottaksregistrert journalpost",
+          "dokumentType"       : "I",
+          "journalforendeEnhet": "4806",
+          "journalstatus"      : "M",
+          "originalBestilt"    : "false",
+          "skannetDato"        : "2019-01-01"
         }
-        """
+      """
 
   Scenario: Skal finne avviket BESTILL_ORIGINAL på mottaksregistrert journalpost
-    Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal listen med avvikstyper inneholde 'BESTILL_ORIGINAL'
 
   @ignored
@@ -37,7 +38,7 @@ Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregist
 
   @ignored
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
-    Når jeg skal finne avvik med path '/journal/journalpostId/avvik?journalstatus=M'
+    Når jeg skal finne avvik med path '/journal/journalpostId/avvik'
     Så skal http status være '200'
     Og så skal listen med avvikstyper ikke inneholde 'BESTILL_ORIGINAL'
 
