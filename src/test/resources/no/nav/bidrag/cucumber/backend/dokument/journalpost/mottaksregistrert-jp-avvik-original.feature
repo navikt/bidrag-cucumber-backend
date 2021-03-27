@@ -28,7 +28,7 @@ Egenskap: Avvikshendelse BESTILL_ORIGINAL på journalposter som er mottaksregist
     Når jeg registrerer avviket med url '/journal/journalpostId/avvik':
       """
         {
-          "avvikType" : "BESTILL_ORIGINAL"
+          "avvikType" : "BESTILL_ORIGINAL",
           "detaljer"  : {
             "enhetsnummer" : "4806"
           }
