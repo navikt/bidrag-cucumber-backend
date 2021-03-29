@@ -25,6 +25,13 @@ Egenskap: bidrag-dokument-journalpost (/sak/(saksnummer)/journal REST API)
           "skannetDato": "2019-01-01"
         }
       """
+    Og lag bidragssak '0603479' når den ikke finnes fra før:
+      """
+        {
+          "saksnummer": "0603479",
+          "enhetsnummer": "4806"
+        }
+      """
 
   Scenario: Sjekk at vi får en liste med journalposter for en gitt sak
     Når jeg henter journalposter for sak "0000003" som har fagområde "BID"
