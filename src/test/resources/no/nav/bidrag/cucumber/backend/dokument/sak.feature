@@ -8,20 +8,20 @@ Egenskap: bidrag-dokument (/sak/(saksnummer)/journal REST API)
     Gitt resttjenesten 'bidragDokument'
 
   @ignored
-  Scenario: Sjekk at vi får en liste med journalposter for en gitt sak
+  Scenario: Sjekk at vi får en liste med journalposter for en gitt sak - ignorert fordi sikkerhet ikke fungerer mot saf
     Når jeg henter journalposter for sak "0000003" som har fagområde "BID"
     Så skal http status være '200'
     Og så skal responsen være en liste
 
   @ignored
-  Scenario: Sjekk at vi får en journalpost for et farskap på gitt sak
+  Scenario: Sjekk at vi får en journalpost for et farskap på gitt sak - ignorert fordi sikkerhet ikke fungerer mot saf
     Når jeg henter journalposter for sak "0603479" som har fagområde "FAR"
     Så skal http status være '200'
     Og så skal responsen være en liste
     Og hver journal i listen skal ha 'fagomrade' = 'FAR'
 
   @ignored
-  Scenario: Sjekk at vi får gjelderAktor i journalpost for et farskap på gitt sak
+  Scenario: Sjekk at vi får gjelderAktor i journalpost for et farskap på gitt sak - ignorert fordi sikkerhet ikke fungerer mot saf
     Når jeg henter journalposter for sak "0603479" som har fagområde "FAR"
     Så skal http status være '200'
     Og så skal responsen være en liste

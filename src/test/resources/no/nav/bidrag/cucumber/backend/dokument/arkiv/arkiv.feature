@@ -17,7 +17,7 @@ Egenskap: bidrag-dokument-arkiv
     Og responsen skal inneholde 'status' = 'UP'
 
   @ignored
-  Scenario: Sjekk at kall mot SAF er OK (ikke forventet å finne noe resultat)
+  Scenario: Sjekk at kall mot SAF er OK (ikke forventet å finne noe resultat) - ignorert grunnet sikkerhet mot saf feiler
     Når jeg kaller endpoint '/sak/1234567/journal' med parameter 'fagomrade' = 'BID'
     Så skal http status være '200'
 
