@@ -37,13 +37,11 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
       | INNG_TIL_UTG_DOKUMENT |
       | FEILFORE_SAK          |
 
-  @ignored
   Scenario: Sjekk at man kan bestille original
     Gitt avvikstype 'BESTILL_ORIGINAL'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
-  @ignored
   Scenario: Sjekk at avviksvalg for gitt journalpost ikke inneholder BESTILL_ORIGINAL
     Gitt avvikstype 'BESTILL_ORIGINAL'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
@@ -51,7 +49,6 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
     Så skal http status være '200'
     Og listen med avvikstyper skal ikke inneholde 'BESTILL_ORIGINAL'
 
-  @ignored
   Scenario: Sjekk at man kan bestille reskannning
     Gitt avvikstype 'BESTILL_RESKANNING'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
@@ -62,21 +59,18 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '400'
 
-  @ignored
   Scenario: Sjekk at man kan bestille splitting
     Gitt avvikstype 'BESTILL_SPLITTING'
     Og avvikstypen har beskrivelse 'Splitt på midten'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
-  @ignored
   Scenario: Sjekk at man kan endre fagområde til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og som har detaljer 'fagomrade' = 'FAR'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
-  @ignored
   Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og som har detaljer 'fagomrade' = 'FAR'
