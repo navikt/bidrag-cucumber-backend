@@ -39,6 +39,7 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
 
   Scenario: Sjekk at man kan bestille original
     Gitt avvikstype 'BESTILL_ORIGINAL'
+    Og detaljer 'enhetsnummer' = '4806'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
@@ -69,12 +70,14 @@ Egenskap: avvik for bidrag-dokument (/journal/*/avvik REST API)
   Scenario: Sjekk at man kan endre fagområde til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og detaljer 'fagomrade' = 'FAR'
+    Og detaljer 'enhetsnummer' = '4806'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '200'
 
   Scenario: Sjekk at endring av fagområde feiler når vi prøver å endre fra FAR til FAR
     Gitt avvikstype 'ENDRE_FAGOMRADE'
     Og detaljer 'fagomrade' = 'FAR'
+    Og detaljer 'enhetsnummer' = '4806'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Når jeg oppretter avvik på opprettet journalpost med nøkkel 'TEST_AVVIKSBEHANDLING'
     Så skal http status være '400'
