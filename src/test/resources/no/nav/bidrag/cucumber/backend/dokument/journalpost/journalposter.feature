@@ -29,7 +29,7 @@ Egenskap: bidrag-dokument-journalpost
             """
             {
               "saksnummer": "0000003",
-              "enhetsnummer": "4802"
+              "enhetsnummer": "4833"
             }
             """
 

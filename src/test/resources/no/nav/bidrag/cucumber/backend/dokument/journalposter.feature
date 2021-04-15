@@ -28,7 +28,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
             """
             {
               "saksnummer": "0000003",
-              "enhetsnummer": "4802"
+              "enhetsnummer": "4833"
             }
             """
 
