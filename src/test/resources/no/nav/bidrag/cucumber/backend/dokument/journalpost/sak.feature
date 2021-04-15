@@ -17,7 +17,7 @@ Egenskap: bidrag-dokument-journalpost (/sak/(saksnummer)/journal REST API)
           "dokumentreferanse": "1234567890",
           "fagomrade": "FAR",
           "gjelder": "29118012345",
-          "journalforendeEnhet": "4802",
+          "journalforendeEnhet": "4833",
           "journaldato": "2019-01-01",
           "journalstatus": "J",
           "mottattDato": "2019-01-01",
