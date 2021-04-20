@@ -18,7 +18,3 @@ Egenskap: bidrag-organisasjon
   Scenario: Sjekk at hent av enheter for saksbehandler-id returnerer OK (200) respons
     Når jeg henter enheter for saksbehandler med ident 'Z992022'
     Så skal http status være '200'
-
-  Scenario: Sjekk at hent av enheter for arbeidsfordeling returnerer OK (200) respons
-    Når jeg henter enheter for arbeidsfordeling med diskresjonskode 'SPSF' og geografisk tilknytning '0301'
-    Så skal http status være '200'
