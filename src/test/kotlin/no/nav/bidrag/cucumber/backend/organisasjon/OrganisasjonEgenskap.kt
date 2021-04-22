@@ -7,23 +7,28 @@ import no.nav.bidrag.cucumber.RestTjeneste
 
 class OrganisasjonEgenskap {
 
-    @Gitt("resttjenesten bidragOrganisasjon")
-    fun `resttjenesten bidragOrganisasjon`() {
-        restTjeneste = RestTjeneste("bidragOrganisasjon")
-    }
+  @Gitt("resttjenesten bidragOrganisasjon")
+  fun `resttjenesten bidragOrganisasjon`() {
+    restTjeneste = RestTjeneste("bidragOrganisasjon")
+  }
 
-    @Når("jeg henter informasjon for ldap ident {string}")
-    fun `jeg henter informasjon for ldap ident`(ldapIdent: String) {
-        restTjeneste.exchangeGet("/saksbehandler/info/$ldapIdent")
-    }
+  @Når("jeg henter informasjon om saksbehandler med ident {string}")
+  fun `jeg henter informasjon om saksbehandler med ident`(ident: String) {
+    restTjeneste.exchangeGet("/saksbehandler/info/$ident")
+  }
 
-    @Når("jeg henter enheter for saksbehandler med ident {string}")
-    fun `jeg henter enheter for saksbehandler med ident`(ident: String) {
-        restTjeneste.exchangeGet("/saksbehandler/enhetsliste/$ident")
-    }
+  @Når("jeg henter enheter for saksbehandler med ident {string}")
+  fun `jeg henter enheter for saksbehandler med ident`(ident: String) {
+    restTjeneste.exchangeGet("/saksbehandler/enhetsliste/$ident")
+  }
 
-    @Når("jeg henter enheter for arbeidsfordeling med diskresjonskode {string} og geografisk tilknytning {string}")
-    fun `jeg henter enheter for arbeidsfordeling med diskresjonskode og geografisk tilknytning`(diskresjonskode: String, geografiskTilknytning: String) {
-        restTjeneste.exchangeGet("/arbeidsfordeling/enhetsliste/?diskresjonskode=$diskresjonskode&geografiskTilknytning=$geografiskTilknytning")
-    }
+  @Når("jeg henter journalfoerende enheter fra arbeidsfordeling")
+  fun `jeg henter jounalfoerende enheter fra arbeidsfordeling`() {
+    restTjeneste.exchangeGet("/arbeidsfordeling/enhetsliste/journalforende")
+  }
+
+  @Når("jeg henter enheter fra arbeidsfordeling for person med ident {string}")
+  fun `jeg henter enheter fra arbeidsfordeling for person med ident`(ident: String) {
+    restTjeneste.exchangeGet("/arbeidsfordeling/enhetsliste/geografisktilknytning/$ident")
+  }
 }
