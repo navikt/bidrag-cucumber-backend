@@ -104,7 +104,8 @@ internal object NaisConfiguration {
     }
 
     private fun fetchIngress(ingresses: List<String?>): String {
-        return fetchIngress(ingresses, "dev.adeo")
+        return fetchIngress(ingresses, "dev.intern.nav.no")
+            ?: fetchIngress(ingresses, "dev.adeo")
             ?: fetchIngress(ingresses, "preprod.local")
             ?: throw IllegalStateException("Kunne ikke fastslå ingress til tjeneste!")
     }
