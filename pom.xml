@@ -21,7 +21,7 @@
     <spring-boot.version>2.4.5</spring-boot.version>
 
     <!-- build -->
-    <kotlin.version>1.5.0</kotlin.version>
+    <kotlin.version>1.5.10</kotlin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
