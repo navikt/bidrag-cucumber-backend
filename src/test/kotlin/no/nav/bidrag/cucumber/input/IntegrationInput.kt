@@ -13,8 +13,7 @@ class IntegrationInput(
     var naisProjectFolder: String = "<not set>",
     var userTest: String = "<not set>",
 ) {
-    val userTestAuth: String
-        get() = Environment.fetchTestUserAuthentication()
+    val userTestAuth: String get() = Environment.fetchTestUserAuthentication()
 
     companion object {
 
@@ -48,7 +47,7 @@ class IntegrationInput(
     }
 
     fun fetchTenantUsername(): String {
-        val testUserUpperCase = userTest.toUpperCase()
+        val testUserUpperCase = userTest.uppercase()
         return "F_$testUserUpperCase.E_$testUserUpperCase@trygdeetaten.no"
     }
 }
