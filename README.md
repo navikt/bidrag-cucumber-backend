@@ -2,7 +2,7 @@
 Integrasjonstester for backend mikrotjenester i bidrag
 
 ## workflow
-![](https://github.com/navikt/bidrag-cucumber-backend/workflows/continuous%20integration/badge.svg)
+[![continuous integration](https://github.com/navikt/bidrag-cucumber-backend/actions/workflows/ci.yaml/badge.svg)](https://github.com/navikt/bidrag-cucumber-backend/actions/workflows/ci.yaml)
 
 ## beskrivelse
 
