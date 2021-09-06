@@ -18,7 +18,7 @@
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
     <!-- dependency management by spring-boot -->
-    <spring-boot.version>2.5.2</spring-boot.version>
+    <spring-boot.version>2.5.4</spring-boot.version>
 
     <!-- build -->
     <kotlin.version>1.5.21</kotlin.version>
