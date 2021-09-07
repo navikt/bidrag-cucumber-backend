@@ -14,6 +14,7 @@ internal object Environment {
     }
 
     fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
+    fun hasTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) != null
     internal fun fetchTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException(
         "Fant ikke passord til test bruker"
     )
@@ -28,7 +29,7 @@ internal object Environment {
 
     private fun initFromEnvironmentAboutToBeRemoved(): IntegrationInput {
         LOGGER.info("Leser IngegrationInput fra System.getProperty(...)")
-        LOGGER.info("Fant ikke $INTEGRATION_INPUT i ${System.getProperties().keys}")
+        LOGGER.info("Fant ikke \$INTEGRATION_INPUT blant ${System.getProperties().keys}")
 
         return IntegrationInput(
             environment = EnvironmentToBeRemoved.miljo,

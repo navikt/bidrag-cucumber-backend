@@ -6,9 +6,27 @@ on:
 
 jobs:
 
+  run_tests_for_bidrag_sjablon_without_security:
+    runs-on: self-hosted
+
+    steps:
+      - uses: navikt/bidrag-integration/cucumber-clone@v5
+        id: clone
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: navikt/bidrag-integration/input-json@v5
+        with:
+          base_path: ${{ steps.clone.outputs.cucumber_path }}
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/args
+        id: creator
+        with:
+          cucumber_tag: bidrag-sjablon
+      - run: ${{ steps.creator.outputs.created_shell }}
+
   run-tests:
     runs-on: self-hosted
     name: run cucumber integration tests
+    needs: run_tests_for_bidrag_sjablon_without_security
 
     steps:
       - run: |
