@@ -17,7 +17,7 @@ jobs:
       - uses: navikt/bidrag-integration/input-json@v5
         with:
           base_path: ${{ steps.clone.outputs.cucumber_path }}
-      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/args
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/user
         id: creator
         with:
           cucumber_tag: bidrag-sjablon
@@ -69,11 +69,18 @@ jobs:
           PIP_USER_AUTHENTICATION: ${{ secrets.PIP_USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
+
+  remove_files:
+    runs-on: self-hosted
+    name: Remove files from workspace
+    needs: run_tests_for_bidrag_sjablon_without_security
+    if: ${{ always() }}
+
+    steps:
       - name: Remove files from workspace
         run: |
           cd $RUNNER_WORKSPACE
           sudo rm -rf *
-        if: ${{ always() }}
 
   bump_dev_version:
     runs-on: ubuntu-latest
