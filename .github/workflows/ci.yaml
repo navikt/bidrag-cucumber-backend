@@ -6,27 +6,8 @@ on:
 
 jobs:
 
-  run_tests_for_bidrag_sjablon_without_security:
+  set-up:
     runs-on: self-hosted
-
-    steps:
-      - uses: navikt/bidrag-integration/cucumber-clone@v5
-        id: clone
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: navikt/bidrag-integration/input-json@v5
-        with:
-          base_path: ${{ steps.clone.outputs.cucumber_path }}
-      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/user
-        id: creator
-        with:
-          cucumber_tag: bidrag-sjablon
-      - run: ${{ steps.creator.outputs.created_shell }}
-
-  run-tests:
-    runs-on: self-hosted
-    name: run cucumber integration tests
-    needs: run_tests_for_bidrag_sjablon_without_security
 
     steps:
       - run: |
@@ -54,11 +35,38 @@ jobs:
         id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
+      - run: echo ${{ steps.tags.outputs.cucumber_path }} > .tag-base-path
+
+  run_tests_for_bidrag_sjablon_without_security:
+    runs-on: self-hosted
+    needs: set-up
+
+    steps:
+      - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
       - uses: navikt/bidrag-integration/input-json@v5
         id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
-          base_path: ${{ steps.tags.outputs.cucumber_path }}
+          base_path: ${{ env.TAG_BASE_PATH }}
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/user
+        id: creator
+        with:
+          cucumber_tag: bidrag-sjablon
+      - run: ${{ steps.creator.outputs.created_shell }}
+      - run: rm ${{ steps.creator.outputs.created_shell }}
+
+  run-all-tests:
+    runs-on: self-hosted
+    name: run cucumber integration tests
+    needs: run_tests_for_bidrag_sjablon_without_security
+
+    steps:
+      - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
+      - uses: navikt/bidrag-integration/input-json@v5
+        id: integration
+        with:
+          applications: ${{ steps.tags.outputs.cloned_apps }}
+          base_path: ${{ env.TAG_BASE_PATH }}
           test_username: z992903
       - uses: navikt/bidrag-scripts/create-cucumber-shell@v1
         id: creator
@@ -86,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Bump SNAPSHOT version
     if: github.ref == 'refs/heads/main'
-    needs: run-tests
+    needs: run-all-tests
 
     steps:
       - uses: actions/checkout@v2
