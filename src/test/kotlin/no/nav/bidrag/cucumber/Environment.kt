@@ -14,7 +14,8 @@ internal object Environment {
     }
 
     fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
-    fun hasTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) != null
+    fun fetchTestUser() = integrationInput?.userTest
+    fun hasTestUser() = fetchTestUser() != null && fetchTestUser() != ""
     internal fun fetchTestUserAuthentication() = System.getProperty(CREDENTIALS_TEST_USER_AUTH) ?: throw IllegalStateException(
         "Fant ikke passord til test bruker"
     )

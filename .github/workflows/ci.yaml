@@ -37,8 +37,9 @@ jobs:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - run: echo ${{ steps.tags.outputs.cucumber_path }} > .tag-base-path
 
-  run_tests_for_bidrag_sjablon_without_security:
+  run-tests-for-bidrag-sjablon:
     runs-on: self-hosted
+    name: run tests for bidrag sjablon without security settings
     needs: set-up
 
     steps:
@@ -48,17 +49,18 @@ jobs:
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ env.TAG_BASE_PATH }}
-      - uses: navikt/bidrag-scripts/create-cucumber-shell@feature/user
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@v1
         id: creator
         with:
           cucumber_tag: bidrag-sjablon
       - run: ${{ steps.creator.outputs.created_shell }}
       - run: rm ${{ steps.creator.outputs.created_shell }}
+      - run: rm -rf json || echo kunne ikke slette json mappa
 
   run-all-tests:
     runs-on: self-hosted
     name: run cucumber integration tests
-    needs: run_tests_for_bidrag_sjablon_without_security
+    needs: run-tests-for-bidrag-sjablon
 
     steps:
       - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
@@ -78,10 +80,10 @@ jobs:
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
 
-  remove_files:
+  remove-files:
     runs-on: self-hosted
     name: Remove files from workspace
-    needs: run_tests_for_bidrag_sjablon_without_security
+    needs: run-all-tests
     if: ${{ always() }}
 
     steps:

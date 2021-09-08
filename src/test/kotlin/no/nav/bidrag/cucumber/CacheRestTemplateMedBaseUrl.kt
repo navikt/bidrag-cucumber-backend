@@ -55,7 +55,8 @@ internal object CacheRestTemplateMedBaseUrl {
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        if (Environment.hasTestUserAuthentication()) {
+        if (Environment.hasTestUser()) {
+            LOGGER.info("Will provide AUTHORIZATION for ${Environment.fetchTestUser()}")
             httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
         }
 
