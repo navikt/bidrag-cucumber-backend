@@ -23,7 +23,7 @@ internal object CacheRestTemplateMedBaseUrl {
     }
 
     fun hentEllerKonfigurer(alias: String, fasitRessurs: Fasit.FasitRessurs): RestTjeneste.RestTemplateMedBaseUrl {
-        return REST_TJENESTE_TIL_APPLIKASJON.computeIfAbsent(alias) { konfigurerApplikasjonForUrl(alias, fasitRessurs.url())}
+        return REST_TJENESTE_TIL_APPLIKASJON.computeIfAbsent(alias) { konfigurerApplikasjonForUrl(alias, fasitRessurs.url()) }
     }
 
     fun hentEllerKonfigurer(applicationOrAlias: String, applicationContext: String): RestTjeneste.RestTemplateMedBaseUrl {
@@ -55,7 +55,10 @@ internal object CacheRestTemplateMedBaseUrl {
         val httpComponentsClientHttpRequestFactory = hentHttpRequestFactorySomIgnorererHttps()
         val httpHeaderRestTemplate = RestTjeneste.setBaseUrlPa(HttpHeaderRestTemplate(httpComponentsClientHttpRequestFactory), applicationUrl)
 
-        httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
+        if (Environment.hasTestUser()) {
+            LOGGER.info("Will provide AUTHORIZATION for ${Environment.fetchTestUser()}")
+            httpHeaderRestTemplate.addHeaderGenerator(HttpHeaders.AUTHORIZATION) { Sikkerhet.fetchToken(applicationName) }
+        }
 
         return RestTjeneste.RestTemplateMedBaseUrl(httpHeaderRestTemplate, applicationUrl)
     }

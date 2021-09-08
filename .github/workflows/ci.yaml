@@ -6,9 +6,8 @@ on:
 
 jobs:
 
-  run-tests:
+  set-up:
     runs-on: self-hosted
-    name: run cucumber integration tests
 
     steps:
       - run: |
@@ -36,11 +35,40 @@ jobs:
         id: tags
         env:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
+      - run: echo ${{ steps.tags.outputs.cucumber_path }} > .tag-base-path
+
+  run-tests-for-bidrag-sjablon:
+    runs-on: self-hosted
+    name: run tests for bidrag sjablon without security settings
+    needs: set-up
+
+    steps:
+      - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
       - uses: navikt/bidrag-integration/input-json@v5
         id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
-          base_path: ${{ steps.tags.outputs.cucumber_path }}
+          base_path: ${{ env.TAG_BASE_PATH }}
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@v1
+        id: creator
+        with:
+          cucumber_tag: bidrag-sjablon
+      - run: ${{ steps.creator.outputs.created_shell }}
+      - run: rm ${{ steps.creator.outputs.created_shell }}
+      - run: rm -rf json || echo kunne ikke slette json mappa
+
+  run-all-tests:
+    runs-on: self-hosted
+    name: run cucumber integration tests
+    needs: run-tests-for-bidrag-sjablon
+
+    steps:
+      - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
+      - uses: navikt/bidrag-integration/input-json@v5
+        id: integration
+        with:
+          applications: ${{ steps.tags.outputs.cloned_apps }}
+          base_path: ${{ env.TAG_BASE_PATH }}
           test_username: z992903
       - uses: navikt/bidrag-scripts/create-cucumber-shell@v1
         id: creator
@@ -51,17 +79,24 @@ jobs:
           PIP_USER_AUTHENTICATION: ${{ secrets.PIP_USER_AUTHENTICATION }}
           TEST_USER_AUTHENTICATION: ${{ secrets.TEST_USER_AUTHENTICATION }}
           USER_AUTHENTICATION: ${{ secrets.USER_AUTHENTICATION }}
+
+  remove-files:
+    runs-on: self-hosted
+    name: Remove files from workspace
+    needs: run-all-tests
+    if: ${{ always() }}
+
+    steps:
       - name: Remove files from workspace
         run: |
           cd $RUNNER_WORKSPACE
           sudo rm -rf *
-        if: ${{ always() }}
 
   bump_dev_version:
     runs-on: ubuntu-latest
     name: Bump SNAPSHOT version
     if: github.ref == 'refs/heads/main'
-    needs: run-tests
+    needs: run-all-tests
 
     steps:
       - uses: actions/checkout@v2
