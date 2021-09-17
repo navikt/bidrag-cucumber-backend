@@ -37,11 +37,12 @@ class JournalpostEgenskaper {
     @Gitt("jeg endrer journalpost for testdata med nøkkel {string}:")
     fun `jeg endrer journalpost for testdata nokkel`(nokkel: String, json: String) {
         val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]
-        restTjeneste.exchangePut("/journal/$journalpostId", json)
+        restTjeneste.exchangePatch("/journal/$journalpostId", json)
     }
 
-    @Gitt("jeg endrer journalpost med id {string} til:")
-    fun `jeg endrer journalpost med id til`(journalpostId: String, journalpostJson: String) {
-        restTjeneste.exchangePut("/journal/$journalpostId", journalpostJson)
+    @Gitt("jeg endrer journalpost for testdata med nøkkel {string} PUT:")
+    fun `jeg endrer journalpost for testdata nokkel PUT`(nokkel: String, json: String) {
+        val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]
+        restTjeneste.exchangePut("/journal/$journalpostId", json)
     }
 }
