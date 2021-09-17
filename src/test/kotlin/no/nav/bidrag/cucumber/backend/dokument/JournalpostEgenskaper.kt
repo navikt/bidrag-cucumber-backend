@@ -29,20 +29,9 @@ class JournalpostEgenskaper {
         verifyer.assertAll()
     }
 
-    @Gitt("jeg endrer journalpost som har id {string}:")
-    fun `jeg endrer journalpost som har id`(journalpostId: String, json: String) {
-        restTjeneste.exchangePut("/journal/$journalpostId", json)
-    }
-
     @Gitt("jeg endrer journalpost for testdata med nøkkel {string}:")
     fun `jeg endrer journalpost for testdata nokkel`(nokkel: String, json: String) {
         val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]
         restTjeneste.exchangePatch("/journal/$journalpostId", json)
-    }
-
-    @Gitt("jeg endrer journalpost for testdata med nøkkel {string} PUT:")
-    fun `jeg endrer journalpost for testdata nokkel PUT`(nokkel: String, json: String) {
-        val journalpostId = FellesTestdataEgenskaper.journalpostIdPerKey[nokkel]
-        restTjeneste.exchangePut("/journal/$journalpostId", json)
     }
 }
