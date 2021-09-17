@@ -76,7 +76,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og jeg registrerer endring av opprettet journalpost, 'REGISTRERING', med path '/journal/{}':
+    Og jeg registrerer endring av opprettet journalpost, 'REGISTRERING', med path '/journal/{}' PUT:
       """
       {
         "skalJournalfores":false,
@@ -114,7 +114,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR', med path '/journal/{}':
+    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR', med path '/journal/{}' PUT:
       """
       {
         "skalJournalfores":true,
@@ -153,7 +153,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_DOK', med path '/journal/{}', med enhet '4806':
+    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_DOK', med path '/journal/{}', med enhet '4806' PUT:
       """
       {
         "skalJournalfores":true,
