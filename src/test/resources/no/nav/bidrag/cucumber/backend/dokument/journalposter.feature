@@ -64,7 +64,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Så skal http status være '404'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-01-01
-    Gitt jeg endrer journalpost for testdata med nøkkel 'JOURNALPOSTER_BD' PUT:
+    Gitt jeg endrer journalpost for testdata med nøkkel 'JOURNALPOSTER_BD':
             """
             {
             "saksnummer": {
@@ -85,7 +85,7 @@ Egenskap: bidrag-dokument (/sak/*/journal REST API)
     Og skal responsen inneholde et objekt med navn 'journalpost' som har feltet 'dokumentDato' = '2001-01-01'
 
   Scenario: Sjekk at dokumentDato kan oppdateres til 2001-02-01
-    Gitt jeg endrer journalpost for testdata med nøkkel 'JOURNALPOSTER_BD' PUT:
+    Gitt jeg endrer journalpost for testdata med nøkkel 'JOURNALPOSTER_BD':
             """
             {
             "journalpostId": 30040789,

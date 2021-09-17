@@ -107,19 +107,10 @@ open class RestTjeneste(
     }
 
     fun exchangePatch(endpointUrl: String, journalpostJson: String) {
-        exchangePut(endpointUrl, journalpostJson, null)
-    }
-
-    fun exchangePut(endpointUrl: String, journalpostJson: String) {
-        exchangePut(endpointUrl, journalpostJson, null)
+        exchangePatch(endpointUrl, journalpostJson, null)
     }
 
     fun exchangePatch(endpointUrl: String, journalpostJson: String, enhet: String?) {
-        val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
-        exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
-    }
-
-    fun exchangePut(endpointUrl: String, journalpostJson: String, enhet: String?) {
         val jsonEntity = httpEntity(endpointUrl, enhet, journalpostJson)
         exchange(jsonEntity, endpointUrl, HttpMethod.PUT)
     }
