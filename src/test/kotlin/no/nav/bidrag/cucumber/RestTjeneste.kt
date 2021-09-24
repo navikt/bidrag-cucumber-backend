@@ -2,6 +2,7 @@ package no.nav.bidrag.cucumber
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.bidrag.commons.CorrelationId
+import no.nav.bidrag.commons.ExceptionLogger
 import no.nav.bidrag.cucumber.sikkerhet.Fasit
 import no.nav.bidrag.cucumber.sikkerhet.Sikkerhet
 import org.slf4j.LoggerFactory
@@ -51,7 +52,12 @@ open class RestTjeneste(
     fun hentHttpStatus(): HttpStatus = responseEntity.statusCode
     fun hentResponse(): String? = responseEntity.body
     fun hentResponseSomListe() = ObjectMapper().readValue(responseEntity.body, List::class.java) as List<Map<String, Any>>
-    fun hentResponseSomMap() = ObjectMapper().readValue(responseEntity.body, Map::class.java) as Map<String, Any>
+    fun hentResponseSomMap() = try {
+        ObjectMapper().readValue(responseEntity.body, Map::class.java) as Map<String, Any>
+    } catch (e: Exception) {
+        ExceptionLogger("bidrag-dokument-journalpost").logException(e, "responseEntity.body (${responseEntity.body})")
+        throw e
+    }
 
     fun exchangeGet(endpointUrl: String): ResponseEntity<String> {
         return exchangeGet(endpointUrl, null, "na")
