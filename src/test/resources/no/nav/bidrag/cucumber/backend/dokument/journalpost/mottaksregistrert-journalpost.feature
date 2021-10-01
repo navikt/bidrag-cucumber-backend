@@ -110,7 +110,6 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "avsenderNavn": "Cucumber Test",
         "beskrivelse": "Testdata for test av journalpost med journalstatus 'M'",
         "dokumentType": "I",
-        "journalforendeEnhet": "4806",
         "dokumentdato": "2020-02-02",
         "dokumentreferanse": "1234567890",
         "fagomrade": "BID",
@@ -121,7 +120,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
         "journalstatus": "M"
         }
         """
-    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_BDJ', med path '/journal/{}', med enhet '4865':
+    Og jeg registrerer endring av opprettet journalpost, 'JOURNALFOR_BDJ', med path '/journal/{}', med enhet '4806':
       """
       {
         "skalJournalfores":true,
