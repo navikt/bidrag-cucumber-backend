@@ -15,7 +15,7 @@ Egenskap: bidrag-sak
 
   Scenario: Sjekk at vi får NOT FOUND dersom vi ber om sak for person som ikke eksisterer i databasen
     Gitt resttjenesten 'bidragSak'
-    Når jeg henter bidragssaker for person med fnr "12345678910"
+    Når jeg henter bidragssaker for person med fnr "12345678901"
     Så skal http status være '404'
 
   @ignored
