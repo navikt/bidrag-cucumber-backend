@@ -72,13 +72,13 @@ class FellesTestdataEgenskaper {
         }
     }
 
-    @Og("hendelsen {string} skal være publisert for opprettet data med nokkel {string}")
-    fun `hendelsen skal vare publisert for opprettet data`(hendelse: String, nokkel: String) {
+    @Og("hendelse skal være publisert for opprettet data med nokkel {string}")
+    fun `hendelse skal vare publisert for opprettet data`(nokkel: String) {
         val journalpostId = journalpostIdPerKey[nokkel]
         val response = restTjenesteTestdata.exchangeGet("/hendelser/$journalpostId")
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body).containsSequence(hendelse)
+        assertThat(response.body).containsSequence(journalpostId)
     }
 
     @Og("lag bidragssak {string} når den ikke finnes fra før:")
