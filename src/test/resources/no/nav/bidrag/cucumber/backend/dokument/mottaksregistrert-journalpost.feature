@@ -95,7 +95,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og at jeg henter endret journalpost for 'REGISTRERING' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'M'
-    Og hendelsen 'REGISTRER_JOURNALPOST' skal være publisert for opprettet data med nokkel 'REGISTRERING'
+    Og en journalpostHendelse for nokkel 'REGISTRERING' skal være produsert
 
   Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFOR':
@@ -134,7 +134,7 @@ Egenskap: journalposter som har journalstatus mottaksregistrert i bidrag-dokumen
     Og at jeg henter endret journalpost for 'JOURNALFOR' med path '/journal/{}'
     Så skal http status være '200'
     Og responsen skal inneholde et objekt med navn 'journalpost' som har feltet 'journalstatus' = 'J'
-    Og hendelsen 'REGISTRER_JOURNALPOST' skal være publisert for opprettet data med nokkel 'JOURNALFOR'
+    Og en journalpostHendelse for nokkel 'JOURNALFOR' skal være produsert
 
   Scenario: Registrer (journalfør) journalpost som har status mottaksregistrert
     Gitt at jeg oppretter journalpost for 'JOURNALFOR_DOK':
