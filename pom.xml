@@ -10,15 +10,15 @@
   <properties>
     <!-- dependencies -->
     <apache-httpcomponenents.version>4.5.13</apache-httpcomponenents.version>
-    <bidrag-commons.version>0.5.11</bidrag-commons.version>
+    <bidrag-commons.version>0.5.16</bidrag-commons.version>
     <clucumber.version>2.7.0</clucumber.version>
-    <cucumber.version>6.11.0</cucumber.version>
+    <cucumber.version>7.0.0</cucumber.version>
     <json-path.version>2.6.0</json-path.version>
     <mimepull.version>1.9.15</mimepull.version>
     <oidc-spring-support.version>0.2.18</oidc-spring-support.version>
 
     <!-- dependency management by spring-boot -->
-    <spring-boot.version>2.5.4</spring-boot.version>
+    <spring-boot.version>2.5.5</spring-boot.version>
 
     <!-- build -->
     <kotlin.version>1.5.31</kotlin.version>
