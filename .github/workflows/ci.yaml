@@ -32,15 +32,14 @@ jobs:
           WORKFLOW_CREDENTIALS: "jactor-rises:${{ secrets.WORKFLOW_TOKEN }}"
       - run: echo ${{ steps.tags.outputs.cucumber_path }} > .tag-base-path
 
-  run-tests-for-bidrag-sjablon:
+  no-auth-bidrag-sjablon:
     runs-on: self-hosted
-    name: run tests for bidrag sjablon without security settings
+    name: bidrag-sjablon without security settings
     needs: set-up
 
     steps:
       - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
       - uses: navikt/bidrag-integration/input-json@v5
-        id: integration
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ env.TAG_BASE_PATH }}
@@ -52,15 +51,33 @@ jobs:
       - run: rm ${{ steps.creator.outputs.created_shell }}
       - run: rm -rf json || echo kunne ikke slette json mappa
 
-  run-all-tests:
+  no-auth-bidrag-testdata:
     runs-on: self-hosted
-    name: run cucumber integration tests
-    needs: run-tests-for-bidrag-sjablon
+    name: bidrag-testdata without security settings
+    needs: no-auth-bidrag-sjablon
 
     steps:
       - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
       - uses: navikt/bidrag-integration/input-json@v5
-        id: integration
+        with:
+          applications: ${{ steps.tags.outputs.cloned_apps }}
+          base_path: ${{ env.TAG_BASE_PATH }}
+      - uses: navikt/bidrag-scripts/create-cucumber-shell@v1
+        id: creator
+        with:
+          cucumber_tag: bidrag-testdata
+      - run: ${{ steps.creator.outputs.created_shell }}
+      - run: rm ${{ steps.creator.outputs.created_shell }}
+      - run: rm -rf json || echo kunne ikke slette json mappa
+
+  run-all-tests:
+    runs-on: self-hosted
+    name: run cucumber integration tests
+    needs: no-auth-bidrag-testdata
+
+    steps:
+      - run: echo TAG_BASE_PATH=$( cat .tag-base-path ) >> $GITHUB_ENV
+      - uses: navikt/bidrag-integration/input-json@v5
         with:
           applications: ${{ steps.tags.outputs.cloned_apps }}
           base_path: ${{ env.TAG_BASE_PATH }}
