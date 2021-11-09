@@ -8,7 +8,7 @@ Egenskap: bidrag-dokument-arkiv
 
   Bakgrunn: Spesifiser base-url til tjenesten her så vi slipper å gjenta for hvert scenario.
   Fasit environment er gitt ved environment variabler ved oppstart.
-    Gitt resttjenesten 'bidragDokumentArkiv'
+    Gitt nais applikasjon 'bidrag-dokument-arkiv'
 
   Scenario: Sjekk at health endpoint er operativt
     Når jeg kaller helsetjenesten
@@ -16,10 +16,11 @@ Egenskap: bidrag-dokument-arkiv
     Og header 'content-type' skal være 'application/json'
     Og responsen skal inneholde 'status' = 'UP'
 
-  @ignored
-  Scenario: Sjekk at kall mot SAF er OK (ikke forventet å finne noe resultat) - ignorert grunnet sikkerhet mot saf feiler
+  @ignored # grunnet UNAUTHORIZED...
+  Scenario: bidrag-dokument-arkiv: Sjekk at henting av journal resulterer i ei tom liste (SAF-grensesnitt)
     Når jeg kaller endpoint '/sak/1234567/journal' med parameter 'fagomrade' = 'BID'
     Så skal http status være '200'
+    Og så skal responsen være ei tom liste
 
 #  Scenario: Opprett en journalpost og finn den via SAF query
 #    Gitt at det opprettes en journalpost i joark med tema BID og saksnummer '1001001'
