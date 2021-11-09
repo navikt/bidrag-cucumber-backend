@@ -169,6 +169,11 @@ class FellesEgenskaper {
         assertThat(restTjeneste.hentResponse()?.trim()).startsWith("[")
     }
 
+    @Og("så skal responsen være ei tom liste")
+    fun `skal responsen vaere ei tom liste`() {
+        assertThat(restTjeneste.hentResponse()?.trim()).isEqualTo("[]")
+    }
+
     @Og("hvert element i listen skal ha følgende properties satt:")
     fun `hvert element i listen skal ha folgende properties satt`(properties: List<String>) {
         val verifyer = SoftAssertions()
