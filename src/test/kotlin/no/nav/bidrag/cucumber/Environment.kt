@@ -12,6 +12,12 @@ internal object Environment {
     val namespace: String by lazy { // brukes for å hente fasit-ressurser
         if (fetchIntegrationInput().environment == "main") "q2" else "q1"
     }
+    val tokenNamespace: String by lazy {
+        if (fetchIntegrationInput().environment == "main") "q2" else "feature-q1"
+    }
+    val issoRedirectUrl: String by lazy {
+        if (fetchIntegrationInput().environment == "main") "https://bidrag-ui.dev.adeo.no/isso" else "https://bidrag-ui-feature.dev.adeo.no/isso"
+    }
 
     fun fetchIntegrationInput() = integrationInput ?: readAndCahcedIntegrationInput()
     fun fetchTestUser() = integrationInput?.userTest

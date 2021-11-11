@@ -12,7 +12,6 @@ import no.nav.bidrag.cucumber.URL_FASIT
 import no.nav.bidrag.cucumber.URL_ISSO
 import no.nav.bidrag.cucumber.URL_ISSO_ACCESS_TOKEN
 import no.nav.bidrag.cucumber.URL_ISSO_AUTHORIZE
-import no.nav.bidrag.cucumber.URL_ISSO_REDIRECT
 import no.nav.bidrag.cucumber.X_OPENAM_PASSW_HEADER
 import no.nav.bidrag.cucumber.X_OPENAM_USER_HEADER
 import org.apache.tomcat.util.codec.binary.Base64
@@ -92,7 +91,7 @@ internal object IssoTokenManager {
 
     private fun hentCodeFraLocationHeader(tokenIdForAuthenticatedTestUser: String): String {
         val httpEntityWithHeaders = initHttpEntity(
-            "client_id=bidrag-ui-${Environment.namespace}&response_type=code&redirect_uri=$URL_ISSO_REDIRECT&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
+            "client_id=bidrag-ui-${Environment.tokenNamespace}&response_type=code&redirect_uri=${Environment.issoRedirectUrl}&decision=allow&csrf=$tokenIdForAuthenticatedTestUser&scope=openid",
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded"),
             header(HttpHeaders.COOKIE, "nav-isso=$tokenIdForAuthenticatedTestUser")
@@ -108,9 +107,9 @@ internal object IssoTokenManager {
     }
 
     private fun hentIdToken(codeFraLocationHeader: String, passordOpenAm: String): String {
-        val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.namespace}:$passordOpenAm"
+        val openApAuth = "$ALIAS_BIDRAG_UI-${Environment.tokenNamespace}:$passordOpenAm"
         val httpEntityWithHeaders = initHttpEntity(
-            "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=$URL_ISSO_REDIRECT",
+            "grant_type=authorization_code&code=$codeFraLocationHeader&redirect_uri=${Environment.issoRedirectUrl}",
             header(HttpHeaders.AUTHORIZATION, "Basic " + String(Base64.encodeBase64(openApAuth.toByteArray(Charsets.UTF_8)))),
             header(HttpHeaders.CACHE_CONTROL, "no-cache"),
             header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
