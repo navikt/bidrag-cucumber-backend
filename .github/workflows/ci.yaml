@@ -6,8 +6,21 @@ on:
 
 jobs:
 
+  restart-testdata:
+    name: restart kubernetes pods bidrag-testdata
+    runs-on: self-hosted
+
+    steps:
+      - name: restart bidrag-testdata
+        if: github.ref == 'refs/heads/main'
+        run: "curl -X 'POST' 'https://bidrag-testdata.dev.adeo.no/bidrag-testdata/restart' -H 'accept: */*' -d ''"
+      - name: restart bidrag-testdata-feature
+        if: github.ref != 'refs/heads/main'
+        run: "curl -X 'POST' 'https://bidrag-testdata-feature.dev.adeo.no/bidrag-testdata/restart' -H 'accept: */*' -d ''"
+
   set-up:
     runs-on: self-hosted
+    needs: restart-testdata
 
     steps:
       - run: |
