@@ -1,5 +1,5 @@
 # bidrag-cucumber-backend
-Integrasjonstester for backend mikrotjenester i bidrag
+Integrasjonstester for backend mikrotjenester i bidrag er nå i [bidrag-cucumber-onprem](https://github.com/navikt/bidrag-cucumber-onprem). Dette prosjektet er arkivert
 
 ## workflow
 [![continuous integration](https://github.com/navikt/bidrag-cucumber-backend/actions/workflows/ci.yaml/badge.svg)](https://github.com/navikt/bidrag-cucumber-backend/actions/workflows/ci.yaml)
